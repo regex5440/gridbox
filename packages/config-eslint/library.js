@@ -33,5 +33,6 @@ module.exports = {
       },
     },
   },
+  "unicorn/filename-case": ["error", { case: "pascalCase" }],
   ignorePatterns: ["node_modules/", "dist/"],
 };
