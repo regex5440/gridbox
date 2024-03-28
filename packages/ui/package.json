@@ -5,8 +5,9 @@
     "**/*.css"
   ],
   "exports": {
+    ".": "./src/index.tsx",
     "./styles.css": "./dist/index.css",
-    "./card": "./src/card.tsx"
+    "./utils": "./src/utils/index.ts"
   },
   "license": "MIT",
   "scripts": {
@@ -30,6 +31,9 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "lucide-react": "^0.363.0"
+    "@radix-ui/react-slot": "^1.0.2",
+    "embla-carousel-react": "^8.0.0",
+    "lucide-react": "^0.363.0",
+    "class-variance-authority": "^0.7.0"
   }
 }

@@ -2,8 +2,7 @@ import "./globals.css";
 import "@repo/ui/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Header from "../../../packages/ui/src/Header";
-import Search from "../../../packages/ui/src/Search";
+import { Header, Search } from "@repo/ui";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +18,7 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className + " bg-glow-conic"}>
         <Header />
         <Search />
         {children}

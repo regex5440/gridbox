@@ -1,4 +1,5 @@
 import React from "react";
+
 export default function Page(): React.ReactNode {
-  return <div>Page</div>;
+  return <div className="h-dvh"></div>;
 }

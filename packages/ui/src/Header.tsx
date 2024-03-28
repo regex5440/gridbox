@@ -9,7 +9,7 @@ import {
   MenubarTrigger,
 } from "./MenuBar";
 
-export default function Header(): ReactNode {
+export default function Header() {
   return (
     <header className="w-full flex justify-between items-center py-4 px-8 border-b border-b-white">
       <h1 className="text-4xl">Gadget/Grid</h1>
