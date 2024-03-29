@@ -8,6 +8,17 @@ const config: Omit<Config, "content"> = {
         "glow-conic":
           "conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 180deg, #e92a67 360deg)",
       },
+      backgroundColor: {
+        "arrow-color": "var(--carousel-arrow-bg-color)",
+      },
+      fill: {
+        "dot-bg": "var(--carousel-arrow-bg-color)",
+      },
+      height: {
+        "1/3screen": "33vh",
+        "2/3screen": "66vh",
+        "3/4screen": "75vh",
+      },
     },
   },
   plugins: [],
