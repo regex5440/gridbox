@@ -1,8 +1,8 @@
-import * as Button from "./Button";
+import { Button, buttonVariants } from "./Button";
 import * as Carousel from "./Carousel";
 import Header from "./Header";
-import * as MenuBar from "./MenuBar";
+import * as Menu from "./MenuBar";
 import Search from "./Search";
 import Input from "./Input";
 
-export { Button, Carousel, Header, MenuBar, Search, Input };
+export { Button, buttonVariants, Carousel, Header, Menu, Search, Input };
