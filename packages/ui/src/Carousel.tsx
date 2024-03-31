@@ -196,7 +196,7 @@ CarouselItem.displayName = "CarouselItem";
 
 const CarouselPrevious = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentProps<typeof Button> & { iconProp: LucideProps }
+  React.ComponentProps<typeof Button> & { iconProp?: LucideProps }
 >(
   (
     { className, variant = "outline", size = "icon", iconProp, ...props },
@@ -230,7 +230,7 @@ CarouselPrevious.displayName = "CarouselPrevious";
 
 const CarouselNext = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentProps<typeof Button> & { iconProp: LucideProps }
+  React.ComponentProps<typeof Button> & { iconProp?: LucideProps }
 >(
   (
     { className, variant = "outline", size = "icon", iconProp, ...props },
