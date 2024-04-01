@@ -24,7 +24,7 @@ export default async function Page() {
   const bannerProducts = bannerAPIResponse.products as Product[];
   const frequentProducts = frequentlyBoughtProducts.products as Product[];
   //TODO 1: Fetch all products data in this server and pass it to Client interactive components
-  //TODO 2: Use Streaming for data fetching
+  //TODO 2: Use Streaming for data fetching, (check if it shows loader)
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>

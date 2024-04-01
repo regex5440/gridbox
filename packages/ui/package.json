@@ -4,12 +4,12 @@
   "sideEffects": [
     "**/*.css"
   ],
-  "types": "./src/index.d.ts",
+  "types": "./@types/index.d.ts",
   "exports": {
     ".": "./src/index.tsx",
     "./styles.css": "./dist/index.css",
     "./utils": "./src/utils/index.ts",
-    "./types": "./src/index.d.ts"
+    "./types": "./@types/index.d.ts"
   },
   "license": "MIT",
   "scripts": {
