@@ -1,0 +1,44 @@
+"use client";
+import { Carousel } from "@repo/ui";
+import { useEffect, useState } from "react";
+import { getRecentlyViewedProductIds } from "../../utils";
+import ProductTemplateWithFetchHook from "./ProductTemplateFetchWrapper";
+
+export default function RecentlyViewed() {
+  const [productIds, setProductIds] = useState<string[] | undefined>(undefined);
+
+  useEffect(() => {
+    const productIds = getRecentlyViewedProductIds() || [];
+    setProductIds(productIds);
+  }, []);
+
+  return (
+    <section className="md:mt-16 ml-12">
+      <h1 className="text-4xl mb-6">Recently Viewed</h1>
+      {productIds?.length ? (
+        <Carousel.Carousel opts={{ slidesToScroll: "auto" }}>
+          <Carousel.CarouselContent>
+            {productIds?.map((productId) => (
+              <Carousel.CarouselItem
+                key={productId}
+                className="basis-[10%] mx-auto"
+              >
+                <ProductTemplateWithFetchHook productId={productId} />
+              </Carousel.CarouselItem>
+            ))}
+          </Carousel.CarouselContent>
+          <Carousel.CarouselPrevious
+            className="bg-arrow-color -translate-x-full w-10 h-10 [&:disabled]:hidden"
+            iconProp={{ className: "w-7 h-7" }}
+          />
+          <Carousel.CarouselNext
+            className="bg-arrow-color -translate-x-4 w-10 h-10 [&:disabled]:hidden"
+            iconProp={{ className: "w-7 h-7" }}
+          />
+        </Carousel.Carousel>
+      ) : (
+        <div className="text-center text-xl">No Products Viewed!</div>
+      )}
+    </section>
+  );
+}

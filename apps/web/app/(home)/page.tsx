@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import { Product } from "@repo/ui/types";
 import { BannerCarousel, ProductsCarousel } from "../../components";
+import RecentlyViewed from "../../components/Client/RecentlyViewed";
 
 export default async function Page() {
   const bannerAPIResponse = await fetch(
@@ -23,7 +24,6 @@ export default async function Page() {
 
   const bannerProducts = bannerAPIResponse.products as Product[];
   const frequentProducts = frequentlyBoughtProducts.products as Product[];
-  //TODO 1: Fetch all products data in this server and pass it to Client interactive components
   //TODO 2: Use Streaming for data fetching, (check if it shows loader)
   return (
     <div>
@@ -35,11 +35,12 @@ export default async function Page() {
           <ProductsCarousel
             products={frequentProducts}
             h1="Frequently Purchased"
-            preferLocalData={false}
           />
         )}
       </Suspense>
-      <ProductsCarousel h1="Recently Viewed" preferLocalData={true} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <RecentlyViewed />
+      </Suspense>
     </div>
   );
 }

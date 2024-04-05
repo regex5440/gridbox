@@ -7,6 +7,7 @@ const config: Omit<Config, "content"> = {
       animation: {
         slideLeftIn: "slideLeftIn 0.7s ease-in-out",
         slideFadeLeftIn: "slideLeftIn 0.7s ease-out, fadeIn 0.7s ease-out",
+        infiniteRotate: "rotate 1s linear infinite",
       },
       backgroundImage: {
         "glow-conic":
@@ -35,6 +36,10 @@ const config: Omit<Config, "content"> = {
         fadeIn: {
           "0%": { opacity: 0 },
           "100%": { opacity: 1 },
+        },
+        rotate: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
         },
       },
     },
