@@ -4,6 +4,7 @@ import Header from "./Header";
 import * as Menu from "./MenuBar";
 import Search from "./Search";
 import Input from "./Input";
+import Footer from "./Footer";
 import { ProductTemplate, ProductTemplateWithControl } from "./Template";
 
 export {
@@ -11,6 +12,7 @@ export {
   buttonVariants,
   Carousel,
   Header,
+  Footer,
   Menu,
   Search,
   Input,

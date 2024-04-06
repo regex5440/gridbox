@@ -2,7 +2,7 @@ import "./globals.css";
 import "@repo/ui/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Header, Search } from "@repo/ui";
+import { Footer, Header, Search } from "@repo/ui";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +22,7 @@ export default function RootLayout({
         <Header />
         <Search />
         {children}
+        <Footer />
       </body>
     </html>
   );

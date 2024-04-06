@@ -1,0 +1,27 @@
+export const Category = {
+  ALL: "all",
+  SMARTPHONE: "smartphones",
+  LAPTOPS: "laptops",
+  SKINCARE: "skincare",
+  FURNITURE: "furniture",
+  "HOME DECORATION": "home-decoration",
+  TOPS: "tops",
+  MEN: {
+    SHIRTS: "mens-shirts",
+    SHOES: "mens-shoes",
+    WATCHES: "mens-watches",
+  },
+  WOMEN: {
+    DRESSES: "womens-dresses",
+    SHOES: "womens-shoes",
+    BAGS: "womens-bags",
+    JEWELRY: "womens-jewellery",
+    WATCHES: "womens-watches",
+  },
+  LIGHTNING: "lighting",
+  AUTOMOTIVE: "automotive",
+  SUNGLASSES: "sunglasses",
+  GROCERIES: "groceries",
+  FRAGRANCES: "fragrances",
+  MOTORCYCLE: "motorcycle",
+};

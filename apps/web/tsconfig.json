@@ -11,7 +11,8 @@
     "../../packages/ui/src/Header.tsx",
     "../../packages/ui/src/Input.tsx",
     "../../packages/ui/src/MenuBar.tsx",
-    "../../packages/ui/src/Search.tsx"
+    "../../packages/ui/src/Search.tsx",
+    "../../packages/ui/utils/enums.ts"
   ],
   "exclude": ["node_modules"]
 }

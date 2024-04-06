@@ -38,7 +38,7 @@ export default function BannerCarousel({ products }: { products: any[] }) {
               className="h-full basis-full group/item"
               data-active={activeSlideIndex === index}
             >
-              <div className={`w-full h-full bg-red-200 relative`}>
+              <div className={`w-full h-full relative`}>
                 <img
                   src={product.thumbnail}
                   className="h-full w-full mx-auto"

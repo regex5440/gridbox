@@ -18,6 +18,9 @@ const config: Omit<Config, "content"> = {
         "arrow-color": "var(--carousel-arrow-bg-color)",
         "buy-now": "yellowgreen",
       },
+      boxShadow: {
+        "inset-top": "inset 0 5px 5px  rgba(125, 125, 125, 0.4)",
+      },
       fill: {
         "dot-bg": "var(--carousel-arrow-bg-color)",
       },
