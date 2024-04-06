@@ -5,11 +5,12 @@ import RecentlyViewed from "../../components/Client/RecentlyViewed";
 
 export default async function Page() {
   const bannerAPIResponse = await fetch(
-    "https://dummyjson.com/products?limit=7"
+    `${process.env.productAPI}/products?limit=7`
   )
     .then((res) => res.json())
     .then(async (data) => {
       await new Promise((res) => {
+        //TODO: Remove delay for 5 seconds
         setTimeout(res, 5000);
       });
       return data;
@@ -17,14 +18,22 @@ export default async function Page() {
     .catch(console.error);
 
   const frequentlyBoughtProducts = await fetch(
-    "https://dummyjson.com/products?skip=10"
+    `${process.env.productAPI}/products?skip=10`
+  )
+    .then((res) => res.json())
+    .catch(console.error);
+
+  const sunglassesProducts = await fetch(
+    `${process.env.productAPI}/products/category/sunglasses?limit=10`
   )
     .then((res) => res.json())
     .catch(console.error);
 
   const bannerProducts = bannerAPIResponse.products as Product[];
   const frequentProducts = frequentlyBoughtProducts.products as Product[];
-  //TODO 2: Use Streaming for data fetching, (check if it shows loader)
+  const sunglasses = sunglassesProducts.products as Product[];
+  //TODO: Use Streaming for data fetching, (check if it shows loader)
+  //TODO: Create a skeleton loader
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
@@ -36,6 +45,11 @@ export default async function Page() {
             products={frequentProducts}
             h1="Frequently Purchased"
           />
+        )}
+      </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
+        {sunglasses && (
+          <ProductsCarousel products={sunglasses} h1="Range of Sunglass" />
         )}
       </Suspense>
       <Suspense fallback={<div>Loading...</div>}>
