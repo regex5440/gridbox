@@ -8,13 +8,13 @@ export default async function Page() {
     `${process.env.productAPI}/products?limit=7`
   )
     .then((res) => res.json())
-    .then(async (data) => {
-      await new Promise((res) => {
-        //TODO: Remove delay for 5 seconds
-        setTimeout(res, 5000);
-      });
-      return data;
-    })
+    // .then(async (data) => {
+    //   await new Promise((res) => {
+    //     //TODO: Remove delay for 5 seconds
+    //     setTimeout(res, 5000);
+    //   });
+    //   return data;
+    // })
     .catch(console.error);
 
   const frequentlyBoughtProducts = await fetch(
