@@ -20,8 +20,8 @@ export default function ProductsCarousel({
 }: ProductCarousalProps) {
   const productsData = products || productIds;
   return (
-    <section className="group/products md:mt-16 ml-12">
-      <h1 className="text-4xl mb-6">{h1}</h1>
+    <section className="group/products md:mt-16 max-sm:mt-8 sm:ml-12">
+      <h1 className="md:text-4xl max-md:text-2xl mb-6">{h1}</h1>
       {productsData?.length && (
         <Carousel.Carousel opts={{ slidesToScroll: "auto" }}>
           <Carousel.CarouselContent>
@@ -33,7 +33,7 @@ export default function ProductsCarousel({
               return (
                 <Carousel.CarouselItem
                   key={productId}
-                  className="basis-[10%] mx-auto"
+                  className="max-sm:basis-[50%] max-lg:basis-[15%] basis-[10%] mx-auto"
                 >
                   {typeof product === "string" ? (
                     <ProductTemplateWithFetchHook productId={productId} />
@@ -45,11 +45,11 @@ export default function ProductsCarousel({
             })}
           </Carousel.CarouselContent>
           <Carousel.CarouselPrevious
-            className="bg-arrow-color -translate-x-full w-10 h-10 [&:disabled]:hidden"
+            className="bg-arrow-color -translate-x-full w-10 h-10 [&:disabled]:hidden hide-mobile-view"
             iconProp={{ className: "w-7 h-7" }}
           />
           <Carousel.CarouselNext
-            className="bg-arrow-color -translate-x-4 w-10 h-10"
+            className="bg-arrow-color -translate-x-4 w-10 h-10 [&:disabled]:hidden hide-mobile-view"
             iconProp={{ className: "w-7 h-7" }}
           />
         </Carousel.Carousel>
