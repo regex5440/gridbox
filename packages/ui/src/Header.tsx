@@ -11,8 +11,8 @@ import {
 
 export default function Header() {
   return (
-    <header className="w-full flex justify-between items-center py-4 px-8 border-b border-b-white">
-      <h1 className="text-4xl">Gadget/Grid</h1>
+    <header className="w-full flex justify-between items-center py-4 px-8 border-b border-b-white max-sm:px-4 max-sm:py-3">
+      <h1 className="text-4xl max-sm:text-2xl">Gadget/Grid</h1>
 
       <Menubar className="gap-6">
         <MenubarMenu>

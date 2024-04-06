@@ -14,7 +14,7 @@ export default function RecentlyViewed() {
 
   return (
     <section className="md:mt-16 max-md:mt-8 sm:ml-12">
-      <h1 className="md:text-4xl max-md:text-2xl mb-6">Recently Viewed</h1>
+      <h1 className="md:text-3xl max-md:text-2xl mb-6">Recently Viewed</h1>
       {productIds?.length ? (
         <Carousel.Carousel opts={{ slidesToScroll: "auto" }}>
           <Carousel.CarouselContent>
