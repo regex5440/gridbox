@@ -5,9 +5,15 @@ const config: Omit<Config, "content"> = {
   theme: {
     extend: {
       animation: {
+        "fade-in": "fadeIn 0.2s ease-out",
+        "fade-out": "fadeIn 0.2s ease-out reverse",
         slideLeftIn: "slideLeftIn 0.7s ease-in-out",
         slideFadeLeftIn: "slideLeftIn 0.7s ease-out, fadeIn 0.7s ease-out",
         infiniteRotate: "rotate 1s linear infinite",
+        "slide-right-in": "slideInRight 0.5s ease-out",
+        "slide-right-out": "slideOutRight 0.5s ease-out",
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
       backgroundImage: {
         "glow-conic":
@@ -17,6 +23,11 @@ const config: Omit<Config, "content"> = {
       backgroundColor: {
         "arrow-color": "var(--carousel-arrow-bg-color)",
         "buy-now": "yellowgreen",
+        "menu-sheet-color": "#0e0e0e",
+        "menu-sheet-color-sub": "#0f0f0f",
+      },
+      color: {
+        "text-color-ternary": "grey",
       },
       boxShadow: {
         "inset-top": "inset 0 5px 5px  rgba(125, 125, 125, 0.4)",
@@ -30,6 +41,14 @@ const config: Omit<Config, "content"> = {
         "3/4screen": "75vh",
       },
       keyframes: {
+        slideInRight: {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(0)" },
+        },
+        slideOutRight: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(100%)" },
+        },
         slideLeftIn: {
           "0%": {
             transform: "translateX(-100%)",
@@ -43,6 +62,14 @@ const config: Omit<Config, "content"> = {
         rotate: {
           "0%": { transform: "rotate(0deg)" },
           "100%": { transform: "rotate(360deg)" },
+        },
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
     },

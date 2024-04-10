@@ -4,12 +4,16 @@ import { Input } from ".";
 
 export default function Search(): React.ReactNode {
   return (
-    <div className="sticky top-0 px-8 py-2">
-      <div className="relative">
-        <span className="w-10 absolute left-0 top-1/2 -translate-y-1/2 grid place-content-center">
+    <div className="sticky top-0 px-4 py-2 z-10">
+      <div className="flex">
+        <div className="w-1/12 grid place-content-center bg-slate-400 rounded-tl-[0.375rem] rounded-bl-[0.375rem]">
           <SearchIcon />
-        </span>
-        <Input type="text" placeholder="Search" className="pl-10" />
+        </div>
+        <Input
+          type="text"
+          placeholder="Search"
+          className="pl-10 rounded-tl-none rounded-bl-none"
+        />
       </div>
     </div>
   );
