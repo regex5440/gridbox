@@ -72,6 +72,9 @@ const config: Omit<Config, "content"> = {
           to: { height: "0" },
         },
       },
+      padding: {
+        "common-x": "1rem",
+      },
     },
   },
   plugins: [],
