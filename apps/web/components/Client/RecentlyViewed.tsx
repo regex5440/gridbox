@@ -18,10 +18,10 @@ export default function RecentlyViewed() {
       {productIds?.length ? (
         <Carousel.Carousel opts={{ slidesToScroll: "auto" }}>
           <Carousel.CarouselContent>
-            {productIds?.map((productId) => (
+            {productIds?.map((productId, index) => (
               <Carousel.CarouselItem
                 key={productId}
-                className="max-sm:basis-[50%] max-lg:basis-[15%] basis-[10%] mx-auto"
+                className={`max-sm:basis-[50%] max-lg:basis-[15%] basis-[10%] ${index === 0 ? "ml-auto" : ""} ${index === productIds.length - 1 ? "mr-auto" : ""}`}
               >
                 <ProductTemplateWithFetchHook productId={productId} />
               </Carousel.CarouselItem>
