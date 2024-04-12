@@ -13,9 +13,10 @@ export default function ProductImageSection({ product }: { product: Product }) {
         <Image
           src={product?.images[activeImageIndex]}
           alt={product?.title}
-          width={100}
-          height={100}
-          className="object-cover h-full w-full"
+          width={800}
+          height={800}
+          className="object-contain h-full w-full"
+          priority
         />
       </div>
       <div className="flex gap-4 justify-center mt-6 max-w-full overflow-x-auto">
@@ -26,7 +27,7 @@ export default function ProductImageSection({ product }: { product: Product }) {
               alt={product?.title}
               width={70}
               height={70}
-              className={`object-cover box-border rounded-md ${activeImageIndex === i ? "border-4" : ""}`}
+              className={`object-contain box-border rounded-md aspect-square ${activeImageIndex === i ? "border-4" : ""}`}
               onClick={setActiveImageIndex.bind(null, i)}
             />
           </Suspense>

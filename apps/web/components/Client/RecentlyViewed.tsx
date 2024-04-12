@@ -1,8 +1,9 @@
 "use client";
 import { Carousel } from "@repo/ui";
 import { useEffect, useState } from "react";
-import { getRecentlyViewedProductIds } from "../../utils";
+import { SiteMap, getRecentlyViewedProductIds } from "../../utils";
 import ProductTemplateWithFetchHook from "./ProductTemplateFetchWrapper";
+import Link from "next/link";
 
 export default function RecentlyViewed() {
   const [productIds, setProductIds] = useState<string[] | undefined>(undefined);
@@ -23,7 +24,9 @@ export default function RecentlyViewed() {
                 key={productId}
                 className={`max-sm:basis-[50%] max-lg:basis-[15%] basis-[10%] ${index === 0 ? "ml-auto" : ""} ${index === productIds.length - 1 ? "mr-auto" : ""}`}
               >
-                <ProductTemplateWithFetchHook productId={productId} />
+                <Link href={`${SiteMap.PDP.path}/${productId}`}>
+                  <ProductTemplateWithFetchHook productId={productId} />
+                </Link>
               </Carousel.CarouselItem>
             ))}
           </Carousel.CarouselContent>
