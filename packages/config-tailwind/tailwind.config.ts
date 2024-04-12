@@ -25,6 +25,7 @@ const config: Omit<Config, "content"> = {
         "buy-now": "yellowgreen",
         "menu-sheet-color": "#0e0e0e",
         "menu-sheet-color-sub": "#0f0f0f",
+        "add-to-cart": "goldenrod",
       },
       color: {
         "text-color-ternary": "grey",
@@ -34,6 +35,7 @@ const config: Omit<Config, "content"> = {
       },
       fill: {
         "dot-bg": "var(--carousel-arrow-bg-color)",
+        "star-color": "var(--star-color, rgb(255,225,0))",
       },
       height: {
         "1/3screen": "33vh",
@@ -74,6 +76,9 @@ const config: Omit<Config, "content"> = {
       },
       padding: {
         "common-x": "1rem",
+      },
+      stroke: {
+        "star-color": "var(--star-color, rgb(255,225,0))",
       },
     },
   },
