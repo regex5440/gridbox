@@ -9,7 +9,7 @@ export default function ProductImageSection({ product }: { product: Product }) {
 
   return (
     <div>
-      <div className="w-96 h-96">
+      <div className="md:w-96 md:h-96 w-76 h-76 mx-auto">
         <Image
           src={product?.images[activeImageIndex]}
           alt={product?.title}
@@ -19,7 +19,7 @@ export default function ProductImageSection({ product }: { product: Product }) {
           priority
         />
       </div>
-      <div className="flex gap-4 justify-center mt-6 max-w-full overflow-x-auto">
+      <div className="flex gap-4 md:justify-center mt-6 max-w-full overflow-x-auto">
         {product?.images.map((img_url: string, i) => (
           <Suspense key={img_url} fallback={<div>Loading...</div>}>
             <Image

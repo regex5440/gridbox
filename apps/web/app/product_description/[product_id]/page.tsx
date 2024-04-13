@@ -30,9 +30,9 @@ export default async function ProductPage({
     <>
       <ProductVisitedMarker product_id={product_id} />
       <div className="px-common-x">
-        <section className="mx-auto w-full max-w-[80%] md:flex gap-8 justify-evenly mt-10">
+        <section className="mx-auto w-full lg:max-w-[80%] md:flex gap-8 justify-evenly mt-10 max-md:flex-wrap">
           <ProductImageSection product={productDetails} />
-          <div className="min-w-80 max-w-[25%] flex flex-col w-full">
+          <div className="sm:min-w-80 sm:max-w-[25%] flex flex-col w-full max-md:mt-10 sm:max-lg:mx-auto">
             <h1 className="text-3xl">{productDetails.title}</h1>
             <p className="text-sm">by {productDetails.brand}</p>
             <p
@@ -109,7 +109,7 @@ export default async function ProductPage({
           </div>
         </section>
         <section className="mt-16">
-          <fieldset className="border p-4 pl-12 rounded-lg">
+          <fieldset className="border p-4 sm:pl-12 rounded-lg">
             <legend>
               <h2 className="text-3xl">Product Details</h2>
             </legend>
