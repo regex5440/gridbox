@@ -9,9 +9,9 @@ export const getRecentlyViewedProductIds = (): string[] => {
 
 export const setRecentlyViewedProductIds = (productId: string) => {
   if (typeof window === "undefined") return;
-  const currentProducts = new Set(getRecentlyViewedProductIds());
+  const currentProducts = new Set(getRecentlyViewedProductIds().toReversed());
   currentProducts.add(productId);
   window.localStorage.viewedProductIds = JSON.stringify(
-    Array.from(currentProducts)
+    Array.from(currentProducts).toReversed()
   );
 };
