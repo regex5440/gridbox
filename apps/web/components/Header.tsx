@@ -1,20 +1,17 @@
-import { CrossIcon, MenuIcon, ShoppingCartIcon, UserIcon } from "lucide-react";
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarTrigger,
-} from "./MenuBar";
-import { Accordion, SidePanel } from ".";
-import { Category } from "../utils";
+import { MenuIcon, ShoppingCartIcon, UserIcon } from "lucide-react";
+import { Accordion, Menu, SidePanel } from "@repo/ui";
 import Link from "next/link";
+import { Category } from "../utils";
 
-export default function Header() {
+const { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } =
+  Menu;
+
+export default function Header({ homePath = "/" }) {
   return (
     <header className="w-full flex justify-between items-center py-4 px-8 border-b border-b-white max-sm:px-4 max-sm:py-3">
-      <h1 className="text-4xl max-sm:text-2xl">Gadget/Grid</h1>
+      <Link href={homePath}>
+        <h1 className="text-4xl max-sm:text-2xl">Gadget/Grid</h1>
+      </Link>
 
       <Menubar className="gap-6">
         <MenubarMenu>

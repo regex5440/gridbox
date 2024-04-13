@@ -1,6 +1,7 @@
-import { Carousel, ProductTemplate } from "@repo/ui";
+import { Carousel } from "@repo/ui";
 import { Product } from "@repo/ui/types";
 import ProductTemplateWithFetchHook from "./ProductTemplateFetchWrapper";
+import { ProductTemplate } from "./ProductTemplate";
 
 type ProductCarousalProps = {
   h1: string;

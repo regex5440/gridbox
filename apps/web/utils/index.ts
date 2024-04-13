@@ -1,5 +1,7 @@
 export * from "./ui";
-export { default as SiteMap } from "./sitemap";
+export * from "./sitemap";
+export * from "./enums";
+export * from "./sitemap";
 
 export const getRecentlyViewedProductIds = (): string[] => {
   if (typeof window === "undefined") return [];

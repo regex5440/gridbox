@@ -3,16 +3,6 @@
   "compilerOptions": {
     "plugins": [{ "name": "next" }]
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "../../packages/ui/src/Header.tsx",
-    "../../packages/ui/src/Input.tsx",
-    "../../packages/ui/src/MenuBar.tsx",
-    "../../packages/ui/src/Search.tsx",
-    "../../packages/ui/utils/enums.ts"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }

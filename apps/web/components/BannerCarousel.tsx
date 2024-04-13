@@ -3,7 +3,7 @@ import { Button, Carousel } from "@repo/ui";
 import { Circle } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import React, { useEffect, useState } from "react";
-import { discountedPrice } from "../../utils";
+import { discountedPrice } from "../utils";
 
 export default function BannerCarousel({ products }: { products: any[] }) {
   const [api, setApi] = useState<Carousel.CarouselApi | null>(null);

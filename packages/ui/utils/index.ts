@@ -5,4 +5,3 @@ function cn(...classes: (string | undefined | boolean)[]): string {
 }
 
 export { cn };
-export * from "./enums";

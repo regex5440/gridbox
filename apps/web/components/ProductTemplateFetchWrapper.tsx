@@ -1,7 +1,7 @@
 "use client";
-import { ProductTemplate } from "@repo/ui";
-import { useFetchProduct } from "../../hooks";
+import { useFetchProduct } from "../hooks";
 import { Product } from "@repo/ui/types";
+import { ProductTemplate } from "./ProductTemplate";
 
 const ProductTemplateWithFetchHook = ({ productId }: { productId: string }) => {
   const { data, isLoading } = useFetchProduct(productId);

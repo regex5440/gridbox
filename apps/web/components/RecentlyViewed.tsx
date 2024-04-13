@@ -1,9 +1,10 @@
 "use client";
 import { Carousel } from "@repo/ui";
 import { useEffect, useState } from "react";
-import { SiteMap, getRecentlyViewedProductIds } from "../../utils";
+import { getRecentlyViewedProductIds } from "../utils";
 import ProductTemplateWithFetchHook from "./ProductTemplateFetchWrapper";
 import Link from "next/link";
+import SiteMap from "../utils/sitemap";
 
 export default function RecentlyViewed() {
   const [productIds, setProductIds] = useState<string[] | undefined>(undefined);

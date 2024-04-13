@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 import ProductImageSection from "./ProductImageViewer";
 import { ProductsCarousel } from "../../../components";
-import RecentlyViewed from "../../../components/Client/RecentlyViewed";
+import RecentlyViewed from "../../../components/RecentlyViewed";
 import { Star, StarHalf } from "lucide-react";
 import { Button } from "@repo/ui";
-import QtySelector from "../../../components/Client/QtySelector";
-import ProductVisitedMarker from "../../../components/Client/ProductVisitedMarker";
+import QtySelector from "../../../components/QtySelector";
+import ProductVisitedMarker from "../../../components/ProductVisitedMarker";
 
 type ProductPageProps = {
   params: {

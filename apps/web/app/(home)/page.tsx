@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { Product } from "@repo/ui/types";
 import { BannerCarousel, ProductsCarousel } from "../../components";
-import RecentlyViewed from "../../components/Client/RecentlyViewed";
+import RecentlyViewed from "../../components/RecentlyViewed";
 
 export default async function Page() {
   const bannerAPIResponse = await fetch(
