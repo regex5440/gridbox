@@ -10,9 +10,16 @@ const SiteMap = {
     absolutePath: "/product_description/:product_id",
   },
   PLP: {
-    type: "page",
-    path: "/products",
-    absolutePath: "/products/:category",
+    Search: {
+      type: "page",
+      path: "/listing",
+      absolutePath: "/listing",
+    },
+    CategoryWise: {
+      type: "page",
+      path: "/listing",
+      absolutePath: "/listing/:category",
+    },
   },
   Cart: {
     type: "page",

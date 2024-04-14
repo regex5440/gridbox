@@ -2,6 +2,7 @@ import { MenuIcon, ShoppingCartIcon, UserIcon } from "lucide-react";
 import { Accordion, Menu, SidePanel } from "@repo/ui";
 import Link from "next/link";
 import { Category } from "../utils";
+import SiteMap from "../utils/sitemap";
 
 const { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } =
   Menu;
@@ -50,7 +51,7 @@ export default function Header({ homePath = "/" }) {
                   if (typeof value === "string") {
                     return (
                       <Link
-                        href={`/${value}`}
+                        href={`${SiteMap.PLP.CategoryWise.path}/${value}`}
                         key={key}
                         className="block py-4 border-b border-b-white hover:underline"
                       >
@@ -67,7 +68,7 @@ export default function Header({ homePath = "/" }) {
                           {Object.entries(value).map(([key, value]) => {
                             return (
                               <Link
-                                href={`/${value}`}
+                                href={`${SiteMap.PLP.CategoryWise.path}/${value}`}
                                 className="block py-4 border-b border-b-white [&:last-child]:border-b-0 hover:underline"
                               >
                                 {key}
