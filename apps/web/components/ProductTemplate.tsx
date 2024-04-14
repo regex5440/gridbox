@@ -8,6 +8,7 @@ import { cn } from "@repo/ui/utils";
 type ProductTemplateProps = {
   product: Product;
   showLoader?: boolean;
+  className?: string;
   [key: string]: any;
 };
 
