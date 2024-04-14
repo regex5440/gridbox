@@ -22,7 +22,7 @@ export default function RecentlyViewed() {
           <Carousel.CarouselContent>
             {productIds?.map((productId, index) => (
               <Carousel.CarouselItem
-                key={productId}
+                key={"rv" + productId}
                 className={`max-sm:basis-[50%] max-lg:basis-[15%] basis-[10%] ${index === 0 ? "ml-auto" : ""} ${index === productIds.length - 1 ? "mr-auto" : ""}`}
               >
                 <Link href={`${SiteMap.PDP.path}/${productId}`}>

@@ -68,6 +68,7 @@ export default function Header({ homePath = "/" }) {
                           {Object.entries(value).map(([key, value]) => {
                             return (
                               <Link
+                                key={key}
                                 href={`${SiteMap.PLP.CategoryWise.path}/${value}`}
                                 className="block py-4 border-b border-b-white [&:last-child]:border-b-0 hover:underline"
                               >
