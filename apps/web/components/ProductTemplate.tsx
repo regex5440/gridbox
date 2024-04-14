@@ -3,10 +3,12 @@ import { Product } from "@repo/ui/types";
 import Image from "next/image";
 import Link from "next/link";
 import SiteMap from "../utils/sitemap";
+import { cn } from "@repo/ui/utils";
 
 type ProductTemplateProps = {
   product: Product;
   showLoader?: boolean;
+  [key: string]: any;
 };
 
 /**
@@ -15,14 +17,23 @@ type ProductTemplateProps = {
  * @param {string} props.showLoader - (Optional) Show skeleton loader
  * @returns
  */
-const ProductTemplate = ({ product, showLoader }: ProductTemplateProps) => {
+const ProductTemplate = ({
+  product,
+  showLoader,
+  className,
+  ...rest
+}: ProductTemplateProps) => {
   //TODO: Replace the temp JSX with proper product templates
   return (
     <>
       {product ? (
         <div
           title={product.title}
-          className="group/product-template cursor-pointer h-full flex flex-col justify-start p-1"
+          className={cn(
+            "group/product-template cursor-pointer h-full flex flex-col justify-start p-1",
+            className
+          )}
+          {...rest}
         >
           <Link href={`${SiteMap.PDP.path}/${product.id}`}>
             <Image
