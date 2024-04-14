@@ -5,6 +5,7 @@ import * as Menu from "./MenuBar";
 import Input from "./Input";
 import Footer from "../../../apps/web/components/Footer";
 import * as SidePanel from "./SidePanel";
+import * as Pagination from "./Pagination";
 
 export {
   Accordion,
@@ -13,6 +14,7 @@ export {
   Carousel,
   Footer,
   Menu,
+  Pagination,
   SidePanel,
   Input,
 };
