@@ -99,9 +99,7 @@ export default async function ProductPage({
                   Add to Cart
                 </Button>
               </form>
-              <p className="my-2 relative before:absolute before:left-0 before:top-1/2 before:block before:w-5/12 before:h-0.5 before:bg-[currentColor] after:absolute after:right-0 after:top-1/2 after:block after:w-5/12 after:h-0.5 after:bg-[currentColor]">
-                OR
-              </p>
+              <p className="my-2 fieldset-legend">OR</p>
               <Button className="border rounded-lg w-8/12">
                 Add to Wishlist
               </Button>

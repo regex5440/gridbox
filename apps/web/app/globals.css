@@ -39,6 +39,29 @@ body {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.fieldset-legend {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    display: block;
+    width: 41.666667%;
+    height: 2px;
+    background-color: currentColor;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    display: block;
+    width: 41.666667%;
+    height: 2px;
+    background-color: currentColor;
+  }
+}
 
 @media screen and (max-width: 768px) {
   .hide-mobile-view {
