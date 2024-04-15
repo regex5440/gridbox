@@ -41,13 +41,14 @@ body {
 }
 .fieldset-legend {
   position: relative;
+  --char-length: 2ch;
   &::before {
     content: "";
     position: absolute;
     left: 0;
     top: 50%;
     display: block;
-    width: 41.666667%;
+    width: calc(50% - var(--char-length) / 2);
     height: 2px;
     background-color: currentColor;
   }
@@ -57,7 +58,7 @@ body {
     right: 0;
     top: 50%;
     display: block;
-    width: 41.666667%;
+    width: calc(50% - var(--char-length) / 2);
     height: 2px;
     background-color: currentColor;
   }

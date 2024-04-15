@@ -30,9 +30,9 @@ export default async function ProductPage({
     <>
       <ProductVisitedMarker product_id={product_id} />
       <div className="px-common-x">
-        <section className="mx-auto w-full lg:max-w-[80%] md:flex gap-8 justify-evenly mt-10 max-md:flex-wrap">
+        <section className="mx-auto w-full lg:max-w-[80%] sm:flex gap-8 justify-evenly mt-10 max-sm:flex-wrap">
           <ProductImageSection product={productDetails} />
-          <div className="sm:min-w-80 sm:max-w-[25%] flex flex-col w-full max-md:mt-10 sm:max-lg:mx-auto">
+          <div className="sm:min-w-80 sm:max-w-[25%] flex flex-col w-full max-sm:mt-10 sm:max-lg:mx-auto">
             <h1 className="text-3xl">{productDetails.title}</h1>
             <p className="text-sm">by {productDetails.brand}</p>
             <p
