@@ -25,9 +25,7 @@ export default function RecentlyViewed() {
                 key={"rv" + productId}
                 className={`max-sm:basis-[50%] max-lg:basis-[15%] basis-[10%] ${index === 0 ? "ml-auto" : ""} ${index === productIds.length - 1 ? "mr-auto" : ""}`}
               >
-                <Link href={`${SiteMap.PDP.path}/${productId}`}>
-                  <ProductTemplateWithFetchHook productId={productId} />
-                </Link>
+                <ProductTemplateWithFetchHook productId={productId} />
               </Carousel.CarouselItem>
             ))}
           </Carousel.CarouselContent>
