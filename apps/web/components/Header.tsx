@@ -33,7 +33,9 @@ export default function Header({ homePath = "/" }) {
             <SidePanel.SheetContent className="bg-menu-sheet-color border-none data-[state=open]:animate-slide-right-in data-[state=closed]:animate-slide-right-out">
               <SidePanel.SheetHeader>
                 <SidePanel.SheetTitle className="text-2xl">
-                  Cart
+                  <Link href="/cart" className="hover:underline">
+                    <SidePanel.SheetClose>Cart</SidePanel.SheetClose>
+                  </Link>
                 </SidePanel.SheetTitle>
               </SidePanel.SheetHeader>
             </SidePanel.SheetContent>
