@@ -6,15 +6,23 @@ import Input from "./Input";
 import Footer from "../../../apps/web/components/Footer";
 import * as SidePanel from "./SidePanel";
 import * as Pagination from "./Pagination";
+import * as Card from "./Card";
+import * as Tabs from "./Tabs";
+import * as Dialog from "./Dialog";
+import * as Select from "./Select";
 
 export {
   Accordion,
   Button,
   buttonVariants,
+  Card,
   Carousel,
+  Dialog,
   Footer,
   Menu,
   Pagination,
   SidePanel,
   Input,
+  Tabs,
+  Select,
 };
