@@ -7,8 +7,10 @@ import QtySelector from "./QtySelector";
 import RecentlyViewed from "./RecentlyViewed";
 import { ProductTemplate, ProductTemplateWithControl } from "./ProductTemplate";
 import ProductTemplateWithFetchHook from "./ProductTemplateFetchWrapper";
+import FormButton from "./FormButton";
 
 export {
+  FormButton,
   Header,
   Footer,
   BannerCarousel,
