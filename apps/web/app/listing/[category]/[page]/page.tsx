@@ -51,7 +51,7 @@ export default async function ListingPage({
       </div>
       <div
         className="text-center text-gray-400 my-4 fieldset-legend"
-        style={{ "--char-length": "20ch" }}
+        style={{ "--char-length": "20ch" } as React.CSSProperties}
       >
         Showing {dataSize} results
       </div>
