@@ -21,6 +21,13 @@ const config: Omit<Config, "content"> = {
         "gradient-to-t": "linear-gradient(to top, black, transparent)",
       },
       backgroundColor: {
+        primary: "var(--primary)",
+        secondary: "var(--secondary)",
+        surface: "var(--surface)",
+        "surface-dark": "var(--surface-dark)",
+        "surface-inverted": "var(--surface-inverted)",
+        overlay: "var(--overlay-background)",
+        error: "var(--error)",
         "arrow-color": "var(--carousel-arrow-bg-color)",
         "buy-now": "yellowgreen",
         "menu-sheet-color": "#0e0e0e",
@@ -28,7 +35,12 @@ const config: Omit<Config, "content"> = {
         "add-to-cart": "goldenrod",
       },
       colors: {
+        primary: "var(--primary)",
+        secondary: "var(--secondary)",
         ternary: "grey",
+        regular: "var(--text-regular)",
+        "regular-inverted": "var(--text-regular-inverted)",
+        error: "var(--error)",
       },
       boxShadow: {
         "inset-top": "inset 0 5px 5px  rgba(125, 125, 125, 0.4)",
