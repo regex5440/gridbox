@@ -9,7 +9,7 @@ const { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } =
 
 export default function Header({ homePath = "/" }) {
   return (
-    <header className="w-full flex justify-between items-center py-4 px-8 border-b border-b-white max-sm:px-4 max-sm:py-3">
+    <header className="w-full flex justify-between items-center py-4 px-8 border-b border-b-primary max-sm:px-4 max-sm:py-3">
       <Link href={homePath}>
         <h1 className="text-4xl max-sm:text-2xl">Gadget/Grid</h1>
       </Link>
@@ -19,10 +19,18 @@ export default function Header({ homePath = "/" }) {
           <MenubarTrigger title="Account">
             <UserIcon />
           </MenubarTrigger>
-          <MenubarContent>
-            <MenubarItem>Login</MenubarItem>
-            <MenubarItem>Profile</MenubarItem>
-            <MenubarItem>Logout</MenubarItem>
+          <MenubarContent className="bg-surface w-28" side="bottom" align="end">
+            <MenubarItem className="hover:bg-primary hover:text-regular-inverted rounded-md text-base">
+              <Link href="/signin" className="w-full">
+                Login
+              </Link>
+            </MenubarItem>
+            <MenubarItem className="w-full hover:bg-primary hover:text-regular-inverted rounded-md text-base">
+              Profile
+            </MenubarItem>
+            <MenubarItem className="w-full hover:bg-primary hover:text-regular-inverted rounded-md text-base">
+              Logout
+            </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
         <MenubarMenu>
@@ -30,7 +38,7 @@ export default function Header({ homePath = "/" }) {
             <SidePanel.SheetTrigger>
               <ShoppingCartIcon />
             </SidePanel.SheetTrigger>
-            <SidePanel.SheetContent className="bg-menu-sheet-color border-none data-[state=open]:animate-slide-right-in data-[state=closed]:animate-slide-right-out">
+            <SidePanel.SheetContent className="bg-surface border-none data-[state=open]:animate-slide-right-in data-[state=closed]:animate-slide-right-out">
               <SidePanel.SheetHeader>
                 <SidePanel.SheetTitle className="text-2xl">
                   <Link href="/cart" className="hover:underline">
@@ -47,7 +55,7 @@ export default function Header({ homePath = "/" }) {
             <SidePanel.SheetTrigger>
               <MenuIcon />
             </SidePanel.SheetTrigger>
-            <SidePanel.SheetContent className="overflow-y-auto bg-menu-sheet-color border-none data-[state=open]:animate-slide-right-in data-[state=closed]:animate-slide-right-out">
+            <SidePanel.SheetContent className="overflow-y-auto bg-surface border-none data-[state=open]:animate-slide-right-in data-[state=closed]:animate-slide-right-out">
               <Accordion.Accordion type="single" collapsible>
                 {Object.entries(Category).map(([key, value]) => {
                   if (typeof value === "string") {
@@ -55,24 +63,28 @@ export default function Header({ homePath = "/" }) {
                       <Link
                         href={`${SiteMap.PLP.CategoryWise.path}/${value}`}
                         key={key}
-                        className="block py-4 border-b border-b-white hover:underline"
+                        className="block py-4 border-b border-b-primary hover:underline"
                       >
                         <SidePanel.SheetClose>{key}</SidePanel.SheetClose>
                       </Link>
                     );
                   } else {
                     return (
-                      <Accordion.AccordionItem value={key} key={key}>
-                        <Accordion.AccordionTrigger className="hover:no-underline">
+                      <Accordion.AccordionItem
+                        value={key}
+                        key={key}
+                        className="border-b border-primary"
+                      >
+                        <Accordion.AccordionTrigger className="hover:no-underline font-normal">
                           {key}
                         </Accordion.AccordionTrigger>
-                        <Accordion.AccordionContent className="pl-4 bg-menu-sheet-color-sub">
+                        <Accordion.AccordionContent className="pl-4 bg-surface-secondary">
                           {Object.entries(value).map(([key, value]) => {
                             return (
                               <Link
                                 key={key}
                                 href={`${SiteMap.PLP.CategoryWise.path}/${value}`}
-                                className="block py-4 border-b border-b-white [&:last-child]:border-b-0 hover:underline"
+                                className="block py-4 border-b border-b-primary [&:last-child]:border-b-0 hover:underline"
                               >
                                 <SidePanel.SheetClose>
                                   {key}
