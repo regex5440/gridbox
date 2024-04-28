@@ -4,6 +4,7 @@
 
 :root {
   --surface: rgb(248 250 252);
+  --surface-2: rgb(241 245 249);
   --surface-dark: rgb(203, 213, 225);
   --surface-inverted: rgb(30 41 59);
   --text-regular: rgb(30 41 59);

@@ -24,6 +24,7 @@ const config: Omit<Config, "content"> = {
         primary: "var(--primary)",
         secondary: "var(--secondary)",
         surface: "var(--surface)",
+        "surface-secondary": "var(--surface-2)",
         "surface-dark": "var(--surface-dark)",
         "surface-inverted": "var(--surface-inverted)",
         overlay: "var(--overlay-background)",
