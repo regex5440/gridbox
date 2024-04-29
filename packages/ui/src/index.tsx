@@ -10,6 +10,7 @@ import * as Card from "./Card";
 import * as Tabs from "./Tabs";
 import * as Dialog from "./Dialog";
 import * as Select from "./Select";
+import * as Navigation from "./Navigation";
 
 export {
   Accordion,
@@ -25,4 +26,5 @@ export {
   Input,
   Tabs,
   Select,
+  Navigation,
 };
