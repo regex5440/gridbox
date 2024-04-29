@@ -3,11 +3,14 @@ import { JWTPayload, jwtVerify, SignJWT } from "jose";
 const secretKey = process.env.SECRET_KEY;
 const encodedKey = new TextEncoder().encode(secretKey);
 
-const createToken = async (payload: JWTPayload) => {
+const createToken = async (
+  payload: JWTPayload,
+  tokenExpiry?: string | number | Date
+) => {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime(process.env.SESSION_EXPIRY || "30m")
+    .setExpirationTime(tokenExpiry || process.env.SESSION_EXPIRY || "30m")
     .sign(encodedKey);
 };
 
