@@ -9,7 +9,7 @@ export default function LoginSignupModal() {
     <>
       <div
         className="fixed left-0 top-0 z-[19] w-[100vw] h-[100vh] bg-overlay backdrop-blur-sm"
-        onClick={router.back}
+        onClick={router.push.bind(null, "/", undefined)}
       ></div>
       <div className="fixed-centered z-20 w-full md:max-w-md max-md:bottom-0 max-md:rounded-l-2xl max-md:rounded-r-2xl">
         <div className="relative">
