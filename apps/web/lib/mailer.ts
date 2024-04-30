@@ -2,7 +2,7 @@
 import { createTransport } from "nodemailer";
 
 const mailTransporter = createTransport({
-  host: process.env.EMAIL_HOST,
+  host: process.env.EMAIL_SERVER,
   port: Number(process.env.EMAIL_PORT) || 465,
   secure: true,
   auth: {
@@ -19,7 +19,7 @@ const mailTransporter = createTransport({
  * @param param.sender Sender info @default sender Chit-Chat <${process.env.EMAIL_USERNAME}>
  * @returns
  */
-const sendEmail = ({
+const sendEmail = async ({
   to,
   subject,
   sender = `${process.env.EMAIL_FROM || "info"} <${process.env.EMAIL_USERNAME}>`,
