@@ -1,45 +1,69 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { SignupFormErrorState, SignupSchema } from "../../lib/definitions";
+import EmailTemplate from "../../lib/email-template";
 import { hash } from "../../lib/hash-salt";
+import sendEmail from "../../lib/mailer";
 import { createUser } from "../controllers/account";
+import { createToken } from "../../lib/jwt";
 
 export default async function signup(
   state: SignupFormErrorState,
   formData: FormData
 ) {
-  const validateFields = SignupSchema.safeParse({
-    firstName: formData.get("firstName"),
-    lastName: formData.get("lastName"),
-    email: formData.get("email"),
-    password: formData.get("password"),
-    passwordConfirm: formData.get("passwordConfirm"),
-    dob: formData.get("dob")
-      ? new Date(formData.get("dob") as string)
-      : new Date("1 Jan 2000"),
-  });
+  try {
+    const validateFields = SignupSchema.safeParse({
+      firstName: formData.get("firstName"),
+      lastName: formData.get("lastName"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+      passwordConfirm: formData.get("passwordConfirm"),
+      dob: formData.get("dob")
+        ? new Date(formData.get("dob") as string)
+        : new Date("1 Jan 2000"),
+    });
 
-  if (!validateFields.success) {
-    //TODO: remove log
-    console.log(validateFields.error.flatten().fieldErrors);
-    return { error: validateFields.error.flatten().fieldErrors };
+    if (!validateFields.success) {
+      //TODO: remove log
+      console.log(validateFields.error.flatten().fieldErrors);
+      return { error: validateFields.error.flatten().fieldErrors };
+    }
+    const { email, firstName, password, lastName, dob, gender } =
+      validateFields.data;
+    console.log("Validated Fields. Hashing password...");
+    const hashedPassword = await hash(password);
+    console.log("Password hashed. Creating user...");
+    //TODO: Create user in database
+    await createUser({
+      email,
+      firstName,
+      password: hashedPassword,
+      lastName,
+      dob,
+      gender,
+    });
+    console.log("User created. Sending verification email...");
+    //TODO: sent a verification email with token
+    const verificationToken = await createToken(
+      { email, type: "verify" },
+      "2h"
+    );
+    const verificationEmail = new EmailTemplate("verification")
+      .values({
+        verificationLink: `${process.env.ASSIGNED_URL}/account/verify?token=${verificationToken}`,
+      })
+      .toHTML();
+    await sendEmail({
+      html: verificationEmail,
+      subject: "Verify your email",
+      to: email,
+    });
+  } catch (e) {
+    console.log(e);
+    return {
+      error: { message: "Something went wrong. Please try again." },
+    };
   }
-  const { email, firstName, password, lastName, dob, gender } =
-    validateFields.data;
-  console.log("Validated Fields. Hashing password...");
-  const hashedPassword = await hash(password);
-  console.log("Password hashed. Creating user...");
-  //TODO: Create user in database
-  await createUser({
-    email,
-    firstName,
-    password: hashedPassword,
-    lastName,
-    dob,
-    gender,
-  });
-  console.log("User created. Sending verification email...");
-  //TODO: sent a verification email with token
-
-  //TODO: Redirect to verify instructions page
+  return redirect("/account/verify");
 }
