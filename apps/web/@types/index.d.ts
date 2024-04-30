@@ -8,4 +8,4 @@ export type NextPageProps = {
   searchParams: {
     [key: string]: string;
   };
-};
+} & RestProps;
