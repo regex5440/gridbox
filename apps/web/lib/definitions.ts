@@ -42,18 +42,19 @@ export const SignupSchema = z
   });
 
 export type LoginFormErrorState =
-  | {
+  | ({
       error?: {
         email?: string[];
         password?: string[];
       };
-    }
-  | {
-      message?: string[];
-    }
+    } & {
+      error?: {
+        message?: string;
+      };
+    })
   | undefined;
 export type SignupFormErrorState =
-  | {
+  | ({
       error?: {
         firstName?: string[];
         email?: string[];
@@ -62,6 +63,9 @@ export type SignupFormErrorState =
         dob?: string[];
         gender?: string[];
       };
-      message?: string[];
-    }
+    } & {
+      error?: {
+        message?: string;
+      };
+    })
   | undefined;
