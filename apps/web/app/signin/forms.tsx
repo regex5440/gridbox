@@ -5,16 +5,23 @@ import login from "../actions/login";
 import { useFormState } from "react-dom";
 import signup from "../actions/signup";
 import { HTMLAttributes } from "react";
+import {
+  LoginFormErrorState,
+  SignupFormErrorState,
+} from "../../lib/definitions";
 
 type FormProps = {
   className?: HTMLAttributes<HTMLFormElement>["className"];
 };
 
 export function Login({ className, ...rest }: FormProps) {
-  const [state, action] = useFormState(login, undefined);
+  const [state, action] = useFormState<LoginFormErrorState, FormData>(
+    login,
+    undefined
+  );
 
   const singleError =
-    state?.message || state?.error?.email || state?.error?.password;
+    state?.error?.message || state?.error?.email || state?.error?.password;
   return (
     <form action={action} className={`mt-4 *:mb-4 w-60 ${className}`} {...rest}>
       <Input
@@ -45,17 +52,23 @@ const { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } =
   SelectElem;
 
 export function Signup({ className, ...rest }: FormProps) {
-  const [state, action] = useFormState(signup, undefined);
-
+  const [state, action] = useFormState<SignupFormErrorState, FormData>(
+    signup,
+    undefined
+  );
+  console.log(state);
   return (
     <form action={action} className={`mt-4 *:mb-2 w-72 ${className}`} {...rest}>
+      {state?.error?.message && (
+        <div className="text-error text-sm">{state.error.message}</div>
+      )}
       <div className="flex justify-between gap-3">
         <Input
           type="text"
           name="firstName"
           placeholder="First Name"
           className={
-            (state?.error.firstName ? "border-2 border-error" : "") + " w-1/2"
+            (state?.error?.firstName ? "border-2 border-error" : "") + " w-1/2"
           }
         />
         <Input
@@ -75,7 +88,7 @@ export function Signup({ className, ...rest }: FormProps) {
           placeholder="Date of Birth"
           title="Date of Birth"
           defaultValue={"2000-01-01"}
-          className={state?.error.dob ? "border-2 border-error" : ""}
+          className={state?.error?.dob ? "border-2 border-error" : ""}
         />
         <Select>
           <SelectTrigger>
@@ -109,7 +122,7 @@ export function Signup({ className, ...rest }: FormProps) {
         name="password"
         placeholder="Password"
         className={
-          state?.error?.password || state?.error.passwordConfirm
+          state?.error?.password || state?.error?.passwordConfirm
             ? "border-2 border-error"
             : ""
         }
@@ -118,9 +131,9 @@ export function Signup({ className, ...rest }: FormProps) {
         type="password"
         name="passwordConfirm"
         placeholder="Confirm Password"
-        className={state?.error.passwordConfirm ? "border-2 border-error" : ""}
+        className={state?.error?.passwordConfirm ? "border-2 border-error" : ""}
       />
-      {(state?.error?.password || state?.error.passwordConfirm) && (
+      {(state?.error?.password || state?.error?.passwordConfirm) && (
         <div className="text-error text-sm">
           {state?.error?.password?.[0] || state?.error.passwordConfirm?.[0]}
         </div>
