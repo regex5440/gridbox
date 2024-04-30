@@ -1,7 +1,7 @@
 "use server";
 
 import { LoginFormErrorState, LoginSchema } from "../../lib/definitions";
-import { hash } from "../../lib/hash-salt";
+import { compareHash } from "../../lib/bcrypt";
 import { authenticateUser } from "../controllers/account";
 import { createSession } from "../controllers/session";
 
@@ -21,13 +21,18 @@ export default async function login(
   }
   //TODO: Authenticate user
   const { email, password } = validateFields.data;
-  const hashedPassword = await hash(password);
-  const user = await authenticateUser({ email, password: hashedPassword });
-  if (!user) {
-    return { error: { message: "Credentials are invalid" } };
+  try {
+    const userData = await authenticateUser({ email });
+    if (userData) {
+      const validUser = await compareHash(password, userData.password);
+      if (validUser) {
+        await createSession({ id: userData.id });
+        return { success: true };
+      }
+    }
+  } catch (e) {
+    console.error(e);
+    return { error: { message: "Something went wrong!" } };
   }
-  console.log(user);
-  //TODO: Create Session
-  createSession({ id: user.id });
-  //TODO: Redirect, based on a query parameter
+  return { error: { message: "Credentials are invalid" } };
 }
