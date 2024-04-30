@@ -24,7 +24,7 @@ export default async function login(
   const hashedPassword = await hash(password);
   const user = await authenticateUser({ email, password: hashedPassword });
   if (!user) {
-    return { message: ["Credentials are invalid"] };
+    return { error: { message: "Credentials are invalid" } };
   }
   console.log(user);
   //TODO: Create Session
