@@ -4,7 +4,7 @@ function EmailVerificationTemplate({
   verificationLink: string;
 }) {
   return `
-  <div style="font-family: inter, sans-serif; border: 1px solid black; width:fit-content;margin:auto; padding: 8px 12px;">
+  <div style="font-family: inter, sans-serif; border: 1px solid black; width:fit-content;margin:auto; padding: 8px 12px; max-width: 280px;">
   <h2 style="color: rgb(50, 98, 115);">Gadget/Grid</h2>
     <h1>Email Verification</h1>
     <p>Click the link below to verify your email address</p>
