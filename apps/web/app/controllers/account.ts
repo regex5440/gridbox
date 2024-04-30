@@ -4,7 +4,6 @@ import prisma from "../../lib/prisma/client";
 
 type LoginCredentials = {
   email: string;
-  password: string;
 };
 
 type ProfileDetails = {
@@ -17,11 +16,12 @@ type ProfileDetails = {
   validEmail?: boolean;
 };
 
-async function authenticateUser({ email, password }: LoginCredentials) {
+async function authenticateUser({ email }: { email: string }) {
   const user = await prisma.profile.findFirst({
-    where: { email, password },
+    where: { email },
     select: {
       id: true,
+      password: true,
     },
   });
   return user;
@@ -66,4 +66,20 @@ async function createUser({
   return user;
 }
 
-export { authenticateUser, createUser, getUserById };
+async function verifyEmail({ email, id }: { email: string; id: string }) {
+  const user = await prisma.profile.update({
+    where: {
+      id,
+      email,
+    },
+    data: {
+      validEmail: true,
+    },
+    select: {
+      id: true,
+    },
+  });
+  return user;
+}
+
+export { authenticateUser, createUser, getUserById, verifyEmail };
