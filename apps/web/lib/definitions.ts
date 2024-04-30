@@ -42,7 +42,7 @@ export const SignupSchema = z
   });
 
 export type LoginFormErrorState =
-  | ({
+  | (({
       error?: {
         email?: string[];
         password?: string[];
@@ -51,6 +51,8 @@ export type LoginFormErrorState =
       error?: {
         message?: string;
       };
+    }) & {
+      success?: boolean;
     })
   | undefined;
 export type SignupFormErrorState =
