@@ -4,11 +4,12 @@ import { FormButton } from "../../components";
 import login from "../actions/login";
 import { useFormState } from "react-dom";
 import signup from "../actions/signup";
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, useEffect } from "react";
 import {
   LoginFormErrorState,
   SignupFormErrorState,
 } from "../../lib/definitions";
+import { useRouter } from "next/navigation";
 
 type FormProps = {
   className?: HTMLAttributes<HTMLFormElement>["className"];
@@ -19,6 +20,16 @@ export function Login({ className, ...rest }: FormProps) {
     login,
     undefined
   );
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state?.success) {
+      const redirect = new URLSearchParams(window.location.search).get(
+        "redirect"
+      );
+      router.push(redirect || "/");
+    }
+  }, [state, router]);
 
   const singleError =
     state?.error?.message || state?.error?.email || state?.error?.password;
@@ -38,9 +49,7 @@ export function Login({ className, ...rest }: FormProps) {
         placeholder="Password"
         className={singleError ? `border-2 border-error` : ""}
       />
-      {singleError && (
-        <div className="text-error text-sm">{singleError[0]}</div>
-      )}
+      {singleError && <div className="text-error text-sm">{singleError}</div>}
       <FormButton className="bg-primary text-regular-inverted w-full">
         Login
       </FormButton>
@@ -56,7 +65,6 @@ export function Signup({ className, ...rest }: FormProps) {
     signup,
     undefined
   );
-  console.log(state);
   return (
     <form action={action} className={`mt-4 *:mb-2 w-72 ${className}`} {...rest}>
       {state?.error?.message && (
