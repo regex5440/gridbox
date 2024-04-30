@@ -3,18 +3,22 @@ import { JWTPayload, jwtVerify, SignJWT } from "jose";
 const secretKey = process.env.SECRET_KEY;
 const encodedKey = new TextEncoder().encode(secretKey);
 
-const createToken = async (
+const createEncryptedToken = async (
   payload: JWTPayload,
   tokenExpiry?: string | number | Date
 ) => {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime(tokenExpiry || process.env.SESSION_EXPIRY || "30m")
+    .setExpirationTime(
+      tokenExpiry || Number(process.env.SESSION_EXPIRY) || "7d"
+    )
     .sign(encodedKey);
 };
 
-const verifyToken = async (token: string) => {
+const decryptToken = async <T>(
+  token: string
+): Promise<(T & JWTPayload) | JWTPayload | null> => {
   try {
     const { payload } = await jwtVerify(token, encodedKey, {
       algorithms: ["HS256"],
@@ -26,4 +30,4 @@ const verifyToken = async (token: string) => {
   }
 };
 
-export { createToken, verifyToken };
+export { createEncryptedToken, decryptToken };
