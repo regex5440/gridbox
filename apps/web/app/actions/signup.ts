@@ -3,10 +3,10 @@
 import { redirect } from "next/navigation";
 import { SignupFormErrorState, SignupSchema } from "../../lib/definitions";
 import EmailTemplate from "../../lib/email-template";
-import { hash } from "../../lib/hash-salt";
+import { hash } from "../../lib/bcrypt";
 import sendEmail from "../../lib/mailer";
 import { createUser } from "../controllers/account";
-import { createToken } from "../../lib/jwt";
+import { createEncryptedToken } from "../../lib/jwt";
 
 export default async function signup(
   state: SignupFormErrorState,
@@ -35,7 +35,7 @@ export default async function signup(
     const hashedPassword = await hash(password);
     console.log("Password hashed. Creating user...");
     //TODO: Create user in database
-    await createUser({
+    const user = await createUser({
       email,
       firstName,
       password: hashedPassword,
@@ -45,8 +45,8 @@ export default async function signup(
     });
     console.log("User created. Sending verification email...");
     //TODO: sent a verification email with token
-    const verificationToken = await createToken(
-      { email, type: "verify" },
+    const verificationToken = await createEncryptedToken(
+      { email, type: "verify", userId: user.id },
       "2h"
     );
     const verificationEmail = new EmailTemplate("verification")
