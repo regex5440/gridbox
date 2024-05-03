@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { createEncryptedToken } from "../../lib/jwt";
+import { createEncryptedToken } from "@lib/jwt";
 
 async function createSession(payload: Record<string, any>) {
   if (!payload) return null;
