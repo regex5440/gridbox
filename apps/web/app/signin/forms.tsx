@@ -13,9 +13,10 @@ import { useRouter } from "next/navigation";
 
 type FormProps = {
   className?: HTMLAttributes<HTMLFormElement>["className"];
+  withinModal?: boolean;
 };
 
-export function Login({ className, ...rest }: FormProps) {
+export function Login({ className, withinModal = false, ...rest }: FormProps) {
   const [state, action] = useFormState<LoginFormErrorState, FormData>(
     login,
     undefined
@@ -27,9 +28,13 @@ export function Login({ className, ...rest }: FormProps) {
       const redirect = new URLSearchParams(window.location.search).get(
         "redirect"
       );
-      router.push(redirect || "/");
+      if (withinModal) {
+        router.back();
+      } else {
+        router.push(redirect || "/");
+      }
     }
-  }, [state, router]);
+  }, [state, router, withinModal]);
 
   const singleError =
     state?.error?.message || state?.error?.email || state?.error?.password;
@@ -60,7 +65,7 @@ export function Login({ className, ...rest }: FormProps) {
 const { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } =
   SelectElem;
 
-export function Signup({ className, ...rest }: FormProps) {
+export function Signup({ className, withinModal, ...rest }: FormProps) {
   const [state, action] = useFormState<SignupFormErrorState, FormData>(
     signup,
     undefined

@@ -3,7 +3,7 @@ import { Login, Signup } from "./forms";
 
 const { Tabs, TabsList, TabsContent, TabsTrigger } = Tab;
 
-export default function LoginSignup() {
+export default function LoginSignup(props: any) {
   return (
     <Card.Card className="flex flex-1 justify-center lg:max-w-2xl mx-auto bg-surface py-4 px-8">
       <Tabs defaultValue="login">
@@ -22,10 +22,10 @@ export default function LoginSignup() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="login">
-          <Login />
+          <Login {...props} />
         </TabsContent>
         <TabsContent value="signup">
-          <Signup />
+          <Signup {...props} />
         </TabsContent>
       </Tabs>
     </Card.Card>
