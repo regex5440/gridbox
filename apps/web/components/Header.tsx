@@ -3,6 +3,7 @@ import { Accordion, SidePanel, Navigation } from "@repo/ui";
 import Link from "next/link";
 import { Category } from "../utils";
 import SiteMap from "../utils/sitemap";
+import authenticateUser from "@app/actions/auth";
 
 const {
   NavigationMenu,
@@ -13,7 +14,8 @@ const {
   NavigationMenuLink,
 } = Navigation;
 
-export default function Header({ homePath = "/" }) {
+export default async function Header({ homePath = "/" }) {
+  const authenticatedUser = await authenticateUser();
   return (
     <header className="w-full flex justify-between items-center py-4 px-8 border-b border-b-primary max-sm:px-4 max-sm:py-3">
       <Link href={homePath}>
@@ -21,16 +23,38 @@ export default function Header({ homePath = "/" }) {
       </Link>
 
       <NavigationMenu className="z-20">
-        <NavigationMenuList className="items-baseline">
+        <NavigationMenuList className="items-center">
           <NavigationMenuItem>
-            <NavigationMenuTrigger title="Account" className="px-3">
-              <UserIcon />
+            <NavigationMenuTrigger
+              title="Account"
+              className="px-3 cursor-pointer rounded-[50%]"
+              asChild
+            >
+              {authenticatedUser.error ? (
+                <UserIcon />
+              ) : (
+                <span className="text-ternary border">
+                  {authenticatedUser.data.firstName.charAt(0) +
+                    authenticatedUser.data.lastName?.charAt(0)}
+                </span>
+              )}
             </NavigationMenuTrigger>
             <NavigationMenuContent asChild>
               <div className="bg-surface min-w-28 flex flex-col items-start *:block *:px-3 *:py-2 *:m-0 *:w-full *:rounded-md *:text-base *:font-sans hover:*:bg-primary hover:*:text-regular-inverted">
-                <NavigationMenuLink href={"/signin"}>Login</NavigationMenuLink>
-                <NavigationMenuLink href="/account">Profile</NavigationMenuLink>
-                <NavigationMenuLink href="/logout">Logout</NavigationMenuLink>
+                {authenticatedUser.error ? (
+                  <NavigationMenuLink href={"/signin"}>
+                    Login
+                  </NavigationMenuLink>
+                ) : (
+                  <>
+                    <NavigationMenuLink href="/account">
+                      My Account
+                    </NavigationMenuLink>
+                    <NavigationMenuLink href="/account/logout">
+                      Logout
+                    </NavigationMenuLink>
+                  </>
+                )}
               </div>
             </NavigationMenuContent>
           </NavigationMenuItem>
