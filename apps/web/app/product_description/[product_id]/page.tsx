@@ -6,6 +6,7 @@ import { Star, StarHalf } from "lucide-react";
 import { Button } from "@repo/ui";
 import QtySelector from "../../../components/QtySelector";
 import ProductVisitedMarker from "../../../components/ProductVisitedMarker";
+import { addToCart } from "@app/actions/cart";
 
 type ProductPageProps = {
   params: {
@@ -26,6 +27,10 @@ export default async function ProductPage({
   ).then((res) => res.json());
 
   const ratingStarCount = Math.ceil(productDetails.rating);
+  const visibleStarRating = String(productDetails.rating).substring(0, 3);
+  const productPrice =
+    productDetails.price -
+    (productDetails.price * productDetails.discountPercentage) / 100;
   return (
     <>
       <ProductVisitedMarker product_id={product_id} />
@@ -37,12 +42,12 @@ export default async function ProductPage({
             <p className="text-sm">by {productDetails.brand}</p>
             <p
               className="flex gap-1 mt-1 items-center"
-              title={productDetails.rating.toFixed(1)}
+              title={visibleStarRating}
             >
               {new Array(ratingStarCount).fill(0).map((_, i) => {
                 if (
                   i === ratingStarCount - 1 &&
-                  productDetails.rating % 10 > 0
+                  (productDetails.rating * 10) % 10 > 0
                 ) {
                   return (
                     <span key={i}>
@@ -62,7 +67,7 @@ export default async function ProductPage({
                   </span>
                 );
               })}
-              ({productDetails.rating.toFixed(1)})
+              ({visibleStarRating})
             </p>
             <p className="mt-4">
               <span className="line-through">Rs. {productDetails.price}</span>{" "}
@@ -71,14 +76,7 @@ export default async function ProductPage({
               </span>
             </p>
             <p className="mt-1 flex justify-between items-baseline">
-              <span className="text-2xl ">
-                ${" "}
-                {(
-                  productDetails.price -
-                  (productDetails.price * productDetails.discountPercentage) /
-                    100
-                ).toFixed(2)}
-              </span>
+              <span className="text-2xl ">$ {productPrice.toFixed(2)}</span>
               {productDetails.stock > 5 ? (
                 <span className="text-green-200">In Stock</span>
               ) : productDetails.stock > 0 ? (
@@ -88,17 +86,19 @@ export default async function ProductPage({
               )}
             </p>
             <div className="mt-auto text-center">
-              <form className="text-center">
+              <form className="text-center" action={addToCart}>
+                <input type="hidden" name="productId" value={product_id} />
+                {/* //TODO: SEND THIS INFORMATION TO ACTION AND BACKEND WILL GATHER DETAILS OF PRODUCT AND WILL CREATE CART */}
                 <div className="flex gap-4 items-end">
                   <QtySelector />
                   <Button className="bg-buy-now text-white p-2 rounded-md mt-4 w-full">
                     Buy Now
                   </Button>
                 </div>
-                <Button className="bg-add-to-cart text-white p-2 rounded-md mt-4 w-full">
-                  Add to Cart
-                </Button>
               </form>
+              <Button className="bg-add-to-cart text-white p-2 rounded-md mt-4 w-full">
+                Add to Cart
+              </Button>
               <p className="my-2 fieldset-legend">OR</p>
               <Button className="border rounded-lg w-8/12">
                 Add to Wishlist
