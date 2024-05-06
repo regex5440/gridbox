@@ -22,3 +22,34 @@ export type NextRoute = (
       | undefined;
   }
 ) => Promise<Response>;
+
+export type LoginFormErrorState =
+  | (({
+      error?: {
+        email?: string[];
+        password?: string[];
+      };
+    } & {
+      error?: {
+        message?: string;
+      };
+    }) & {
+      success?: boolean;
+    })
+  | undefined;
+export type SignupFormErrorState =
+  | ({
+      error?: {
+        firstName?: string[];
+        email?: string[];
+        password?: string[];
+        passwordConfirm?: string[];
+        dob?: string[];
+        gender?: string[];
+      };
+    } & {
+      error?: {
+        message?: string;
+      };
+    })
+  | undefined;
