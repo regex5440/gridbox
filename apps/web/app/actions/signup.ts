@@ -1,12 +1,13 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { SignupFormErrorState, SignupSchema } from "../../lib/definitions";
-import EmailTemplate from "../../lib/email-template";
-import { hash } from "../../lib/bcrypt";
-import sendEmail from "../../lib/mailer";
-import { createUser } from "../controllers/account";
-import { createEncryptedToken } from "../../lib/jwt";
+import { SignupFormErrorState } from "@types";
+import { SignupSchema } from "@lib/definitions";
+import { hash } from "@lib/bcrypt";
+import { createUser } from "@app/controllers/account";
+import { createEncryptedToken } from "@lib/jwt";
+import EmailTemplate from "@lib/email-template";
+import sendEmail from "@lib/mailer";
 
 export default async function signup(
   state: SignupFormErrorState,

@@ -1,15 +1,12 @@
 "use client";
 import { Input, Select as SelectElem } from "@repo/ui";
-import { FormButton } from "../../components";
-import login from "../actions/login";
 import { useFormState } from "react-dom";
-import signup from "../actions/signup";
 import { HTMLAttributes, useEffect } from "react";
-import {
-  LoginFormErrorState,
-  SignupFormErrorState,
-} from "../../lib/definitions";
 import { useRouter } from "next/navigation";
+import { LoginFormErrorState, SignupFormErrorState } from "@types";
+import FormButton from "@components/FormButton";
+import login from "@app/actions/login";
+import signup from "@app/actions/signup";
 
 type FormProps = {
   className?: HTMLAttributes<HTMLFormElement>["className"];

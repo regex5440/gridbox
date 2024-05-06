@@ -1,9 +1,10 @@
 "use server";
 
-import { LoginFormErrorState, LoginSchema } from "../../lib/definitions";
-import { compareHash } from "../../lib/bcrypt";
-import { authenticateUser } from "../controllers/account";
-import { createSession } from "../controllers/session";
+import { authenticateUser } from "@app/controllers/account";
+import { createSession } from "@app/controllers/session";
+import { compareHash } from "@lib/bcrypt";
+import { LoginSchema } from "@lib/definitions";
+import { LoginFormErrorState } from "@types";
 
 export default async function login(
   state: LoginFormErrorState,
