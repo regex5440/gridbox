@@ -3,7 +3,8 @@ import { Accordion, SidePanel, Navigation } from "@repo/ui";
 import Link from "next/link";
 import { Category } from "../utils";
 import SiteMap from "../utils/sitemap";
-import authenticateUser from "@app/actions/auth";
+import getAuthenticateUser from "@app/actions/auth";
+import MiniCartContent from "./MiniCartContent";
 
 const {
   NavigationMenu,
@@ -15,7 +16,7 @@ const {
 } = Navigation;
 
 export default async function Header({ homePath = "/" }) {
-  const authenticatedUser = await authenticateUser();
+  const authenticatedUser = await getAuthenticateUser();
   return (
     <header className="w-full flex justify-between items-center py-4 px-8 border-b border-b-primary max-sm:px-4 max-sm:py-3">
       <Link href={homePath}>
@@ -58,21 +59,8 @@ export default async function Header({ homePath = "/" }) {
               </div>
             </NavigationMenuContent>
           </NavigationMenuItem>
-          <NavigationMenuItem>
-            <SidePanel.Sheet>
-              <SidePanel.SheetTrigger className="px-3">
-                <ShoppingCartIcon />
-              </SidePanel.SheetTrigger>
-              <SidePanel.SheetContent className="bg-surface border-none data-[state=open]:animate-slide-right-in data-[state=closed]:animate-slide-right-out">
-                <SidePanel.SheetHeader>
-                  <SidePanel.SheetTitle className="text-2xl">
-                    <Link href="/cart" className="hover:underline">
-                      <SidePanel.SheetClose>Cart</SidePanel.SheetClose>
-                    </Link>
-                  </SidePanel.SheetTitle>
-                </SidePanel.SheetHeader>
-              </SidePanel.SheetContent>
-            </SidePanel.Sheet>
+          <NavigationMenuItem className="max-md:hidden">
+            <MiniCartContent />
           </NavigationMenuItem>
           <NavigationMenuItem>
             <SidePanel.Sheet>

@@ -3,7 +3,7 @@ import { getUserById } from "@app/controllers/account";
 import { decryptToken } from "@lib/jwt";
 import { cookies } from "next/headers";
 
-export default async function authenticateUser() {
+export default async function getAuthenticateUser() {
   const token = cookies().get("session.token")?.value;
   if (!token) {
     return { error: { message: "Invalid token" } };
