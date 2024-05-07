@@ -3,7 +3,7 @@ import { Accordion, SidePanel, Navigation } from "@repo/ui";
 import Link from "next/link";
 import { Category } from "../utils";
 import SiteMap from "../utils/sitemap";
-import getAuthenticateUser from "@app/actions/auth";
+import { getAuthenticateUser } from "@app/actions/auth";
 import MiniCartContent from "./MiniCartContent";
 
 const {
@@ -35,7 +35,7 @@ export default async function Header({ homePath = "/" }) {
                 <UserIcon />
               ) : (
                 <span className="text-ternary border">
-                  {authenticatedUser.data.firstName.charAt(0) +
+                  {authenticatedUser.data?.firstName?.charAt(0) +
                     authenticatedUser.data.lastName?.charAt(0)}
                 </span>
               )}

@@ -3,7 +3,7 @@ import { getUserById } from "@app/controllers/account";
 import { decryptToken } from "@lib/jwt";
 import { cookies } from "next/headers";
 
-export default async function getAuthenticateUser() {
+export async function authenticateUser() {
   const token = cookies().get("session.token")?.value;
   if (!token) {
     return { error: { message: "Invalid token" } };
@@ -14,10 +14,18 @@ export default async function getAuthenticateUser() {
   }
   const { id } = payload;
   if (typeof id === "string") {
-    const user = await getUserById(id);
+    return { data: { id }, success: true };
+  }
+  return { error: { message: "Invalid token" } };
+}
+
+export async function getAuthenticateUser() {
+  const authenticUser = await authenticateUser();
+  if (authenticUser?.success) {
+    const user = await getUserById(authenticUser.data.id);
     if (user) {
       return { data: user, success: true };
     }
   }
-  return { error: { message: "Invalid token" } };
+  return { error: { message: "User does not exists" } };
 }
