@@ -6,49 +6,68 @@ import Link from "next/link";
 import QtySelector from "./QtySelector";
 import { Button } from "@repo/ui";
 import { Trash2 } from "lucide-react";
+import { useState } from "react";
+import { useFetchProduct } from "@hooks/index";
 
 type CartItemProps = {
-  product: Product;
+  productId: string;
+  initialQty?: number;
   onRemove?: (productId: string) => void;
   onQtyChange?: (qty: number, productId: string) => void;
   className?: string;
 };
 
 export default function CartItem({
-  product,
+  productId,
+  initialQty = 1,
   onQtyChange,
   onRemove,
   className = "",
 }: CartItemProps) {
+  const [quantity, setQuantity] = useState(initialQty);
+  const { data: product, isLoading, error } = useFetchProduct(productId);
+
+  const handleQtyChange = (count: number) => {
+    setQuantity(count);
+    onQtyChange?.(count, productId);
+    //TODO: update cart item quantity (debounced?)
+  };
+
   return (
     <div className={"flex gap-4 border-b pb-2 lg:max-w-lg w-full " + className}>
-      <Link href={`${SiteMap.PDP.path}/${product.id}`}>
-        <div className="relative w-24 h-24">
-          <Image src={product.thumbnail} alt={product.title} fill />
-          {/* <div className="absolute bottom-0.5 right-0.5 rounded-full aspect-square w-fit p-1 flex justify-center items-center backdrop-invert">
+      {isLoading && <p>Loading...</p>}
+      {error && <p>Cannot load product</p>}
+      {product && (
+        <>
+          <Link href={`${SiteMap.PDP.path}/${product.id}`}>
+            <div className="relative w-24 h-24">
+              <Image src={product.thumbnail} alt={product.title} fill />
+              {/* <div className="absolute bottom-0.5 right-0.5 rounded-full aspect-square w-fit p-1 flex justify-center items-center backdrop-invert">
             <span className="text-sm font-semibold"></span>
           </div> */}
-        </div>
-      </Link>
-      <div className="flex flex-col justify-between w-full">
-        <Link href={`${SiteMap.PDP.path}/${product.id}`}>
-          <h3 className="text-xl line-clamp-1">{product.title}</h3>
-        </Link>
-        <p>${product.price}</p>
-        <div className="flex justify-between items-center">
-          <QtySelector
-            buttonHeight={7}
-            initialCount={3}
-            onChange={(count) => onQtyChange?.(count, String(product.id))}
-          />
-          <Button
-            onClick={onRemove?.bind(null, String(product.id))}
-            title="Remove"
-          >
-            <Trash2 />
-          </Button>
-        </div>
-      </div>
+            </div>
+          </Link>
+          <div className="flex flex-col justify-between w-full">
+            <Link href={`${SiteMap.PDP.path}/${product.id}`}>
+              <h3 className="text-xl line-clamp-1">{product.title}</h3>
+            </Link>
+            <p>${product.price}</p>
+            <div className="flex justify-between items-center">
+              <QtySelector
+                count={quantity}
+                buttonHeight={7}
+                onChange={handleQtyChange}
+              />
+              <Button
+                onClick={onRemove?.bind(null, String(product.id))}
+                title="Remove"
+              >
+                <Trash2 />
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
