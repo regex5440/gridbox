@@ -25,8 +25,6 @@ const useMiniCart = create<State & Actions>((set) => ({
       const data = await response.json();
       if (data.success) {
         set({ cartItems: data.data });
-      } else {
-        throw new Error(data.error.message);
       }
     } catch (e) {
       console.error(e);
