@@ -25,9 +25,9 @@ export default function MiniCart() {
           )}
         </div>
       </SidePanel.SheetTrigger>
-      <SidePanel.SheetContent className="bg-surface border-none data-[state=open]:animate-slide-right-in data-[state=closed]:animate-slide-right-out">
+      <SidePanel.SheetContent className="bg-surface border-none data-[state=open]:animate-slide-right-in data-[state=closed]:animate-slide-right-out group minicart">
         <SidePanel.SheetHeader>
-          <SidePanel.SheetTitle className="text-2xl">
+          <SidePanel.SheetTitle className="text-2xl mb-3">
             <Link href="/cart" className="hover:underline">
               <SidePanel.SheetClose>Cart</SidePanel.SheetClose>
             </Link>
@@ -42,6 +42,7 @@ export default function MiniCart() {
                 key={item.productId}
                 productId={String(item.productId)}
                 initialQty={item.quantity}
+                className="mb-1"
               />
             ))
           ) : (

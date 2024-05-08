@@ -55,12 +55,14 @@ export default function CartItem({
             <div className="flex justify-between items-center">
               <QtySelector
                 count={quantity}
-                buttonHeight={7}
                 onChange={handleQtyChange}
+                buttonClassName="group-[.minicart]:w-6 group-[.minicart]:h-6 p-1 text-regular cursor-pointer bg-transparent border-2 border-primary"
+                countClassName="text-base w-7 text-center text-primary"
               />
               <Button
                 onClick={onRemove?.bind(null, String(product.id))}
                 title="Remove"
+                className="group-[.minicart]:text-secondary group-[.minicart]:w-7 group-[.minicart]:h-7 group-[.minicart]:p-1 group-[.minicart]:bg-transparent"
               >
                 <Trash2 />
               </Button>
