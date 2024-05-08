@@ -7,6 +7,7 @@ import { Button } from "@repo/ui";
 import QtySelector from "../../../components/QtySelector";
 import ProductVisitedMarker from "../../../components/ProductVisitedMarker";
 import { addToCart } from "@app/actions/cart";
+import ProductPurchaseForm from "@app/product_description/[product_id]/ProductPurchaseForm";
 
 type ProductPageProps = {
   params: {
@@ -86,19 +87,7 @@ export default async function ProductPage({
               )}
             </p>
             <div className="mt-auto text-center">
-              <form className="text-center" action={addToCart}>
-                <input type="hidden" name="productId" value={product_id} />
-                {/* //TODO: SEND THIS INFORMATION TO ACTION AND BACKEND WILL GATHER DETAILS OF PRODUCT AND WILL CREATE CART */}
-                <div className="flex gap-4 items-end">
-                  <QtySelector />
-                  <Button className="bg-buy-now text-white p-2 rounded-md mt-4 w-full">
-                    Buy Now
-                  </Button>
-                </div>
-              </form>
-              <Button className="bg-add-to-cart text-white p-2 rounded-md mt-4 w-full">
-                Add to Cart
-              </Button>
+              <ProductPurchaseForm productId={product_id} />
               <p className="my-2 fieldset-legend">OR</p>
               <Button className="border rounded-lg w-8/12">
                 Add to Wishlist
