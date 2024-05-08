@@ -53,3 +53,17 @@ export type SignupFormErrorState =
       };
     })
   | undefined;
+
+export type ProductPurchaseFormState =
+  | {
+      error: {
+        message?: string;
+        redirect?: string;
+      };
+    }
+  | {
+      success: {
+        redirect: string;
+      };
+    }
+  | undefined;
