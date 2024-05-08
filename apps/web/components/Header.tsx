@@ -65,7 +65,7 @@ export default async function Header({ homePath = "/" }) {
           <NavigationMenuItem>
             <SidePanel.Sheet>
               <SidePanel.SheetOverlay className="data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out" />
-              <SidePanel.SheetTrigger className="px-3">
+              <SidePanel.SheetTrigger className="px-3 py-2">
                 <MenuIcon />
               </SidePanel.SheetTrigger>
               <SidePanel.SheetContent className="overflow-y-auto bg-surface border-none data-[state=open]:animate-slide-right-in data-[state=closed]:animate-slide-right-out">
