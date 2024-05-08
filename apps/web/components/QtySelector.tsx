@@ -1,23 +1,19 @@
 "use client";
 import { Button } from "@repo/ui";
 import { Minus, Plus } from "lucide-react";
-import { HTMLAttributes, useState } from "react";
 
 type QtySelectorProps = {
-  initialCount?: number;
-  onChange?: (count: number) => void;
+  count: number;
+  onChange: (count: number) => void;
   buttonHeight?: number; //Tailwind CSS height value
 };
 
 export default function QtySelector({
-  initialCount,
+  count,
   onChange,
   buttonHeight,
 }: QtySelectorProps) {
-  const [count, setQty] = useState(initialCount || 1);
-
   const setCount = (qty: number) => {
-    setQty(qty);
     onChange?.(qty);
   };
 
