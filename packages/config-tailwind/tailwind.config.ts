@@ -35,6 +35,14 @@ const config: Omit<Config, "content"> = {
         "menu-sheet-color-sub": "#0f0f0f",
         "add-to-cart": "goldenrod",
       },
+      border: {
+        primary: "var(--primary)",
+        secondary: "var(--secondary)",
+        surface: "var(--surface)",
+        "surface-secondary": "var(--surface-2)",
+        "surface-dark": "var(--surface-dark)",
+        "surface-inverted": "var(--surface-inverted)",
+      },
       colors: {
         primary: "var(--primary)",
         secondary: "var(--secondary)",
