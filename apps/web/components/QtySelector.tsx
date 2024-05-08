@@ -1,17 +1,20 @@
 "use client";
 import { Button } from "@repo/ui";
 import { Minus, Plus } from "lucide-react";
+import { HTMLAttributes } from "react";
 
 type QtySelectorProps = {
   count: number;
   onChange: (count: number) => void;
-  buttonHeight?: number; //Tailwind CSS height value
+  buttonClassName?: HTMLAttributes<HTMLButtonElement>["className"];
+  countClassName?: HTMLAttributes<HTMLSpanElement>["className"];
 };
 
 export default function QtySelector({
   count,
   onChange,
-  buttonHeight,
+  buttonClassName,
+  countClassName,
 }: QtySelectorProps) {
   const setCount = (qty: number) => {
     onChange?.(qty);
@@ -24,23 +27,23 @@ export default function QtySelector({
         value={count}
         min={1}
         max={30}
-        name="qty"
+        name="quantity"
         hidden
         readOnly
       />
       <Button
         onClick={() => setCount(Math.max(1, count - 1))}
         type="button"
-        className={`border h-${buttonHeight || 8} aspect-square p-1`}
+        className={buttonClassName}
         title="Decrease quantity"
       >
         <Minus />
       </Button>
-      <span className="w-6 text-center">{count}</span>
+      <span className={countClassName}>{count}</span>
       <Button
         onClick={() => setCount(Math.min(30, count + 1))}
         type="button"
-        className={`border h-${buttonHeight || 8} aspect-square p-1`}
+        className={buttonClassName}
         title="Increase quantity"
       >
         <Plus />
