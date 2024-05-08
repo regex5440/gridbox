@@ -14,36 +14,75 @@ datasource db {
 }
 
 model profile {
-  id         String    @id @default(cuid())
-  firstName  String    @db.VarChar(255)
-  lastName   String?
-  email      String
-  validEmail Boolean   @default(false)
-  password   String
-  gender     String?
-  dob        DateTime?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  wishlist   String[]
-  Order      order[]
+  id           String         @id @default(cuid())
+  firstName    String         @db.VarChar(255)
+  lastName     String?
+  email        String         @unique
+  validEmail   Boolean        @default(false)
+  password     String
+  gender       String?
+  dob          DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  wishlist     String[]
+  shippingInfo shippingInfo[]
+  cart         cartItem[]
+  orders       order[]
 }
 
-model orderItem {
-  id       String @id @default(cuid())
-  orderId  Int?
-  name     Int
-  quantity Int
-  price    Float
-  Order    order? @relation(fields: [id], references: [orderId], onUpdate: Cascade)
+model shippingInfo {
+  id        String   @id @default(cuid())
+  profileId String?
+  address   String
+  city      String
+  state     String
+  zip       String
+  country   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profile   profile? @relation(fields: [profileId], references: [id])
+}
+
+model cartItem {
+  id        String  @id @default(cuid())
+  buyerId   String
+  productId String
+  quantity  Int
+  profile   profile @relation(fields: [buyerId], references: [id], onUpdate: Cascade)
+
+  @@unique([buyerId, productId])
 }
 
 model order {
-  orderId    String      @id @default(cuid())
-  createdBy  String
-  totalPrice Float
-  status     String
-  createdAt  DateTime    @default(now())
-  orderItem  orderItem[]
+  id           String      @id @default(cuid())
+  createdBy    String
+  status       String
+  orderItem    orderItem[]
+  shippingInfo String
+  contactInfo  String
+  billingId    String
+  createdAt    DateTime    @default(now())
+  profile      profile     @relation(fields: [createdBy], references: [id], onUpdate: Cascade)
+  billing      billing     @relation(fields: [billingId], references: [id], onUpdate: Cascade)
+}
 
-  profile profile? @relation(fields: [createdBy], references: [id], onUpdate: Cascade)
+model orderItem {
+  id       String  @id @default(cuid())
+  orderId  String?
+  name     Int
+  quantity Int
+  price    Float
+  order    order?  @relation(fields: [orderId], references: [id], onUpdate: Cascade)
+}
+
+model billing {
+  id        String   @id @default(cuid())
+  method    String
+  amount    Float
+  refunded  Boolean  @default(false)
+  status    String
+  paidBy    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  order     order[]
 }
