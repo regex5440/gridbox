@@ -40,3 +40,8 @@ export const SignupSchema = z
       });
     }
   });
+
+export const CartProductAddSchema = z.object({
+  productId: z.string({ message: "Invalid product id" }).min(1).trim(),
+  quantity: z.number().int("Invalid quantity").min(1).max(30),
+});

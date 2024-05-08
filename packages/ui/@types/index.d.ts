@@ -14,4 +14,9 @@ type Product = {
   images: string[];
 };
 
-export { ButtonProps, Product };
+type CartItem = {
+  productId: number;
+  quantity: number;
+};
+
+export { ButtonProps, Product, CartItem };
