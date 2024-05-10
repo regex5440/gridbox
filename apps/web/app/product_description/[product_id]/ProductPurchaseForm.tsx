@@ -36,8 +36,8 @@ export default function ProductPurchaseForm({
           <QtySelector
             count={quantity}
             onChange={setQuantity}
-            buttonClassName="h-7 w-7 p-1 flex justify-center items-center text-regular-inverted cursor-pointer user-select-none bg-transparent border-2 border-secondary text-secondary"
-            countClassName="w-7 text-xl text-secondary"
+            optionClassName="py-0.5 px-1"
+            triggerClassName="w-20"
           />
           <FormButton className="bg-buy-now text-white p-2 rounded-md mt-4 w-full">
             Buy Now
