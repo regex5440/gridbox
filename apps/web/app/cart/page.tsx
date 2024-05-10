@@ -1,17 +1,27 @@
 import { Product } from "@repo/ui/types";
 import CartItem from "../../components/CartItem";
 import { Button } from "@repo/ui";
+import { getCartItems } from "@app/controllers/cart";
+import { authenticateUser } from "@app/actions/auth";
+import { redirect } from "next/navigation";
 
 export default async function CartPage() {
-  const data = await fetch(
-    `${process.env.productAPI}/products?limit=5&skip=14`
-  ).then((res) => res.json());
+  const authenticUser = await authenticateUser();
+  if (!authenticUser.success) {
+    return redirect("/signin");
+  }
+  const cartItems = await getCartItems({ userId: authenticUser.data.id });
 
-  const cartProducts: Product[] = data.products;
-
-  const productQty = 2; // TODO: Receive this from db
+  const cartProducts = await Promise.all(
+    cartItems.data.map(({ productId }) =>
+      fetch(`${process.env.productAPI}/products/${productId}`).then((res) =>
+        res.json()
+      )
+    )
+  );
   const subTotal = cartProducts.reduce(
-    (acc, product) => acc + product.price * productQty,
+    (acc, product, index) =>
+      acc + product.price * cartItems.data[index].quantity,
     0
   );
   const maxDiscountPercentage = cartProducts.reduce(
@@ -25,10 +35,11 @@ export default async function CartPage() {
     <div className="px-common-x lg:mx-auto flex lg:justify-around max-lg:justify-between lg:w-10/12 max-lg:w-full max-md:flex-col max-w-screen-xl">
       <div className="md:w-1/2 group/items group-last:border-0">
         <h1 className="text-3xl mb-4">Cart</h1>
-        {cartProducts.map((product) => (
+        {cartProducts.map((product, index) => (
           <CartItem
             key={product.id}
-            product={product}
+            productObj={product}
+            initialQty={cartItems.data[index].quantity}
             className="mb-2 [&:last-child]:border-0"
           />
         ))}
