@@ -4,9 +4,7 @@ import { ProductsCarousel } from "../../../components";
 import RecentlyViewed from "../../../components/RecentlyViewed";
 import { Star, StarHalf } from "lucide-react";
 import { Button } from "@repo/ui";
-import QtySelector from "../../../components/QtySelector";
 import ProductVisitedMarker from "../../../components/ProductVisitedMarker";
-import { addToCart } from "@app/actions/cart";
 import ProductPurchaseForm from "@app/product_description/[product_id]/ProductPurchaseForm";
 
 type ProductPageProps = {
