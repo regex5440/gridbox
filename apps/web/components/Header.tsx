@@ -1,10 +1,12 @@
-import { MenuIcon, ShoppingCartIcon, UserIcon } from "lucide-react";
+"use client";
+import { MenuIcon, UserIcon } from "lucide-react";
 import { Accordion, SidePanel, Navigation } from "@repo/ui";
 import Link from "next/link";
 import { Category } from "../utils";
 import SiteMap from "../utils/sitemap";
-import { getAuthenticateUser } from "@app/actions/auth";
 import MiniCartContent from "./MiniCartContent";
+import useUserStore from "@lib/store/user";
+import { useEffect } from "react";
 
 const {
   NavigationMenu,
@@ -15,8 +17,12 @@ const {
   NavigationMenuLink,
 } = Navigation;
 
-export default async function Header({ homePath = "/" }) {
-  const authenticatedUser = await getAuthenticateUser();
+export default function Header({ homePath = "/" }) {
+  const { user, fetchUser } = useUserStore();
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
   return (
     <header className="w-full flex justify-between items-center py-4 px-8 border-b border-b-primary max-sm:px-4 max-sm:py-3">
       <Link href={homePath}>
@@ -31,18 +37,17 @@ export default async function Header({ homePath = "/" }) {
               className="px-3 cursor-pointer rounded-[50%]"
               asChild
             >
-              {authenticatedUser.error ? (
+              {!user ? (
                 <UserIcon />
               ) : (
                 <span className="text-ternary border">
-                  {authenticatedUser.data?.firstName?.charAt(0) +
-                    authenticatedUser.data.lastName?.charAt(0)}
+                  {user.firstName?.charAt(0) + user.lastName?.charAt(0)}
                 </span>
               )}
             </NavigationMenuTrigger>
             <NavigationMenuContent asChild>
               <div className="bg-surface min-w-28 flex flex-col items-start *:block *:px-3 *:py-2 *:m-0 *:w-full *:rounded-md *:text-base *:font-sans hover:*:bg-primary hover:*:text-regular-inverted">
-                {authenticatedUser.error ? (
+                {!user ? (
                   <NavigationMenuLink href={"/signin"}>
                     Login
                   </NavigationMenuLink>

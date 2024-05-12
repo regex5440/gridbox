@@ -7,6 +7,8 @@ import { LoginFormErrorState, SignupFormErrorState } from "@types";
 import FormButton from "@components/FormButton";
 import login from "@app/actions/login";
 import signup from "@app/actions/signup";
+import useMiniCart from "@lib/store/minicart";
+import useUserStore from "@lib/store/user";
 
 type FormProps = {
   className?: HTMLAttributes<HTMLFormElement>["className"];
@@ -19,9 +21,13 @@ export function Login({ className, withinModal = false, ...rest }: FormProps) {
     undefined
   );
   const router = useRouter();
+  const { fetchCart } = useMiniCart();
+  const { fetchUser } = useUserStore();
 
   useEffect(() => {
     if (state?.success) {
+      fetchCart();
+      fetchUser();
       const redirect = new URLSearchParams(window.location.search).get(
         "redirect"
       );
