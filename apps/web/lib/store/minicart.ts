@@ -12,12 +12,16 @@ type Actions = {
   fetchCart: () => void;
   setCartItems: (items: CartItem[]) => void;
   addCartItem: (item: CartItem) => void;
+  clearCart: () => void;
 };
 
 const useMiniCart = create<State & Actions>((set) => ({
   open: false,
   loadingCart: false,
   cartItems: [],
+  clearCart: () => {
+    set({ cartItems: [] });
+  },
   fetchCart: async () => {
     try {
       set({ loadingCart: true });
