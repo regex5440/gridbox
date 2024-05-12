@@ -44,4 +44,47 @@ async function addItemsToCart({
   return { data };
 }
 
-export { addItemsToCart, getCartItems };
+async function removeItemFromCart({
+  productId,
+  userId,
+}: {
+  productId: string;
+  userId: string;
+}) {
+  const data = await prisma.cartItem.delete({
+    where: {
+      buyerId_productId: {
+        buyerId: userId,
+        productId,
+      },
+    },
+  });
+
+  return { data };
+}
+
+async function updateItemQuantity({
+  productId,
+  quantity,
+  userId,
+}: {
+  productId: string;
+  quantity: number;
+  userId: string;
+}) {
+  const data = await prisma.cartItem.update({
+    where: {
+      buyerId_productId: {
+        buyerId: userId,
+        productId,
+      },
+    },
+    data: {
+      quantity,
+    },
+  });
+
+  return { data };
+}
+
+export { addItemsToCart, getCartItems, removeItemFromCart, updateItemQuantity };

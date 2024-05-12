@@ -1,76 +1,116 @@
-import { Product } from "@repo/ui/types";
+"use client";
 import CartItem from "../../components/CartItem";
 import { Button } from "@repo/ui";
-import { getCartItems } from "@app/controllers/cart";
-import { authenticateUser } from "@app/actions/auth";
-import { redirect } from "next/navigation";
+import { removeCartItem, updateCartItemQty } from "@app/actions/cart";
+import useMiniCart from "@lib/store/minicart";
+import { useEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
 
-export default async function CartPage() {
-  const authenticUser = await authenticateUser();
-  if (!authenticUser.success) {
-    return redirect("/signin");
-  }
-  const cartItems = await getCartItems({ userId: authenticUser.data.id });
+type CartTotal = {
+  subTotal: number;
+  maxDiscountPercentage: number;
+  discountedPrice: number;
+  tax: number;
+  payable: number;
+};
 
-  const cartProducts = await Promise.all(
-    cartItems.data.map(({ productId }) =>
-      fetch(`${process.env.productAPI}/products/${productId}`).then((res) =>
-        res.json()
-      )
-    )
-  );
-  const subTotal = cartProducts.reduce(
-    (acc, product, index) =>
-      acc + product.price * cartItems.data[index].quantity,
-    0
-  );
-  const maxDiscountPercentage = cartProducts.reduce(
-    (acc, product) =>
-      acc > product.discountPercentage ? acc : product.discountPercentage,
-    0
-  );
-  const discountedPrice = subTotal * (maxDiscountPercentage / 100);
-  const tax = discountedPrice * 0.1; // 10%
+export default function CartPage() {
+  const { cartItems, fetchCart, loadingCart } = useMiniCart();
+  const [cartTotal, setCartTotal] = useState<{
+    loading: boolean;
+    data: CartTotal | null;
+  }>({
+    loading: true,
+    data: null,
+  });
+
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      setCartTotal((state) => ({ ...state, loading: true }));
+      try {
+        fetch("/api/cart/total").then(async (res) => {
+          const resJson = await res.json();
+          setCartTotal({ data: resJson.success.data, loading: false });
+        });
+      } catch (e) {
+        console.error(e);
+        setCartTotal((state) => ({ ...state, loading: false }));
+      }
+    } else {
+      setCartTotal({ data: null, loading: false });
+    }
+  }, [cartItems, setCartTotal]);
+
   return (
     <div className="px-common-x lg:mx-auto flex lg:justify-around max-lg:justify-between lg:w-10/12 max-lg:w-full max-md:flex-col max-w-screen-xl">
       <div className="md:w-1/2 group/items group-last:border-0">
         <h1 className="text-3xl mb-4">Cart</h1>
-        {cartProducts.map((product, index) => (
-          <CartItem
-            key={product.id}
-            productObj={product}
-            initialQty={cartItems.data[index].quantity}
-            className="mb-2 [&:last-child]:border-0"
-          />
-        ))}
+        {loadingCart ? (
+          <div>Loading...</div>
+        ) : (
+          cartItems.map(({ productId, quantity }) => (
+            <CartItem
+              key={productId}
+              productId={productId}
+              initialQty={quantity}
+              onQtyChange={(qty, productId) => {
+                updateCartItemQty({ productId, quantity: qty }).then(fetchCart);
+              }}
+              onRemove={(productId) => {
+                removeCartItem(productId).then(fetchCart);
+              }}
+              className="mb-2 [&:last-child]:border-0"
+            />
+          ))
+        )}
+        {cartItems.length === 0 && (
+          <p className="text-center text-xl h-[40vh] my-10">No items </p>
+        )}
       </div>
-      <div className="md:border-l h-fit lg:w-1/3 md:w-2/5 max-md:border-t max-md:p-4 px-4 md:mt-12 sticky top-20">
-        <div className="w-full">
-          <div className="*:flex *:justify-between *:mb-3">
-            <div>
-              <span className="text-left">Subtotal</span>{" "}
-              <span className="text-right text-xl">${subTotal.toFixed(2)}</span>
+      <div
+        className="md:border-l h-fit lg:w-1/3 md:w-2/5 max-md:border-t max-md:p-4 px-4 md:mt-12 sticky top-20 data-[loading=true]:pointer-events-none data-[loading=true]:opacity-50 data-[empty=true]:hidden"
+        data-loading={cartTotal.loading}
+        data-empty={cartItems.length === 0}
+      >
+        <div className="w-full relative">
+          {cartTotal.loading && (
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[1]">
+              <Loader2 className="animate-spin" size={"40px"} />
             </div>
-            <div>
-              <span className="text-left">
-                Discount{" "}
-                <span className="text-xs">({maxDiscountPercentage}%)</span>
-              </span>{" "}
-              <span className="text-right text-xl">
-                - ${discountedPrice.toFixed(2)}
-              </span>
+          )}
+          {cartTotal.data && (
+            <div className="*:flex *:justify-between *:mb-3">
+              <div>
+                <span className="text-left">Subtotal</span>{" "}
+                <span className="text-right text-xl">
+                  ${cartTotal.data.subTotal.toFixed(2)}
+                </span>
+              </div>
+              <div>
+                <span className="text-left">
+                  Discount{" "}
+                  <span className="text-xs">
+                    ({cartTotal.data.maxDiscountPercentage}%)
+                  </span>
+                </span>{" "}
+                <span className="text-right text-xl">
+                  - ${cartTotal.data.discountedPrice}
+                </span>
+              </div>
+              <div>
+                <span className="text-left">Tax</span>{" "}
+                <span className="text-right text-xl">
+                  + ${cartTotal.data.tax}
+                </span>
+              </div>
+              <div className="border-t border-b py-1">
+                <span className="text-left text-2xl">You Pay</span>{" "}
+                <span className="text-right text-2xl">
+                  ${cartTotal.data.payable}
+                </span>
+              </div>
             </div>
-            <div>
-              <span className="text-left">Tax</span>{" "}
-              <span className="text-right text-xl">+ ${tax.toFixed(2)}</span>
-            </div>
-            <div className="border-t border-b py-1">
-              <span className="text-left text-2xl">You Pay</span>{" "}
-              <span className="text-right text-2xl">
-                ${(subTotal - discountedPrice + tax).toFixed(2)}
-              </span>
-            </div>
-          </div>
+          )}
         </div>
         <Button className="bg-add-to-cart w-full text-xl h-12">
           Proceed to Checkout

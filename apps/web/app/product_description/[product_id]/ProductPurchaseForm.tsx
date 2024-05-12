@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@repo/ui";
-import { addToCart } from "@app/actions/cart";
+import { buyNowAction } from "@app/actions/cart";
 import { useEffect, useState } from "react";
 import useMiniCart from "@lib/store/minicart";
 import { LoaderCircle } from "lucide-react";
@@ -14,7 +14,7 @@ export default function ProductPurchaseForm({
 }: {
   productId: string;
 }) {
-  const [formState, formAction] = useFormState(addToCart, undefined);
+  const [formState, formAction] = useFormState(buyNowAction, undefined);
   const [loadingAddToCart, setLoadingAddToCart] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const { toggle, addCartItem } = useMiniCart();

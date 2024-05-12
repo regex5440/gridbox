@@ -52,6 +52,7 @@ export default async function Header({ homePath = "/" }) {
                       My Account
                     </NavigationMenuLink>
                     <NavigationMenuLink href="/account/logout">
+                      {/* //TODO: Create a page to handle cleanup before hitting to logout api */}
                       Logout
                     </NavigationMenuLink>
                   </>

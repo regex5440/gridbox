@@ -13,13 +13,17 @@ declare global {
 }
 
 const authMiddleware: NextMiddleware = async (req, event) => {
+  const requestedPath = req.nextUrl.pathname;
+  const redirectURL = !requestedPath.startsWith("/api")
+    ? `/signin?redirect=${requestedPath}`
+    : `/signin`;
   const sessionToken = cookies().get("session.token")?.value;
   if (!sessionToken) {
-    return redirect("/signin");
+    return redirect(redirectURL);
   }
   const decryptedToken = await decryptToken<{ id: string }>(sessionToken);
   if (!decryptedToken) {
-    return redirect("/signin");
+    return redirect(redirectURL);
   }
   //TODO: pass this id to routes decryptedToken.id;
 };

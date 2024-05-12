@@ -9,5 +9,5 @@ const combinedMiddleware: (middlewares: NextMiddleware[]) => NextMiddleware =
 export default combinedMiddleware([authMiddleware]);
 
 export const config = {
-  matcher: ["/api/account/:path*", "/cart", "/checkout", "/account"],
+  matcher: ["/api/account/:path*", "/api/cart/:path*", "/checkout", "/account"],
 };

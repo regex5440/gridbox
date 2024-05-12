@@ -1,6 +1,6 @@
 "use client";
 import { Select as Sel } from "@repo/ui";
-import React, { HTMLAttributes } from "react";
+import React, { HTMLAttributes, useState } from "react";
 
 const {
   Select,
@@ -18,16 +18,22 @@ type QtySelectorProps = {
   optionClassName?: HTMLAttributes<HTMLDivElement>["className"];
 };
 
+const MAX_QUANTITY = 10;
 export default function QtySelector({
-  count,
+  count: initialCount = 1,
   onChange,
   triggerClassName,
   optionClassName,
 }: QtySelectorProps) {
-  const MAX_QUANTITY = 10;
+  const [count, setCount] = useState(initialCount);
+  const qtyChangeHandler = (strVal: string) => {
+    const qty = Number(strVal);
+    setCount(qty);
+    onChange?.(qty);
+  };
   return (
     <Select
-      onValueChange={(strVal) => onChange?.(Number(strVal))}
+      onValueChange={qtyChangeHandler}
       defaultValue={String(count)}
       name="quantity"
     >

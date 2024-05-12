@@ -3,8 +3,9 @@
 import { authenticateUser } from "./auth";
 import { ProductPurchaseFormState } from "@types";
 import { CartProductAddSchema } from "@lib/definitions";
+import { removeItemFromCart, updateItemQuantity } from "@app/controllers/cart";
 
-export async function addToCart(
+export async function buyNowAction(
   state: ProductPurchaseFormState,
   formData: FormData
 ) {
@@ -28,7 +29,7 @@ export async function addToCart(
     quantity: String(validData.data.quantity),
   });
 
-  const redirectURL = `/cart?${redirectURLParam.toString()}`;
+  const redirectURL = `/checkout?${redirectURLParam.toString()}`;
 
   console.log(formData, redirectURL);
   if (isAuthenticated) {
@@ -44,4 +45,52 @@ export async function addToCart(
   //? Approach: Use the URL to redirect to cart page. This will keep the buy now product separate from the cart.
   //?: Create the redirect URL with product and quantity information
   //?: cart page should handle the redirect URL if provided with query params or with cart products, if query not present.
+}
+
+export async function updateCartItemQty({
+  quantity,
+  productId,
+}: {
+  quantity: number;
+  productId: string;
+}) {
+  const authenticUser = await authenticateUser();
+  if (!authenticUser.success) {
+    return { error: { message: "Unauthorized" } };
+  }
+  const userId = authenticUser.data.id;
+
+  const updatedData = await updateItemQuantity({ productId, quantity, userId });
+  if (!updatedData.data) {
+    return { error: { message: "Failed to add product to cart" } };
+  }
+  return {
+    success: {
+      data: {
+        productId: updatedData.data.productId,
+        quantity: updatedData.data.quantity,
+      },
+    },
+  };
+}
+
+export async function removeCartItem(productId: string) {
+  const authenticUser = await authenticateUser();
+  if (!authenticUser.success) {
+    return { error: { message: "Unauthorized" } };
+  }
+  const userId = authenticUser.data.id;
+
+  const updatedData = await removeItemFromCart({ productId, userId });
+  if (!updatedData.data) {
+    return { error: { message: "Failed to remove product from cart" } };
+  }
+  return {
+    success: {
+      data: {
+        productId: updatedData.data.productId,
+        removed: true,
+      },
+    },
+  };
 }

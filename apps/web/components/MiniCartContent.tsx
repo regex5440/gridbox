@@ -5,6 +5,7 @@ import { ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 import CartItem from "./CartItem";
 import { useEffect } from "react";
+import { removeCartItem, updateCartItemQty } from "@app/actions/cart";
 
 export default function MiniCart() {
   const { open, toggle, loadingCart, cartItems, fetchCart } = useMiniCart();
@@ -42,6 +43,14 @@ export default function MiniCart() {
                 key={item.productId}
                 productId={String(item.productId)}
                 initialQty={item.quantity}
+                onQtyChange={(qty, productId) => {
+                  updateCartItemQty({ productId, quantity: qty }).then(
+                    fetchCart
+                  );
+                }}
+                onRemove={(productId) => {
+                  removeCartItem(productId).then(fetchCart);
+                }}
                 className="mb-1"
               />
             ))
