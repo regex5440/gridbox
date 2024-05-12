@@ -69,7 +69,7 @@ export default async function ProductPage({
               ({visibleStarRating})
             </p>
             <p className="mt-4">
-              <span className="line-through">Rs. {productDetails.price}</span>{" "}
+              <span className="line-through">$ {productDetails.price}</span>{" "}
               <span className="ml-4">
                 {productDetails.discountPercentage}% OFF
               </span>

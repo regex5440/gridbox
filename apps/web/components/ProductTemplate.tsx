@@ -49,7 +49,7 @@ const ProductTemplate = ({
               {product.title}
             </h1>
             <div className="text-color-ternary text-md text-right mt-auto">
-              Rs. {product.price}
+              $ {product.price}
             </div>
           </Link>
         </div>
