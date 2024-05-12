@@ -8,7 +8,7 @@ export default function LoginSignup({
   params,
   searchParams,
   ...props
-}: NextPageProps) {
+}: NextPageProps | { [key: string]: any }) {
   return (
     <Card.Card className="flex flex-1 justify-center lg:max-w-2xl mx-auto bg-surface py-4 px-8">
       <Tabs defaultValue="login">
