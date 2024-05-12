@@ -1,6 +1,6 @@
 "use client";
 import useMiniCart from "@lib/store/minicart";
-import { SidePanel } from "@repo/ui";
+import { Button, SidePanel } from "@repo/ui";
 import { ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 import CartItem from "./CartItem";
@@ -34,7 +34,7 @@ export default function MiniCart() {
             </Link>
           </SidePanel.SheetTitle>
         </SidePanel.SheetHeader>
-        <div>
+        <div className="overflow-y-auto max-h-full">
           {loadingCart ? (
             <p>Loading...</p>
           ) : cartItems.length > 0 ? (
@@ -58,6 +58,16 @@ export default function MiniCart() {
             <p>Cart is empty</p>
           )}
         </div>
+        {cartItems?.length > 0 && (
+          <SidePanel.SheetFooter className="absolute bottom-0 left-0 w-full">
+            <Link
+              href="/checkout"
+              className="bg-add-to-cart text-regular-inverted w-full text-center py-2 text-xl"
+            >
+              Checkout
+            </Link>
+          </SidePanel.SheetFooter>
+        )}
       </SidePanel.SheetContent>
     </SidePanel.Sheet>
   );
