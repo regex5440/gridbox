@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@repo/ui";
-import { buyNowAction } from "@app/actions/cart";
+import { buyNowAction } from "actions/cart";
 import { useEffect, useState } from "react";
 import useMiniCart from "@lib/store/minicart";
 import { LoaderCircle } from "lucide-react";

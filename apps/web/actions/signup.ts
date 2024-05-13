@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { SignupFormErrorState } from "@types";
 import { SignupSchema } from "@lib/definitions";
 import { hash } from "@lib/bcrypt";
-import { createUser } from "@app/controllers/account";
+import { createUser } from "controllers/account";
 import { createEncryptedToken } from "@lib/jwt";
 import EmailTemplate from "@lib/email-template";
 import sendEmail from "@lib/mailer";

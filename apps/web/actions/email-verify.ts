@@ -1,6 +1,6 @@
 "use server";
 
-import { decryptToken } from "../../lib/jwt";
+import { decryptToken } from "../lib/jwt";
 import { verifyEmail } from "../controllers/account";
 
 export default async function emailVerify(token: string) {

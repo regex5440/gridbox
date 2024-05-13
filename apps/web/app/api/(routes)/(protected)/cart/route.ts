@@ -1,5 +1,5 @@
-import { authenticateUser } from "@app/actions/auth";
-import { addItemsToCart, getCartItems } from "@app/controllers/cart";
+import { authenticateUser } from "actions/auth";
+import { addItemsToCart, getCartItems } from "controllers/cart";
 import { CartProductAddSchema } from "@lib/definitions";
 import { NextRoute } from "@types";
 

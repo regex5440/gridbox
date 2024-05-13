@@ -1,4 +1,4 @@
-import { deleteSession } from "@app/controllers/session";
+import { deleteSession } from "controllers/session";
 import { redirect } from "next/navigation";
 
 export async function GET() {

@@ -1,5 +1,5 @@
 "use server";
-import { getUserById } from "@app/controllers/account";
+import { getUserById } from "controllers/account";
 import { decryptToken } from "@lib/jwt";
 import { cookies } from "next/headers";
 

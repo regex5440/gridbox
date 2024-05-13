@@ -5,8 +5,8 @@ import { HTMLAttributes, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { LoginFormErrorState, SignupFormErrorState } from "@types";
 import FormButton from "@components/FormButton";
-import login from "@app/actions/login";
-import signup from "@app/actions/signup";
+import login from "actions/login";
+import signup from "actions/signup";
 import useMiniCart from "@lib/store/minicart";
 import useUserStore from "@lib/store/user";
 

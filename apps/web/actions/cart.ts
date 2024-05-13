@@ -3,7 +3,7 @@
 import { authenticateUser } from "./auth";
 import { ProductPurchaseFormState } from "@types";
 import { CartProductAddSchema } from "@lib/definitions";
-import { removeItemFromCart, updateItemQuantity } from "@app/controllers/cart";
+import { removeItemFromCart, updateItemQuantity } from "controllers/cart";
 
 export async function buyNowAction(
   state: ProductPurchaseFormState,

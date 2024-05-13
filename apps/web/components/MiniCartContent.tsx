@@ -5,7 +5,7 @@ import { ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 import CartItem from "./CartItem";
 import { useEffect } from "react";
-import { removeCartItem, updateCartItemQty } from "@app/actions/cart";
+import { removeCartItem, updateCartItemQty } from "actions/cart";
 
 export default function MiniCart() {
   const { open, toggle, loadingCart, cartItems, fetchCart } = useMiniCart();

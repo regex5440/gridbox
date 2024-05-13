@@ -1,4 +1,4 @@
-import { getAuthenticateUser } from "@app/actions/auth";
+import { getAuthenticateUser } from "actions/auth";
 import { create } from "zustand";
 
 type State = {

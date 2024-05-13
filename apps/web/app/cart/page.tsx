@@ -1,7 +1,7 @@
 "use client";
 import CartItem from "../../components/CartItem";
 import { Button } from "@repo/ui";
-import { removeCartItem, updateCartItemQty } from "@app/actions/cart";
+import { removeCartItem, updateCartItemQty } from "actions/cart";
 import useMiniCart from "@lib/store/minicart";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";

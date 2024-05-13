@@ -1,5 +1,5 @@
-import { authenticateUser } from "@app/actions/auth";
-import { getCartItems } from "@app/controllers/cart";
+import { authenticateUser } from "actions/auth";
+import { getCartItems } from "controllers/cart";
 import { NextRoute } from "@types";
 
 export const GET: NextRoute = async (request, { params }) => {
