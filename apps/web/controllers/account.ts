@@ -1,5 +1,6 @@
 "use server";
 
+import { AddressBook } from "@types";
 import prisma from "../lib/prisma/client";
 
 type LoginCredentials = {
@@ -82,4 +83,88 @@ async function verifyEmail({ email, id }: { email: string; id: string }) {
   return user;
 }
 
-export { authenticateUser, createUser, getUserById, verifyEmail };
+async function getUserShippingInfo(userId: string) {
+  const addresses = await prisma.shippingInfo.findMany({
+    where: {
+      profileId: userId,
+    },
+    select: {
+      id: true,
+      address: true,
+      city: true,
+      country: true,
+      fullName: true,
+      state: true,
+      zip: true,
+      phone: true,
+      createdAt: true,
+    },
+  });
+  return addresses;
+}
+
+async function addNewAddress({
+  userId,
+  address,
+  city,
+  country,
+  fullName,
+  phone,
+  state,
+  zip,
+}: { userId: string } & Omit<AddressBook, "id">) {
+  const data = await prisma.shippingInfo.create({
+    data: {
+      address,
+      city,
+      country,
+      fullName,
+      state,
+      zip,
+      phone,
+      profileId: userId,
+    },
+    select: {
+      id: true,
+      address: true,
+      city: true,
+      country: true,
+      fullName: true,
+      state: true,
+      zip: true,
+      phone: true,
+      createdAt: true,
+    },
+  });
+  return data;
+}
+
+async function editAddress({
+  id,
+  ...rest
+}: Partial<AddressBook> & Required<Pick<AddressBook, "id">>) {
+  const updatedFields: { [key: string]: string } = {};
+  let key: keyof typeof rest;
+  for (key in rest) {
+    if (typeof rest[key] === "string") {
+      updatedFields[key] = rest[key] as string;
+    }
+  }
+  const data = await prisma.shippingInfo.update({
+    where: {
+      id,
+    },
+    data: updatedFields,
+  });
+  return data;
+}
+
+export {
+  authenticateUser,
+  createUser,
+  getUserById,
+  getUserShippingInfo,
+  verifyEmail,
+  addNewAddress,
+  editAddress,
+};
