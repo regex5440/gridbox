@@ -64,7 +64,9 @@ export default function MiniCart() {
               href="/checkout"
               className="bg-add-to-cart text-regular-inverted w-full text-center py-2 text-xl"
             >
-              Checkout
+              <SidePanel.SheetClose className="w-full h-full text-center">
+                Checkout
+              </SidePanel.SheetClose>
             </Link>
           </SidePanel.SheetFooter>
         )}
