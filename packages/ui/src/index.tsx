@@ -1,5 +1,6 @@
 import * as Accordion from "./Accordion";
 import { Button, buttonVariants } from "./Button";
+import { Badge, badgeVariants } from "./Badge";
 import * as Carousel from "./Carousel";
 import * as Menu from "./MenuBar";
 import Input from "./Input";
@@ -16,6 +17,8 @@ export {
   Accordion,
   Button,
   buttonVariants,
+  Badge,
+  badgeVariants,
   Card,
   Carousel,
   Dialog,
