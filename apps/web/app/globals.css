@@ -5,12 +5,12 @@
 :root {
   --surface: rgb(248 250 252);
   --surface-2: rgb(241 245 249);
-  --surface-dark: rgb(203, 213, 225);
   --surface-inverted: rgb(30 41 59);
   --text-regular: rgb(30 41 59);
   --text-regular-inverted: rgb(241 245 249);
   --primary: rgb(50, 98, 115);
-  --secondary: rgb(85, 61, 54);
+  --secondary: rgb(127, 156, 170);
+  --ternary: rgb(203, 213, 225);
   --overlay-background: rgba(0, 0, 0, 0.5);
   --error: rgb(243, 91, 91);
   --foreground-rgb: 0, 0, 0;

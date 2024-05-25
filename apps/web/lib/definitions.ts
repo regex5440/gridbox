@@ -45,3 +45,16 @@ export const CartProductAddSchema = z.object({
   productId: z.string({ message: "Invalid product id" }).min(1).trim(),
   quantity: z.number().int("Invalid quantity").min(1).max(30),
 });
+
+export const AddressSchema = z.object({
+  fullName: z.string().min(3, "Full name is required").trim(),
+  address: z.string().min(3, "Address is required").trim(),
+  city: z.string().min(1, "City is required").trim(),
+  state: z.string().min(1, "State is required").trim(),
+  zip: z.string().length(6, "Zip is required").trim(),
+  country: z.string().min(1, "Country is required").trim(),
+  phone: z
+    .string()
+    .regex(/\d{5,12}/, "Phone is required")
+    .trim(),
+});

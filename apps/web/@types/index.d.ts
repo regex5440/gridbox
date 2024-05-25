@@ -67,3 +67,35 @@ export type ProductPurchaseFormState =
       };
     }
   | undefined;
+
+export type AddressBook = {
+  id: string;
+  fullName: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+  phone: string;
+};
+
+export type AddressFormState =
+  | {
+      error?:
+        | {
+            fullName?: string[];
+            address?: string[];
+            city?: string[];
+            state?: string[];
+            zip?: string[];
+            country?: string[];
+            phone?: string[];
+          }
+        | {
+            message?: string;
+            common: true;
+          };
+    }
+  | { success?: { data: AddressBook } }
+  | undefined;
+//TODO: Separate files for different types
