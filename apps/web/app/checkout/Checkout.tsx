@@ -42,10 +42,10 @@ export default function Checkout({
   });
 
   return (
-    <div className="lg:max-w-screen-xl w-[70%] mx-auto min-h-[60vh]">
+    <div className="lg:max-w-screen-lg w-11/12 mx-auto min-h-[60vh]">
       <h1 className="text-4xl font-bold mb-4">Checkout</h1>
-      <div className="max-lg:flex max-lg:flex-col gap-4 lg:grid lg:grid-cols-[60%_40%]">
-        <div className="to-red-400 h-full">
+      <div className="max-md:flex max-md:flex-col gap-4 md:grid lg:grid-cols-[62%_38%] md:grid-cols-[55%_45%]">
+        <div className="h-full">
           <AddressConfirmation
             addressList={userAddress || []}
             selectedAddress={formData}
@@ -95,8 +95,8 @@ function CheckoutPayment({
   };
 
   return (
-    <form className="to-blue-400 max-lg:mt-8" action={formHandler}>
-      <h2 className="text-xl font-semibold">Cart</h2>
+    <form className="max-md:mt-8" action={formHandler}>
+      <h2 className="text-xl font-semibold">Product Overview</h2>
       <div className="lg:border-l lg:border-l-gray-400 lg:pl-2 pb-2 flex flex-col gap-2">
         {productDetailList.map((productDetail) => (
           <div

@@ -40,34 +40,34 @@ export default function AddressForm({ onCancel, onConfirm }: AddressFormProps) {
           name="address"
           data-error={state?.error?.address?.length > 0 || state?.error?.common}
         />
-        <div className="flex justify-between">
+        <div className="flex gap-4 sm:gap-2 max-sm:w-full">
           <input
             type="text"
             placeholder="City"
-            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-error"
+            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-error w-full"
             name="city"
             data-error={state?.error?.city?.length > 0 || state?.error?.common}
           />
           <input
             type="text"
             placeholder="State"
-            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-error"
+            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-error w-full"
             name="state"
             data-error={state?.error?.state?.length > 0 || state?.error?.common}
           />
         </div>
-        <div className="flex justify-between">
+        <div className="flex gap-4 sm:gap-2 max-sm:w-full">
           <input
             type="text"
             placeholder="Zip Code"
-            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-error"
+            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-error w-full"
             name="zip"
             data-error={state?.error?.zip?.length > 0 || state?.error?.common}
           />
           <input
             type="text"
             placeholder="Country"
-            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-error"
+            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-error w-full"
             name="country"
             data-error={
               state?.error?.country?.length > 0 || state?.error?.common

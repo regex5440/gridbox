@@ -73,7 +73,7 @@ export default function AddressConfirmation({
     (add) => add.id === selectedAddress.shipping
   );
   return (
-    <div className="lg:max-w-[80%] overflow-x-hidden">
+    <div className="lg:max-w-[80%] md:max-w-[90%] overflow-x-hidden">
       <div
         className="flex justify-center gap-8 *:cursor-pointer"
         onClick={handleStepChange}
