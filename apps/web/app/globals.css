@@ -36,6 +36,10 @@
     )
     rgb(var(--background-start-rgb));
 } */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
 
 .text-overflow-ellipsis {
   max-width: 100%;

@@ -8,10 +8,34 @@ type Product = {
   discountPercentage: number;
   rating: number;
   stock: number;
-  brand: string;
+  brand?: string;
   category: string;
   thumbnail: string;
   images: string[];
+  shippingInformation: string;
+  returnPolicy: string;
+  warrantyInformation: string;
+  sku: string;
+  dimensions: {
+    height: number;
+    width: number;
+    depth: number;
+  };
+  tags: string[];
+  meta: {
+    createdAt: string;
+    updatedAt: string;
+    barcode: string;
+    qrCode: string;
+  };
+  weight: number;
+  reviews: {
+    rating: number;
+    comment: string;
+    date: string;
+    reviewerName: string;
+    reviewerEmail: string;
+  }[];
 };
 
 type CartItem = {

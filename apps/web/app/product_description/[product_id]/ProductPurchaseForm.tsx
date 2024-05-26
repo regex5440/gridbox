@@ -46,7 +46,7 @@ export default function ProductPurchaseForm({
       </form>
       <Button
         data-loading={loadingAddToCart}
-        className="bg-add-to-cart p-2 rounded-md mt-4 w-full"
+        className="bg-add-to-cart p-2 rounded-md mt-3 w-full"
         onClick={(e) => {
           setLoadingAddToCart(true);
           fetch("/api/cart", {
