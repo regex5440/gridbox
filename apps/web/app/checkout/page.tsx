@@ -21,7 +21,7 @@ export default async function CheckoutPage({ searchParams }: NextPageProps) {
   }
 
   let cartItems: CartItem[] = [];
-
+  let usingCartItems = false;
   if (
     redirectURLParams.get("type") === "buy_now" &&
     redirectURLParams.has("productId") &&
@@ -45,16 +45,15 @@ export default async function CheckoutPage({ searchParams }: NextPageProps) {
     cartItems = await getCartItems({ userId: authenticatedUser.data.id }).then(
       (res) => res.data
     );
+    usingCartItems = true;
   }
 
   let anyItemNotInStock = false;
-  console.log(cartItems);
   const productDetails: ProductDetail[] = await Promise.all(
     cartItems?.map(({ productId, quantity }) =>
       fetch(`${process.env.productAPI}/products/${productId}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           if (data.stock <= 0) {
             anyItemNotInStock = true;
           }
@@ -74,6 +73,12 @@ export default async function CheckoutPage({ searchParams }: NextPageProps) {
   const paymentIntent = await stripe.paymentIntents.create({
     amount: Math.round(cartBreakup.payable * 100),
     currency: "inr",
+    metadata: {
+      buyNowOrder: redirectURLParams.get("type") === "buy_now" ? 1 : 0,
+      cartBreakup: JSON.stringify(cartBreakup),
+      forUser: authenticatedUser.data.id,
+      cartItems: JSON.stringify(cartItems),
+    },
   });
   return (
     <div>
@@ -88,6 +93,7 @@ export default async function CheckoutPage({ searchParams }: NextPageProps) {
           cartBreakup={cartBreakup}
           anyItemNotInStock={anyItemNotInStock}
           clientSecret={paymentIntent.client_secret}
+          usingCart={usingCartItems}
         />
       )}
     </div>

@@ -38,6 +38,7 @@ async function getUserById(id: string) {
       lastName: true,
       dob: true,
       gender: true,
+      defaultShipping: true,
     },
   });
   return user;

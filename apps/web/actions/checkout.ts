@@ -1,6 +1,20 @@
 "use server";
 
-export async function checkout(formData: FormData) {
-  //? TODO: Get a flag to fetch & use cart data or form data
-  console.log(formData);
+import stripe from "@lib/payment.server";
+
+export async function updateAddressInIntent({
+  billing,
+  shipping,
+  intentId,
+}: {
+  billing: string;
+  shipping: string;
+  intentId: string;
+}) {
+  await stripe.paymentIntents.update(intentId, {
+    metadata: {
+      billingId: billing,
+      shippingId: shipping,
+    },
+  });
 }
