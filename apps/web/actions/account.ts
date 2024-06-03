@@ -1,4 +1,4 @@
-import { AddressSchema } from "@lib/definitions";
+import { AddressSchema } from "@lib/definitions/account";
 import { authenticateUser } from "./auth";
 import {
   addNewAddress,

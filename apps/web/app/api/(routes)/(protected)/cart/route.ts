@@ -1,6 +1,6 @@
 import { authenticateUser } from "actions/auth";
 import { addItemsToCart, getCartItems } from "controllers/cart";
-import { CartProductAddSchema } from "@lib/definitions";
+import { CartProductAddSchema } from "@lib/definitions/account";
 import { NextRoute } from "@types";
 
 export const GET: NextRoute = async (request, { params }) => {

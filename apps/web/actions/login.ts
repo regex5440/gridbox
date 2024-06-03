@@ -3,7 +3,7 @@
 import { authenticateUser } from "controllers/account";
 import { createSession } from "controllers/session";
 import { compareHash } from "@lib/bcrypt";
-import { LoginSchema } from "@lib/definitions";
+import { LoginSchema } from "@lib/definitions/account";
 import { LoginFormErrorState } from "@types";
 
 export default async function login(

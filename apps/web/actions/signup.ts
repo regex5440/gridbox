@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { SignupFormErrorState } from "@types";
-import { SignupSchema } from "@lib/definitions";
+import { SignupSchema } from "@lib/definitions/account";
 import { hash } from "@lib/bcrypt";
 import { createUser } from "controllers/account";
 import { createEncryptedToken } from "@lib/jwt";
