@@ -26,16 +26,11 @@ export default async function signup(
     });
 
     if (!validateFields.success) {
-      //TODO: remove log
-      console.log(validateFields.error.flatten().fieldErrors);
       return { error: validateFields.error.flatten().fieldErrors };
     }
     const { email, firstName, password, lastName, dob, gender } =
       validateFields.data;
-    console.log("Validated Fields. Hashing password...");
     const hashedPassword = await hash(password);
-    console.log("Password hashed. Creating user...");
-    //TODO: Create user in database
     const user = await createUser({
       email,
       firstName,
@@ -45,7 +40,7 @@ export default async function signup(
       gender,
     });
     console.log("User created. Sending verification email...");
-    //TODO: sent a verification email with token
+    //TODO: put this task in a queue: sent a verification email with token
     const verificationToken = await createEncryptedToken(
       { email, type: "verify", userId: user.id },
       "2h"

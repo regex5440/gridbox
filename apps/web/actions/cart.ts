@@ -25,7 +25,6 @@ export async function buyNowAction(
   });
 
   if (!validData.success) {
-    console.log(validData.error);
     return { error: { message: "Invalid data" } };
   }
   const redirectURLParam = new URLSearchParams({
@@ -36,7 +35,6 @@ export async function buyNowAction(
 
   const redirectURL = `/checkout?${redirectURLParam.toString()}`;
 
-  console.log(formData, redirectURL);
   if (isAuthenticated) {
     return { success: { redirect: redirectURL } };
   } else {

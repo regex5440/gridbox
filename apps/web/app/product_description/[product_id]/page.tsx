@@ -31,10 +31,6 @@ export default async function ProductPage({
   const productDetails = await fetch(
     `${process.env.productAPI}/products/${product_id}`
   ).then<Product>((res) => res.json());
-  console.log(
-    `${process.env.productAPI}/products/${product_id}`,
-    productDetails
-  );
 
   const relatedProducts = await fetch(
     `${process.env.productAPI}/products/category/${productDetails.category}?limit=10`

@@ -10,17 +10,14 @@ export default async function login(
   state: LoginFormErrorState,
   formData: FormData
 ) {
-  //TODO: Validate formData
   const validateFields = LoginSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
   });
   if (!validateFields.success) {
-    //TODO: remove log
-    console.log(validateFields.error.flatten().fieldErrors);
     return { error: validateFields.error.flatten().fieldErrors };
   }
-  //TODO: Authenticate user
+
   const { email, password } = validateFields.data;
   try {
     const userData = await authenticateUser({ email });

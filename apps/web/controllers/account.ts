@@ -64,7 +64,6 @@ async function createUser({
       validEmail,
     },
   });
-  console.log(user);
   return user;
 }
 

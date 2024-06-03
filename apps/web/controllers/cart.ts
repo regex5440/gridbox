@@ -93,7 +93,6 @@ async function clearCart({ userId }: { userId: string }) {
       buyerId: userId,
     },
   });
-  console.log(data);
   return data;
 }
 

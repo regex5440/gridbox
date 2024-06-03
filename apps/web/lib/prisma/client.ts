@@ -9,13 +9,6 @@ declare const globalThis: {
 
 const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
 
-// try {
-//   prisma.$connect();
-// } catch (e) {
-//   console.log(e);
-//   prisma.$disconnect();
-// }
-
 export default prisma;
 
 if (process.env.NODE_ENV === "development") {

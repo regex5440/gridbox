@@ -25,7 +25,6 @@ const authMiddleware: NextMiddleware = async (req, event) => {
       return;
     }
   }
-  console.log(requestedPath, "->", customRedirectURL);
   return NextResponse.redirect(new URL(customRedirectURL, req.url));
 };
 
