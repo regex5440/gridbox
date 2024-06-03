@@ -87,4 +87,20 @@ async function updateItemQuantity({
   return { data };
 }
 
-export { addItemsToCart, getCartItems, removeItemFromCart, updateItemQuantity };
+async function clearCart({ userId }: { userId: string }) {
+  const data = await prisma.cartItem.deleteMany({
+    where: {
+      buyerId: userId,
+    },
+  });
+  console.log(data);
+  return data;
+}
+
+export {
+  addItemsToCart,
+  getCartItems,
+  removeItemFromCart,
+  updateItemQuantity,
+  clearCart,
+};

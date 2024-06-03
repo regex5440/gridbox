@@ -2,8 +2,12 @@
 
 import { authenticateUser } from "./auth";
 import { ProductPurchaseFormState } from "@types";
-import { CartProductAddSchema } from "@lib/definitions";
-import { removeItemFromCart, updateItemQuantity } from "controllers/cart";
+import { CartProductAddSchema } from "@lib/definitions/account";
+import {
+  clearCart,
+  removeItemFromCart,
+  updateItemQuantity,
+} from "controllers/cart";
 import { CartItem } from "@repo/ui/types";
 
 export async function buyNowAction(
@@ -91,6 +95,26 @@ export async function removeCartItem(productId: string) {
       data: {
         productId: updatedData.data.productId,
         removed: true,
+      },
+    },
+  };
+}
+
+export async function clearUserCart() {
+  const authenticUser = await authenticateUser();
+  if (!authenticUser.success) {
+    return { error: { message: "Unauthorized" } };
+  }
+  const userId = authenticUser.data.id;
+
+  const updatedData = await clearCart({ userId });
+  if (!updatedData) {
+    return { error: { message: "Failed to clear cart" } };
+  }
+  return {
+    success: {
+      data: {
+        cleared: true,
       },
     },
   };
