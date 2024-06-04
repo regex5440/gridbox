@@ -22,7 +22,7 @@ export default function Footer({}) {
       </ul>
       {/* <hr className="w-7/12 my-4 mx-auto max-lg:w-11/12" /> */}
       <div className="text-center mt-4">
-        <p>© 2023-2024, Gadget/Grid, Inc. or its affiliates</p>
+        <p>© 2023-2024, GridBox, Inc. or its affiliates</p>
         <p className="max-sm:mt-3">
           Designed & Developed by{" "}
           <Link

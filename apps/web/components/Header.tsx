@@ -26,7 +26,7 @@ export default function Header({ homePath = "/" }) {
   return (
     <header className="w-full flex justify-between items-center py-4 px-8 border-b border-b-primary max-sm:px-4 max-sm:py-3">
       <Link href={homePath}>
-        <h1 className="text-4xl max-sm:text-2xl">Gadget/Grid</h1>
+        <h1 className="text-4xl max-sm:text-2xl">GridBox</h1>
       </Link>
 
       <NavigationMenu className="z-20">
