@@ -48,16 +48,16 @@ export function Login({ className, withinModal = false, ...rest }: FormProps) {
         id="email"
         name="email"
         placeholder="Email Address"
-        className={singleError ? `border-2 border-error` : ""}
+        className={singleError ? `border-2 border-alert` : ""}
       />
       <Input
         type="password"
         id="password"
         name="password"
         placeholder="Password"
-        className={singleError ? `border-2 border-error` : ""}
+        className={singleError ? `border-2 border-alert` : ""}
       />
-      {singleError && <div className="text-error text-sm">{singleError}</div>}
+      {singleError && <div className="text-alert text-sm">{singleError}</div>}
       <FormButton className="bg-primary text-regular-inverted w-full">
         Login
       </FormButton>
@@ -76,7 +76,7 @@ export function Signup({ className, withinModal, ...rest }: FormProps) {
   return (
     <form action={action} className={`mt-4 *:mb-2 w-72 ${className}`} {...rest}>
       {state?.error?.message && (
-        <div className="text-error text-sm">{state.error.message}</div>
+        <div className="text-alert text-sm">{state.error.message}</div>
       )}
       <div className="flex justify-between gap-3">
         <Input
@@ -84,7 +84,7 @@ export function Signup({ className, withinModal, ...rest }: FormProps) {
           name="firstName"
           placeholder="First Name"
           className={
-            (state?.error?.firstName ? "border-2 border-error" : "") + " w-1/2"
+            (state?.error?.firstName ? "border-2 border-alert" : "") + " w-1/2"
           }
         />
         <Input
@@ -95,7 +95,7 @@ export function Signup({ className, withinModal, ...rest }: FormProps) {
         />
       </div>
       {state?.error?.firstName && (
-        <div className="text-error text-sm">{state?.error.firstName?.[0]}</div>
+        <div className="text-alert text-sm">{state?.error.firstName?.[0]}</div>
       )}
       <div className="flex justify-between gap-3">
         <Input
@@ -104,7 +104,7 @@ export function Signup({ className, withinModal, ...rest }: FormProps) {
           placeholder="Date of Birth"
           title="Date of Birth"
           defaultValue={"2000-01-01"}
-          className={state?.error?.dob ? "border-2 border-error" : ""}
+          className={state?.error?.dob ? "border-2 border-alert" : ""}
         />
         <Select>
           <SelectTrigger>
@@ -122,16 +122,16 @@ export function Signup({ className, withinModal, ...rest }: FormProps) {
         </Select>
       </div>
       {state?.error?.dob && (
-        <div className="text-error text-sm">{state?.error.dob?.[0]}</div>
+        <div className="text-alert text-sm">{state?.error.dob?.[0]}</div>
       )}
       <Input
         type="email"
         name="email"
         placeholder="Email Address"
-        className={state?.error?.email ? "border-2 border-error" : ""}
+        className={state?.error?.email ? "border-2 border-alert" : ""}
       />
       {state?.error?.email && (
-        <div className="text-error text-sm">{state?.error.email?.[0]}</div>
+        <div className="text-alert text-sm">{state?.error.email?.[0]}</div>
       )}
       <Input
         type="password"
@@ -139,7 +139,7 @@ export function Signup({ className, withinModal, ...rest }: FormProps) {
         placeholder="Password"
         className={
           state?.error?.password || state?.error?.passwordConfirm
-            ? "border-2 border-error"
+            ? "border-2 border-alert"
             : ""
         }
       />
@@ -147,10 +147,10 @@ export function Signup({ className, withinModal, ...rest }: FormProps) {
         type="password"
         name="passwordConfirm"
         placeholder="Confirm Password"
-        className={state?.error?.passwordConfirm ? "border-2 border-error" : ""}
+        className={state?.error?.passwordConfirm ? "border-2 border-alert" : ""}
       />
       {(state?.error?.password || state?.error?.passwordConfirm) && (
-        <div className="text-error text-sm">
+        <div className="text-alert text-sm">
           {state?.error?.password?.[0] || state?.error.passwordConfirm?.[0]}
         </div>
       )}

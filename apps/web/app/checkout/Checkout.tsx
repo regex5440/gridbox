@@ -173,7 +173,7 @@ function CheckoutPayment({
           {productDetailList.map((productDetail) => (
             <div
               key={productDetail.id}
-              className="flex items-center gap-4 w-full p-1 rounded-md bg-surface-secondary data-[available=false]:border-error border border-transparent"
+              className="flex items-center gap-4 w-full p-1 rounded-md bg-surface-secondary data-[available=false]:border-alert border border-transparent"
               data-available={productDetail.stock > 0}
             >
               <div className="relative w-14 h-14 border border-secondary rounded-md overflow-hidden box-border">
@@ -192,7 +192,7 @@ function CheckoutPayment({
                 <div className="flex justify-between w-full">
                   <div>${productDetail.price}</div>
                   {productDetail.stock <= 0 && (
-                    <div className="text-error">Out of Stock</div>
+                    <div className="text-alert">Out of Stock</div>
                   )}
                 </div>
               </div>
@@ -202,7 +202,7 @@ function CheckoutPayment({
         <div className="py-2 rounded-l ">
           <PaymentElement options={{ layout: "accordion" }} />
           {generalPageError.length > 0 && (
-            <div className="text-center text-base text-error mt-2">
+            <div className="text-center text-base text-alert mt-2">
               {generalPageError}
             </div>
           )}

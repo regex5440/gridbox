@@ -54,7 +54,7 @@ export default function BannerCarousel({ products }: { products: any[] }) {
                       </p>
                     </div>
                     <div className="grid grid-cols-2">
-                      <span className="bg-red-500 max-md:row-start-1 max-md:col-span-2 md:rounded-full max-md:rounded-md md:text-xl font-bold text-center p-2 w-fit h-fit max-md:p-1 max-md:text-sm max-md:ml-auto">
+                      <span className="bg-alert max-md:row-start-1 max-md:col-span-2 md:rounded-full max-md:rounded-md md:text-xl font-bold text-center px-2 py-1 w-fit h-fit max-md:p-1 max-md:text-sm max-md:ml-auto">
                         {product.discountPercentage}% Off
                       </span>
 

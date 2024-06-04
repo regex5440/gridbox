@@ -28,7 +28,7 @@ export default function AddressForm({ onCancel, onConfirm }: AddressFormProps) {
         <input
           type="text"
           placeholder="Full Name"
-          className="border border-gray-400 p-2 rounded-md data-[error=true]:border-error"
+          className="border border-gray-400 p-2 rounded-md data-[error=true]:border-alert"
           name="name"
           data-error={
             state?.error?.fullName?.length > 0 || state?.error?.common
@@ -36,7 +36,7 @@ export default function AddressForm({ onCancel, onConfirm }: AddressFormProps) {
         />
         <textarea
           placeholder="Address"
-          className="border border-gray-400 p-2 rounded-md data-[error=true]:border-error"
+          className="border border-gray-400 p-2 rounded-md data-[error=true]:border-alert"
           name="address"
           data-error={state?.error?.address?.length > 0 || state?.error?.common}
         />
@@ -44,14 +44,14 @@ export default function AddressForm({ onCancel, onConfirm }: AddressFormProps) {
           <input
             type="text"
             placeholder="City"
-            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-error w-full"
+            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-alert w-full"
             name="city"
             data-error={state?.error?.city?.length > 0 || state?.error?.common}
           />
           <input
             type="text"
             placeholder="State"
-            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-error w-full"
+            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-alert w-full"
             name="state"
             data-error={state?.error?.state?.length > 0 || state?.error?.common}
           />
@@ -60,14 +60,14 @@ export default function AddressForm({ onCancel, onConfirm }: AddressFormProps) {
           <input
             type="text"
             placeholder="Zip Code"
-            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-error w-full"
+            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-alert w-full"
             name="zip"
             data-error={state?.error?.zip?.length > 0 || state?.error?.common}
           />
           <input
             type="text"
             placeholder="Country"
-            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-error w-full"
+            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-alert w-full"
             name="country"
             data-error={
               state?.error?.country?.length > 0 || state?.error?.common
@@ -79,7 +79,7 @@ export default function AddressForm({ onCancel, onConfirm }: AddressFormProps) {
           <input
             type="tel"
             placeholder="Phone without country code"
-            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-error"
+            className="border border-gray-400 p-2 rounded-md data-[error=true]:border-alert"
             name="phone"
             data-error={state?.error?.phone?.length > 0 || state?.error?.common}
           />

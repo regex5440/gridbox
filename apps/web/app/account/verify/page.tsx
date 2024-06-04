@@ -35,7 +35,7 @@ export default async function VerifyPage({
       renderVerifyContent = (
         <div>
           <p>
-            <CircleX size={70} className="text-error mx-auto" />
+            <CircleX size={70} className="text-alert mx-auto" />
           </p>
           <h1 className="text-center text-2xl">Verification link expired</h1>
           <p className="text-center mt-5">

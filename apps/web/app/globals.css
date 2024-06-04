@@ -12,7 +12,7 @@
   --secondary: rgb(127, 156, 170);
   --ternary: rgb(203, 213, 225);
   --overlay-background: rgba(0, 0, 0, 0.5);
-  --error: rgb(243, 91, 91);
+  --alert: rgb(243, 91, 91);
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
