@@ -49,7 +49,7 @@ export default async function ProductPage({
           (productDetails.rating * 10) % 10 > 0
         ) {
           return (
-            <span key={i}>
+            <span key={`starTop${i}`}>
               <StarHalf
                 size={16}
                 className="fill-star-color stroke-star-color"
@@ -58,7 +58,7 @@ export default async function ProductPage({
           );
         }
         return (
-          <span key={i}>
+          <span key={`starTop${i}`}>
             <Star size={16} className="fill-star-color stroke-star-color" />
           </span>
         );
@@ -79,8 +79,11 @@ export default async function ProductPage({
               <p className="text-sm">by {productDetails.brand}</p>
             )}
             <p className="text-xs flex gap-2 overflow-x-auto mt-2">
-              {productDetails.tags?.map((label: string) => (
-                <span className="bg-surface-secondary px-1.5 py-0.5 rounded-full">
+              {productDetails.tags?.map((label: string, i) => (
+                <span
+                  className="bg-surface-secondary px-1.5 py-0.5 rounded-full"
+                  key={`tag${i}`}
+                >
                   {label}
                 </span>
               ))}
@@ -252,7 +255,10 @@ export default async function ProductPage({
             </p>
             <div className="flex gap-4 max-md:flex-col justify-center overflow-x-auto p-1">
               {productDetails.reviews.map((review) => (
-                <div className="shadow-md rounded p-4 max-lg:p-2 flex-auto">
+                <div
+                  className="shadow-md rounded p-4 max-lg:p-2 flex-auto"
+                  key={review.reviewerEmail}
+                >
                   <div className="flex justify-between items-center">
                     <div>
                       {new Array(Math.floor(review.rating))
@@ -261,6 +267,7 @@ export default async function ProductPage({
                           <Star
                             size={16}
                             className="fill-star-color stroke-star-color inline-block"
+                            key={`starB${i}`}
                           />
                         ))}
                     </div>
