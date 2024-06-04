@@ -10,6 +10,7 @@ const config: Omit<Config, "content"> = {
         slideLeftIn: "slideLeftIn 0.7s ease-in-out",
         slideFadeLeftIn: "slideLeftIn 0.7s ease-out, fadeIn 0.7s ease-out",
         infiniteRotate: "rotate 1s linear infinite",
+        "slide-bottom-up": "slideBottomUp 0.5s ease-out",
         "slide-right-in": "slideInRight 0.5s ease-out",
         "slide-right-out": "slideOutRight 0.5s ease-out",
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -69,6 +70,10 @@ const config: Omit<Config, "content"> = {
             transform: "translateX(-100%)",
           },
           "100%": { transform: "translateX(0)" },
+        },
+        slideBottomUp: {
+          "0%": { transform: "translateY(100%)" },
+          "100%": { transform: "translateY(0)" },
         },
         fadeIn: {
           "0%": { opacity: 0 },

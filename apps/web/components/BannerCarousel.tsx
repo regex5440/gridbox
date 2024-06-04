@@ -4,8 +4,16 @@ import { Circle } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import React, { useEffect, useState } from "react";
 import { discountedPrice } from "../utils";
+import Link from "next/link";
+import SiteMap from "@utils/sitemap";
+import { useFormState } from "react-dom";
+import { buyNowAction } from "@actions/cart";
+import FormButton from "./FormButton";
+import { useRouter } from "next/navigation";
 
 export default function BannerCarousel({ products }: { products: any[] }) {
+  const router = useRouter();
+  const [state, action] = useFormState(buyNowAction, undefined);
   const [api, setApi] = useState<Carousel.CarouselApi | null>(null);
   const [activeSlideIndex, setActiveSlideIndex] = useState<number>(0);
 
@@ -14,6 +22,14 @@ export default function BannerCarousel({ products }: { products: any[] }) {
       setActiveSlideIndex(api?.selectedScrollSnap());
     });
   }, [api]);
+
+  useEffect(() => {
+    if (state?.error?.redirect) {
+      router.push(state.error.redirect);
+    } else if (state?.success?.redirect) {
+      router.push(state.success.redirect);
+    }
+  }, [state]);
   const moveToSlide = (index: number) => {
     api?.scrollTo(index);
   };
@@ -35,7 +51,7 @@ export default function BannerCarousel({ products }: { products: any[] }) {
           {products?.map((product: any, index: number) => (
             <Carousel.CarouselItem
               key={product.id}
-              className="h-full basis-full group/item"
+              className="h-full basis-full group/item select-none"
               data-active={activeSlideIndex === index}
             >
               <div className={`w-full h-full relative`}>
@@ -44,29 +60,34 @@ export default function BannerCarousel({ products }: { products: any[] }) {
                   className="h-full w-full mx-auto"
                 />
                 <div className="absolute left-0 bottom-0 w-full h-2/3 max-md:h-full bg-gradient-to-t flex items-center justify-center">
-                  <div className="flex justify-between w-10/12 items-end">
-                    <div className="transition-all group-data-[active=true]/item:animate-slideFadeLeftIn max-w-[50%]">
-                      <h2 className="md:text-4xl max-md:text-2xl">
+                  <div className="flex justify-between w-10/12 items-end text-regular-inverted">
+                    <Link
+                      href={`${SiteMap.PDP.path}/${product.id}`}
+                      className="transition-all group-data-[active=true]/item:animate-slideFadeLeftIn max-w-[50%] group"
+                    >
+                      <h2 className="md:text-4xl max-md:text-2xl group-hover:underline">
                         {product.title}
                       </h2>
-                      <p title={product.description} className="max-md:hidden">
+                      <p
+                        title={product.description}
+                        className="max-md:hidden mt-2"
+                      >
                         {product.description}
                       </p>
-                    </div>
-                    <div className="grid grid-cols-2">
-                      <span className="bg-alert max-md:row-start-1 max-md:col-span-2 md:rounded-full max-md:rounded-md md:text-xl font-bold text-center px-2 py-1 w-fit h-fit max-md:p-1 max-md:text-sm max-md:ml-auto">
-                        {product.discountPercentage}% Off
+                    </Link>
+                    <div className="grid grid-cols-2 md:min-w-60">
+                      <span className="bg-alert max-md:row-start-1 max-md:col-span-2 md:rounded-full max-md:rounded-md md:text-xl font-bold text-center px-1.5 py-1 w-fit h-fit max-md:p-1 max-md:text-sm max-md:ml-auto">
+                        - {product.discountPercentage}%
                       </span>
 
                       <div className="col-start-1 max-md:hidden">
-                        <div className="text-2xl font-extralight">
-                          <sup>$ </sup>
-                          <span className="line-through">{product.price}</span>
+                        <div className="text-xl font-light line-through">
+                          ${product.price}
                         </div>
                       </div>
 
                       <div className="col-start-2 col-span-2 justify-self-end max-md:col-start-1">
-                        <span className="mx-auto md:text-4xl text-2xl font-extralight">
+                        <span className="mx-auto md:text-4xl text-2xl font-semibold">
                           $
                           {discountedPrice(
                             product.price,
@@ -74,9 +95,28 @@ export default function BannerCarousel({ products }: { products: any[] }) {
                           )}
                         </span>
                       </div>
-                      <Button className="col-start-1 col-span-2 w-full mt-4 bg-buy-now text-xl text-black">
-                        Buy Now
-                      </Button>
+                      <form
+                        action={action}
+                        className="col-start-1 col-span-2 max-md:hidden overflow-hidden"
+                      >
+                        <input
+                          type="hidden"
+                          name="productId"
+                          value={product.id}
+                          readOnly
+                          hidden
+                        />
+                        <input
+                          type="hidden"
+                          name="quantity"
+                          value="1"
+                          readOnly
+                          hidden
+                        />
+                        <FormButton className="w-full mt-4 bg-buy-now text-xl text-black opacity-0 group-data-[active=true]/item:animate-[slideBottomUp_0.7s_ease-out_0.5s,fadeIn_0.6s_ease-out_0.5s_forwards]">
+                          Buy Now
+                        </FormButton>
+                      </form>
                     </div>
                   </div>
                 </div>
