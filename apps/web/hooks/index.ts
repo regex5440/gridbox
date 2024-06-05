@@ -1,8 +1,14 @@
 import useSWR, { SWRConfiguration } from "swr";
-import { fetchProduct } from "../services";
 
 const useFetchProduct = (productId: string, extra?: SWRConfiguration) => {
-  const response = useSWR(`/api/products/${productId}`, fetchProduct, extra);
+  const response = useSWR(
+    `/api/products/${productId}`,
+    (path: string) =>
+      fetch(path)
+        .then((res) => res.json())
+        .then((data) => data.data),
+    extra
+  );
   return response;
 };
 

@@ -5,7 +5,7 @@ import RecentlyViewed from "../components/RecentlyViewed";
 
 export default async function Page() {
   const bannerAPIResponse = await fetch(
-    `${process.env.productAPI}/products?limit=7`
+    `${process.env.productAPI}/products?limit=7&skip=50`
   )
     .then((res) => res.json())
     // .then(async (data) => {
@@ -32,7 +32,6 @@ export default async function Page() {
   const bannerProducts = bannerAPIResponse.products as Product[];
   const frequentProducts = frequentlyBoughtProducts.products as Product[];
   const sunglasses = sunglassesProducts.products as Product[];
-  //TODO: Use Streaming for data fetching, (check if it shows loader)
   //TODO: Create a skeleton loader
   return (
     <div>
