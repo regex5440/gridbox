@@ -18,6 +18,7 @@ export default function ProductPurchaseForm({
   const [loadingAddToCart, setLoadingAddToCart] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const { toggle, addCartItem } = useMiniCart();
+  const [toggleAdded, setToggleAdded] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -27,6 +28,11 @@ export default function ProductPurchaseForm({
       router.push(formState.success.redirect);
     }
   }, [formState]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setToggleAdded(false), 2000);
+    return () => clearTimeout(timeout);
+  }, [toggleAdded]);
 
   return (
     <div>
@@ -59,7 +65,8 @@ export default function ProductPurchaseForm({
                 router.push("/signin");
               } else {
                 addCartItem(data.data);
-                toggle(true);
+                setToggleAdded(true);
+                window.matchMedia("(min-width: 768px)").matches && toggle(true);
               }
             })
             .catch((err) => {
@@ -72,6 +79,8 @@ export default function ProductPurchaseForm({
       >
         {loadingAddToCart ? (
           <LoaderCircle className="animate-spin" />
+        ) : toggleAdded ? (
+          "Added ✌️"
         ) : (
           "Add to Cart"
         )}
