@@ -59,13 +59,13 @@ export default function BannerCarousel({ products }: { products: any[] }) {
                   src={product.thumbnail}
                   className="h-full w-full mx-auto"
                 />
-                <div className="absolute left-0 bottom-0 w-full h-2/3 max-md:h-full bg-gradient-to-t flex items-center justify-center">
-                  <div className="flex justify-between w-10/12 items-end text-regular-inverted">
+                <div className="absolute left-0 bottom-0 w-full h-2/3 max-md:h-full bg-gradient-to-t flex md:items-center justify-center max-md:pb-10">
+                  <div className="flex justify-between w-10/12 max-md:w-11/12 items-end text-regular-inverted">
                     <Link
                       href={`${SiteMap.PDP.path}/${product.id}`}
                       className="transition-all group-data-[active=true]/item:animate-slideFadeLeftIn max-w-[50%] group"
                     >
-                      <h2 className="md:text-4xl max-md:text-2xl group-hover:underline">
+                      <h2 className="md:text-4xl max-md:text-lg group-hover:underline">
                         {product.title}
                       </h2>
                       <p
@@ -76,7 +76,7 @@ export default function BannerCarousel({ products }: { products: any[] }) {
                       </p>
                     </Link>
                     <div className="grid grid-cols-2 md:min-w-60">
-                      <span className="bg-alert max-md:row-start-1 max-md:col-span-2 md:rounded-full max-md:rounded-md md:text-xl font-bold text-center px-1.5 py-1 w-fit h-fit max-md:p-1 max-md:text-sm max-md:ml-auto">
+                      <span className="bg-alert max-md:row-start-1 max-md:col-span-2 md:rounded-full max-md:rounded-md md:text-xl font-bold text-center md:px-1.5 md:py-1 w-fit h-fit max-md:p-0.5 max-md:text-sm max-md:ml-auto">
                         - {product.discountPercentage}%
                       </span>
 
@@ -87,7 +87,7 @@ export default function BannerCarousel({ products }: { products: any[] }) {
                       </div>
 
                       <div className="col-start-2 col-span-2 justify-self-end max-md:col-start-1">
-                        <span className="mx-auto md:text-4xl text-2xl font-semibold">
+                        <span className="mx-auto md:text-4xl text-lg font-semibold">
                           $
                           {discountedPrice(
                             product.price,
@@ -125,18 +125,18 @@ export default function BannerCarousel({ products }: { products: any[] }) {
           ))}
         </Carousel.CarouselContent>
         <Carousel.CarouselPrevious
-          iconProp={{ className: "w-10 h-10" }}
-          className="bg-arrow-color w-12 h-12 opacity-0 transition-all duration-300 md:group-hover/banner:opacity-100 md:group-hover/banner:translate-x-8 max-md:pointer-events-none"
+          iconProp={{ className: "w-10 h-8" }}
+          className="bg-primary text-regular-inverted w-10 h-10 opacity-0 transition-all duration-300 md:group-hover/banner:opacity-100 md:group-hover/banner:translate-x-8 max-md:pointer-events-none max-md:invisible"
         />
         <Carousel.CarouselNext
-          iconProp={{ className: "w-10 h-10" }}
-          className="bg-arrow-color dark w-12 h-12 opacity-0 transition-all duration-300 md:group-hover/banner:opacity-100 md:group-hover/banner:-translate-x-8 max-md:pointer-events-none"
+          iconProp={{ className: "w-10 h-8" }}
+          className="bg-primary text-regular-inverted dark w-10 h-10 opacity-0 transition-all duration-300 md:group-hover/banner:opacity-100 md:group-hover/banner:-translate-x-8 max-md:pointer-events-none max-md:invisible"
         />
         <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
           {products?.map((_: any, index: number) => (
             <Circle
               key={index}
-              className="cursor-pointer data-[selected=true]:fill-dot-bg w-5 max-md:w-3"
+              className="cursor-pointer stroke-secondary data-[selected=true]:fill-primary w-5 max-md:w-3"
               data-selected={activeSlideIndex === index}
               onClick={moveToSlide.bind(null, index)}
             />
