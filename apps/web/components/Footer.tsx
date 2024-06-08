@@ -28,7 +28,7 @@ export default function Footer({}) {
           <Link
             href="https://hdxdev.in"
             target="_blank"
-            className="hover:underline"
+            className="hover:underline text-nowrap"
           >
             Harsh Dagar (hdxdev.in)
           </Link>
