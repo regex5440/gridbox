@@ -1,3 +1,4 @@
+import { use, useCallback, useEffect, useRef, useState } from "react";
 import useSWR, { SWRConfiguration } from "swr";
 
 const useFetchProduct = (productId: string, extra?: SWRConfiguration) => {
@@ -12,4 +13,19 @@ const useFetchProduct = (productId: string, extra?: SWRConfiguration) => {
   return response;
 };
 
-export { useFetchProduct };
+function useDebounce<T extends (...args: any[]) => any>(
+  func: T,
+  delay: number
+) {
+  const timeout = useRef<NodeJS.Timeout | null>(null);
+  return useCallback((...args: Parameters<T>) => {
+    timeout.current && clearTimeout(timeout.current);
+    let returnValue: ReturnType<T> | void = undefined;
+    timeout.current = setTimeout(() => {
+      returnValue = func(...args);
+    }, delay);
+    return returnValue;
+  }, []);
+}
+
+export { useFetchProduct, useDebounce };
