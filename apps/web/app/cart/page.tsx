@@ -43,7 +43,7 @@ export default function CartPage() {
   }, [cartItems, setCartTotal]);
 
   return (
-    <div className="px-common-x lg:mx-auto flex lg:justify-around max-lg:justify-between lg:w-10/12 max-lg:w-full max-md:flex-col max-w-screen-xl min-h-[60vh]">
+    <div className="px-common-x lg:mx-auto flex lg:justify-around max-lg:justify-between lg:w-10/12 max-lg:w-full max-md:flex-col max-w-screen-xl min-h-[60vh] mt-4">
       <div className="md:w-1/2 group/items group-last:border-0">
         <h1 className="text-3xl mb-4">Cart</h1>
         {loadingCart ? (
