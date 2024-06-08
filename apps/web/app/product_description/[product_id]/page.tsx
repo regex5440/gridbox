@@ -12,7 +12,6 @@ import {
   Star,
   StarHalf,
 } from "lucide-react";
-import { Button } from "@repo/ui";
 import ProductVisitedMarker from "../../../components/ProductVisitedMarker";
 import ProductPurchaseForm from "@app/product_description/[product_id]/ProductPurchaseForm";
 import { Product } from "@repo/ui/types";
@@ -25,29 +24,13 @@ type ProductPageProps = {
   searchParams: URLSearchParams;
 };
 
-export default async function ProductPage({
-  params: { product_id },
-}: ProductPageProps) {
-  const productDetails = await fetch(
-    `${process.env.productAPI}/products/${product_id}`
-  ).then<Product>((res) => res.json());
+const StarRatings = ({ rating }: { rating: number }) => {
+  const ratingStarCount = Math.ceil(rating);
 
-  const relatedProducts = await fetch(
-    `${process.env.productAPI}/products/category/${productDetails.category}?limit=10`
-  ).then((res) => res.json());
-
-  const ratingStarCount = Math.ceil(productDetails.rating);
-  const visibleStarRating = String(productDetails.rating).substring(0, 3);
-  const productPrice =
-    productDetails.price -
-    (productDetails.price * productDetails.discountPercentage) / 100;
-  const overRallRating = (
+  return (
     <div className="inline-flex gap-1 mt-1 items-center w-fit">
       {new Array(ratingStarCount).fill(0).map((_, i) => {
-        if (
-          i === ratingStarCount - 1 &&
-          (productDetails.rating * 10) % 10 > 0
-        ) {
+        if (i === ratingStarCount - 1 && (rating * 10) % 10 > 0) {
           return (
             <span key={`starTop${i}`}>
               <StarHalf
@@ -65,6 +48,23 @@ export default async function ProductPage({
       })}
     </div>
   );
+};
+
+export default async function ProductPage({
+  params: { product_id },
+}: ProductPageProps) {
+  const productDetails = await fetch(
+    `${process.env.productAPI}/products/${product_id}`
+  ).then<Product>((res) => res.json());
+
+  const relatedProducts = await fetch(
+    `${process.env.productAPI}/products/category/${productDetails.category}?limit=10`
+  ).then((res) => res.json());
+
+  const visibleStarRating = String(productDetails.rating).substring(0, 3);
+  const productPrice =
+    productDetails.price -
+    (productDetails.price * productDetails.discountPercentage) / 100;
   return (
     <>
       <ProductVisitedMarker product_id={product_id} />
@@ -89,7 +89,8 @@ export default async function ProductPage({
               ))}
             </p>
             <Link title={visibleStarRating} href={"#reviews"}>
-              {overRallRating}({visibleStarRating})
+              <StarRatings rating={productDetails.rating} /> (
+              {visibleStarRating})
             </Link>
             <p className="mt-1">
               <span className="line-through">$ {productDetails.price}</span>{" "}
@@ -250,9 +251,10 @@ export default async function ProductPage({
         {productDetails.reviews.length > 0 && (
           <section className="my-14 lg:ml-12 sm:mx-2" id="reviews">
             <h2 className="text-3xl underline">Customer Reviews</h2>
-            <p className="my-4 origin-left scale-125 w-fit">
-              Overall: {overRallRating}({visibleStarRating}/5)
-            </p>
+            <div className="my-4 origin-left scale-125 w-fit">
+              Overall: <StarRatings rating={productDetails.rating} /> (
+              {visibleStarRating}/5)
+            </div>
             <div className="flex gap-4 max-md:flex-col justify-center overflow-x-auto p-1">
               {productDetails.reviews.map((review) => (
                 <div
