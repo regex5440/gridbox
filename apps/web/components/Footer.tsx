@@ -4,7 +4,7 @@ import { Category } from "../utils";
 export default function Footer({}) {
   const categories = Object.entries(Category);
   return (
-    <div className="p-8 max-h-[300px] mt-4 bg-footer shadow-inset-top">
+    <div className="p-8 pb-2 max-h-[300px] mt-10 bg-footer shadow-inset-top">
       <ul className="lg:max-w-3xl max-lg:max-w-[90%] mx-auto grid grid-cols-4 max-sm:grid-cols-2 max-sm:text-sm gap-4 justify-between border-b border-b-slate-400 pb-4">
         {categories.map(([key, value]) => {
           if (key === "ALL" || typeof value === "object") return null;
