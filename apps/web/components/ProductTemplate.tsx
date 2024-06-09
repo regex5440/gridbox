@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SiteMap from "../utils/sitemap";
 import { cn } from "@repo/ui/utils";
+import StarRatings from "./StarRating";
 
 type ProductTemplateProps = {
   product: Product;
@@ -24,32 +25,42 @@ const ProductTemplate = ({
   className,
   ...rest
 }: ProductTemplateProps) => {
-  //TODO: Replace the temp JSX with proper product templates
   return (
     <>
       {product ? (
         <div
           title={product.title}
           className={cn(
-            "group/product-template cursor-pointer h-full flex flex-col justify-start p-1",
+            "group/product-template cursor-pointer h-auto flex flex-col justify-start p-1 select-none relative",
             className
           )}
           {...rest}
         >
+          <div className="absolute -right-0.5 top-1 bg-surface-secondary px-2 text-sm rounded-l">
+            -{product.discountPercentage.toFixed(1)}%
+          </div>
           <Link href={`${SiteMap.PDP.path}/${product.id}`}>
             <Image
               src={product.thumbnail}
               alt={product.title}
-              className="w-full aspect-square object-fill"
-              width={100}
-              height={150}
+              className="w-full aspect-square object-fill border-b"
+              width={240}
+              height={240}
               blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII="
             />
-            <h1 className="capitalize mt-2 text-overflow-2-lines group-hover/product-template:underline">
-              {product.title}
-            </h1>
-            <div className="text-color-ternary text-md text-right mt-auto">
-              $ {product.price}
+            <div className="px-2">
+              <h1 className="capitalize mt-2 text-overflow-2-lines group-hover/product-template:underline text-center">
+                {product.title}
+              </h1>
+              <div className="flex flex-col mt-1">
+                <div className="flex items-center justify-center flex-wrap">
+                  <StarRatings rating={product.rating} starSize={16} />
+                  <div className="text-sm">({product.rating.toFixed(1)})</div>
+                </div>
+                <div className="text-color-ternary text-md text-center mt-2 text-nowrap flex-grow">
+                  $ {product.price}
+                </div>
+              </div>
             </div>
           </Link>
         </div>

@@ -38,19 +38,23 @@ export default async function ListingPage({
 
   return (
     <div className="col-span-4 p-4">
-      <div className="flex flex-wrap justify-center gap-x-4 gap-y-8 max-md:gap-x-2 max-md:gap-y-4">
+      <h1 className="text-2xl mb-4">
+        <span className="text-xl">Category:</span>{" "}
+        <span className="capitalize">{category}</span>
+      </h1>
+      <div className="flex flex-wrap sm:justify-center max-sm:justify-evenly gap-x-4 gap-y-8 max-md:gap-x-2 max-md:gap-y-4">
         <Suspense fallback={<div>Loading...</div>}>
           {data.products?.map((product: Product) => (
             <ProductTemplate
               product={product}
-              className="md:w-60 md:h-72 sm:w-40 sm:h-40 max-sm:w-28 max-sm:h-28 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out"
+              className="md:w-60 lg:h-auto max-sm:w-40 max-sm:flex-grow rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out"
               key={product.id}
             />
           ))}
         </Suspense>
       </div>
       <div
-        className="text-center text-gray-400 my-4 fieldset-legend"
+        className="text-center text-gray-400 mt-8 fieldset-legend"
         style={{ "--char-length": "20ch" } as React.CSSProperties}
       >
         Showing {dataSize} results
