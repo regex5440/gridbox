@@ -57,7 +57,7 @@ export default function BannerCarousel({ products }: { products: any[] }) {
               <div className={`w-full h-full relative`}>
                 <img
                   src={product.thumbnail}
-                  className="h-full w-full mx-auto"
+                  className="h-full w-full mx-auto object-cover object-center"
                 />
                 <div className="absolute left-0 bottom-0 w-full h-2/3 max-md:h-full bg-gradient-to-t flex md:items-center justify-center max-md:pb-10">
                   <div className="flex justify-between w-10/12 max-md:w-11/12 items-end text-regular-inverted">
