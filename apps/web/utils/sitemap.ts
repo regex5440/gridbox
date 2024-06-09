@@ -31,6 +31,23 @@ const SiteMap = {
     path: "/checkout",
     absolutePath: "/checkout",
   },
+  Account: {
+    Orders: {
+      type: "page",
+      path: "/account/orders",
+      absolutePath: "/account/orders",
+    },
+    Profile: {
+      type: "page",
+      path: "/account/profile",
+      absolutePath: "/account/profile",
+    },
+    Logout: {
+      type: "page",
+      path: "/account/logout",
+      absolutePath: "/account/logout",
+    },
+  },
 };
 
 export default SiteMap;
