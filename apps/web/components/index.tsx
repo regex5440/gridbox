@@ -8,6 +8,7 @@ import RecentlyViewed from "./RecentlyViewed";
 import { ProductTemplate, ProductTemplateWithControl } from "./ProductTemplate";
 import ProductTemplateWithFetchHook from "./ProductTemplateFetchWrapper";
 import FormButton from "./FormButton";
+import StarRatings from "./StarRating";
 
 export {
   FormButton,
@@ -21,4 +22,5 @@ export {
   ProductTemplateWithFetchHook,
   RecentlyViewed,
   Search,
+  StarRatings,
 };

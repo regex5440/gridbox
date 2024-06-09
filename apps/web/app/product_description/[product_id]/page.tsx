@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import ProductImageSection from "./ProductImageViewer";
-import { ProductsCarousel } from "../../../components";
+import { ProductsCarousel, StarRatings } from "../../../components";
 import RecentlyViewed from "../../../components/RecentlyViewed";
 import {
   CircleCheckBig,
@@ -10,7 +10,6 @@ import {
   RotateCcw,
   ShieldCheck,
   Star,
-  StarHalf,
 } from "lucide-react";
 import ProductVisitedMarker from "../../../components/ProductVisitedMarker";
 import ProductPurchaseForm from "@app/product_description/[product_id]/ProductPurchaseForm";
@@ -22,32 +21,6 @@ type ProductPageProps = {
     product_id: string;
   };
   searchParams: URLSearchParams;
-};
-
-const StarRatings = ({ rating }: { rating: number }) => {
-  const ratingStarCount = Math.ceil(rating);
-
-  return (
-    <div className="inline-flex gap-1 mt-1 items-center w-fit">
-      {new Array(ratingStarCount).fill(0).map((_, i) => {
-        if (i === ratingStarCount - 1 && (rating * 10) % 10 > 0) {
-          return (
-            <span key={`starTop${i}`}>
-              <StarHalf
-                size={16}
-                className="fill-star-color stroke-star-color"
-              />
-            </span>
-          );
-        }
-        return (
-          <span key={`starTop${i}`}>
-            <Star size={16} className="fill-star-color stroke-star-color" />
-          </span>
-        );
-      })}
-    </div>
-  );
 };
 
 export default async function ProductPage({
@@ -251,8 +224,9 @@ export default async function ProductPage({
         {productDetails.reviews.length > 0 && (
           <section className="my-14 lg:ml-12 sm:mx-2" id="reviews">
             <h2 className="text-3xl underline">Customer Reviews</h2>
-            <div className="my-4 origin-left scale-125 w-fit">
-              Overall: <StarRatings rating={productDetails.rating} /> (
+            <div className="my-4 w-fit flex items-center gap-1">
+              Overall:{" "}
+              <StarRatings rating={productDetails.rating} starSize={28} /> (
               {visibleStarRating}/5)
             </div>
             <div className="flex gap-4 max-md:flex-col justify-center overflow-x-auto p-1">
@@ -261,19 +235,7 @@ export default async function ProductPage({
                   className="shadow-md rounded p-4 max-lg:p-2 flex-auto"
                   key={review.reviewerEmail}
                 >
-                  <div className="flex justify-between items-center">
-                    <div>
-                      {new Array(Math.floor(review.rating))
-                        .fill(0)
-                        .map((_, i) => (
-                          <Star
-                            size={16}
-                            className="fill-star-color stroke-star-color inline-block"
-                            key={`starB${i}`}
-                          />
-                        ))}
-                    </div>
-                  </div>
+                  <StarRatings rating={review.rating} />
                   <div className="flex justify-between items-center font-semibold">
                     {review.reviewerName}{" "}
                     <div className="text-xs text-ternary">
