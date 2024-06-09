@@ -114,7 +114,7 @@ function CheckoutPayment({
       return;
     }
     await updateAddressInIntent({ ...formData, intentId: paymentIntentId });
-    //TODO: Update the paymentIntent with billing address so all options can be available for payment
+
     const paymentSubmission = await elements.submit();
     if (paymentSubmission.error) {
       setFormLoading(false);
