@@ -74,3 +74,31 @@ export async function createOrder({
   });
   return { data: order };
 }
+
+export async function getOrderInfo({
+  orderId: id,
+  intentId: intent,
+}: {
+  orderId?: string;
+  intentId?: string;
+}) {
+  if (!id && !intent) {
+    return;
+  }
+
+  const order = await prisma.order.findUnique({
+    where: {
+      id,
+      intent,
+      OR: [
+        {
+          intent,
+        },
+        {
+          id,
+        },
+      ],
+    },
+  });
+  return { data: order };
+}

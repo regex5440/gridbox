@@ -1,6 +1,8 @@
 "use server";
 
 import stripe from "@lib/payment.server";
+import { authenticateUser } from "./auth";
+import { getOrderInfo } from "controllers/order";
 
 export async function updateAddressInIntent({
   billing,
@@ -17,4 +19,20 @@ export async function updateAddressInIntent({
       shippingId: shipping,
     },
   });
+}
+
+export async function getOrderByIntent({
+  paymentIntent,
+}: {
+  paymentIntent: string;
+}) {
+  const authenticUser = await authenticateUser();
+  if (!authenticUser) {
+    return { error: "User not authenticated" };
+  }
+  const request = await getOrderInfo({ intentId: paymentIntent });
+  if (!request?.data) {
+    return { error: "Order not found" };
+  }
+  return { data: request.data };
 }
