@@ -81,13 +81,14 @@ export default function Header({ homePath = "/" }) {
                   {Object.entries(Category).map(([key, value]) => {
                     if (typeof value === "string") {
                       return (
-                        <Link
-                          href={`${SiteMap.PLP.CategoryWise.path}/${value}`}
-                          key={key}
-                          className="block py-4 border-b border-b-primary hover:underline"
-                        >
-                          <SidePanel.SheetClose>{key}</SidePanel.SheetClose>
-                        </Link>
+                        <SidePanel.SheetClose asChild key={key}>
+                          <Link
+                            href={`${SiteMap.PLP.CategoryWise.path}/${value}`}
+                            className="block py-4 border-b border-b-primary hover:underline"
+                          >
+                            {key}
+                          </Link>
+                        </SidePanel.SheetClose>
                       );
                     } else {
                       return (
@@ -102,15 +103,14 @@ export default function Header({ homePath = "/" }) {
                           <Accordion.AccordionContent className="pl-4 bg-surface-secondary">
                             {Object.entries(value).map(([key, value]) => {
                               return (
-                                <Link
-                                  key={key}
-                                  href={`${SiteMap.PLP.CategoryWise.path}/${value}`}
-                                  className="block py-4 border-b border-b-primary [&:last-child]:border-b-0 hover:underline"
-                                >
-                                  <SidePanel.SheetClose>
+                                <SidePanel.SheetClose asChild key={key}>
+                                  <Link
+                                    href={`${SiteMap.PLP.CategoryWise.path}/${value}`}
+                                    className="block py-4 border-b border-b-primary [&:last-child]:border-b-0 hover:underline"
+                                  >
                                     {key}
-                                  </SidePanel.SheetClose>
-                                </Link>
+                                  </Link>
+                                </SidePanel.SheetClose>
                               );
                             })}
                           </Accordion.AccordionContent>
