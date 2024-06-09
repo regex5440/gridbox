@@ -48,6 +48,11 @@ const SiteMap = {
       absolutePath: "/account/logout",
     },
   },
+  Signin: {
+    type: "page",
+    path: "/signin",
+    absolutePath: "/signin",
+  },
 };
 
 export default SiteMap;

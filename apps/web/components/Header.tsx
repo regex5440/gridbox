@@ -48,16 +48,18 @@ export default function Header({ homePath = "/" }) {
             <NavigationMenuContent asChild>
               <div className="bg-surface min-w-28 flex flex-col items-start *:block *:px-3 *:py-2 *:m-0 *:w-full *:rounded-md *:text-base *:font-sans hover:*:bg-primary hover:*:text-regular-inverted">
                 {!user ? (
-                  <NavigationMenuLink href={"/signin"}>
+                  <NavigationMenuLink href={SiteMap.Signin.path}>
                     Login
                   </NavigationMenuLink>
                 ) : (
                   <>
-                    <NavigationMenuLink href="/account">
+                    <NavigationMenuLink href={SiteMap.Account.Profile.path}>
                       My Account
                     </NavigationMenuLink>
-                    <NavigationMenuLink href="/account/logout">
-                      {/* //TODO: Create a page to handle cleanup before hitting to logout api */}
+                    <NavigationMenuLink href={SiteMap.Account.Orders.path}>
+                      Orders
+                    </NavigationMenuLink>
+                    <NavigationMenuLink href={SiteMap.Account.Logout.path}>
                       Logout
                     </NavigationMenuLink>
                   </>
