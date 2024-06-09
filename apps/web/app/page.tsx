@@ -4,8 +4,9 @@ import { BannerCarousel, ProductsCarousel } from "../components";
 import RecentlyViewed from "../components/RecentlyViewed";
 
 export default async function Page() {
+  const randomSkip = Math.floor(Math.random() * 100);
   const bannerAPIResponse = await fetch(
-    `${process.env.productAPI}/products?limit=7&skip=50`
+    `${process.env.productAPI}/products?limit=7&skip=${randomSkip}`
   )
     .then((res) => res.json())
     // .then(async (data) => {
