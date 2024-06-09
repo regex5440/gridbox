@@ -43,7 +43,7 @@ export default async function ListingPage({
           {data.products?.map((product: Product) => (
             <ProductTemplate
               product={product}
-              className="md:w-60 md:h-72 sm:w-40 sm:h-40 max-sm:w-28 max-sm:h-28"
+              className="md:w-60 md:h-72 sm:w-40 sm:h-40 max-sm:w-28 max-sm:h-28 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out"
               key={product.id}
             />
           ))}
@@ -80,7 +80,7 @@ export default async function ListingPage({
                 {currentPage}
               </PaginationLink>
             </PaginationItem>
-            {dataSize * currentPage < dataTotal && (
+            {dataSize + dataSkipped < dataTotal && (
               <>
                 <PaginationItem>
                   <PaginationLink href={String(currentPage + 1)}>
