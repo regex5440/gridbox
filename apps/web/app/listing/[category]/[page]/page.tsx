@@ -67,7 +67,12 @@ export default async function ListingPage({
                 <PaginationItem>
                   <PaginationPrevious href={String(currentPage - 1)} />
                 </PaginationItem>
-                {currentPage > 2 && (
+                {currentPage >= 3 && (
+                  <PaginationItem>
+                    <PaginationLink href={"1"}>1</PaginationLink>
+                  </PaginationItem>
+                )}
+                {currentPage > 3 && (
                   <PaginationItem>
                     <PaginationEllipsis />
                   </PaginationItem>
@@ -80,7 +85,7 @@ export default async function ListingPage({
               </>
             )}
             <PaginationItem>
-              <PaginationLink href={String(currentPage)}>
+              <PaginationLink href={String(currentPage)} isActive={true}>
                 {currentPage}
               </PaginationLink>
             </PaginationItem>
