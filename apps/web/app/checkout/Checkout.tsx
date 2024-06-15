@@ -15,6 +15,7 @@ import {
 import { stripeClient } from "@lib/payment.client";
 import { PaymentIntentResult, StripeElements } from "@stripe/stripe-js";
 import { Loader2 } from "lucide-react";
+import ProductImage from "@components/ProductImage";
 
 type CheckoutPageProps = {
   productDetailList: ProductDetail[];
@@ -176,17 +177,12 @@ function CheckoutPayment({
               className="flex items-center gap-4 w-full p-1 rounded-md bg-surface-secondary data-[available=false]:border-alert border border-transparent"
               data-available={productDetail.stock > 0}
             >
-              <div className="relative w-14 h-14 border border-secondary rounded-md overflow-hidden box-border">
-                <Image
-                  src={productDetail.thumbnail}
-                  alt={productDetail.title}
-                  className="object-cover"
-                  fill
-                />
-                <div className="absolute right-0.5 bottom-0.5 rounded-full w-1/3 aspect-square flex justify-center items-center text-xs bg-black text-white leading-none">
-                  {productDetail.quantity}
-                </div>
-              </div>
+              <ProductImage
+                className="w-14 h-14 border border-secondary rounded-md"
+                alt={productDetail.title}
+                src={productDetail.thumbnail}
+                quantity={productDetail.quantity}
+              />
               <div className="flex-1">
                 <h3>{productDetail.title}</h3>
                 <div className="flex justify-between w-full">
