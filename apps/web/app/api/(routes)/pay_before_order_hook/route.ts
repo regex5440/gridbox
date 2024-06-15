@@ -77,7 +77,7 @@ export const POST: NextRoute = async (request, { params }) => {
               name: data.title,
               price: data.price,
               quantity: item.quantity,
-              id: data.id,
+              id: String(data.id as number),
             }))
         )
       ),
