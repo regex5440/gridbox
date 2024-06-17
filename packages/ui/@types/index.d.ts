@@ -43,4 +43,22 @@ type CartItem = {
   quantity: number;
 };
 
-export { ButtonProps, Product, CartItem };
+type Order = {
+  id: string;
+  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+  paidAmount: number;
+  shippingLocation: string;
+  contactInfo: string;
+  paymentStatus: "pending" | "success" | "failed" | "refunded";
+  createdAt: Date;
+  orderItem: {
+    id: string;
+    orderId: string;
+    productId: string;
+    name: string;
+    quantity: number;
+    price: number;
+  }[];
+};
+
+export { ButtonProps, Product, CartItem, Order };
