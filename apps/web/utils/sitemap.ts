@@ -42,6 +42,16 @@ const SiteMap = {
       path: "/account/profile",
       absolutePath: "/account/profile",
     },
+    Addresses: {
+      type: "page",
+      path: "/account/addresses",
+      absolutePath: "/account/addresses",
+    },
+    Payment: {
+      type: "page",
+      path: "/account/payment",
+      absolutePath: "/account/payment",
+    },
     Logout: {
       type: "page",
       path: "/account/logout",
