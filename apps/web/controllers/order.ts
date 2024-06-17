@@ -1,21 +1,18 @@
 import prisma from "@lib/prisma/client";
+import { Order } from "@repo/ui/types";
 
 type OrderItemParams = {
   name: string;
   price: number;
   quantity: number;
+  id: string;
 };
 
 type OrderCreationParams = {
   contactInfo: string;
   shippingLocation: string;
-  initOrderStatus:
-    | "pending"
-    | "processing"
-    | "shipped"
-    | "delivered"
-    | "cancelled";
-  paymentStatus: "pending" | "success" | "failed" | "refunded";
+  initOrderStatus: Pick<Order, "status">["status"];
+  paymentStatus: Pick<Order, "paymentStatus">["paymentStatus"];
   userId: string;
   paymentIntent: string;
   items: OrderItemParams[];
@@ -50,6 +47,7 @@ export async function createOrder({
       orderItem: {
         createMany: {
           data: items.map((item) => ({
+            productId: item.id,
             name: item.name,
             price: item.price,
             quantity: item.quantity,
@@ -101,4 +99,23 @@ export async function getOrderInfo({
     },
   });
   return { data: order };
+}
+
+export async function getOrdersByUser(userId: string) {
+  const orders = await prisma.order.findMany({
+    where: {
+      createdBy: userId,
+    },
+    select: {
+      id: true,
+      createdAt: true,
+      status: true,
+      contactInfo: true,
+      shippingLocation: true,
+      paidAmount: true,
+      paymentStatus: true,
+      orderItem: true,
+    },
+  });
+  return { data: orders };
 }
