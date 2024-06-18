@@ -58,7 +58,7 @@ export default async function ({ order }: { order: Order }) {
             <div className="sm:w-2/3 max-sm:w-1/2 w-full">
               <Link
                 href={`${SiteMap.PDP.path}/${firstProduct.productId}`}
-                className="text-overflow-2-lines sm:text-nowrap overflow-ellipsis overflow-x-hidden text-ternary w-fit hover:underline"
+                className="line-clamp-2 sm:text-nowrap overflow-ellipsis overflow-x-hidden text-ternary w-fit hover:underline"
               >
                 {firstProduct.name}
               </Link>
@@ -95,7 +95,7 @@ export default async function ({ order }: { order: Order }) {
                       className="w-16 h-16"
                     />
                     <div className="flex-grow text-ternary">
-                      <div className="text-overflow-2-lines sm:text-nowrap overflow-ellipsis overflow-x-hidden group-hover:underline">
+                      <div className="line-clamp-2 sm:text-nowrap overflow-ellipsis overflow-x-hidden group-hover:underline">
                         {product.name}
                       </div>
                       <div className="text-sm mt-2">${product.price}</div>

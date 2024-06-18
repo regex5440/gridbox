@@ -49,7 +49,7 @@ const ProductTemplate = ({
               blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII="
             />
             <div className="px-2">
-              <h1 className="capitalize mt-2 text-overflow-2-lines group-hover/product-template:underline text-center">
+              <h1 className="capitalize mt-2 line-clamp-2 group-hover/product-template:underline text-center">
                 {product.title}
               </h1>
               <div className="flex flex-col mt-1">
