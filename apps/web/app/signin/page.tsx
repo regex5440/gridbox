@@ -10,7 +10,7 @@ export default function LoginSignup({
   ...props
 }: NextPageProps | { [key: string]: any }) {
   return (
-    <Card.Card className="flex flex-1 justify-center lg:max-w-2xl mx-auto bg-surface py-4 px-8">
+    <Card.Card className="flex flex-1 justify-center lg:max-w-2xl mx-auto bg-surface py-4 px-8 mt-4 group-has-[&]/signin:mt-0">
       <Tabs defaultValue="login">
         <TabsList className="flex w-fit mx-auto bg-surface-dark">
           <TabsTrigger
