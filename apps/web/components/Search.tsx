@@ -60,7 +60,7 @@ export default function Search(): React.ReactNode {
   };
 
   return (
-    <div className="sticky top-0 px-common-x py-2 z-10 bg-surface shadow-md">
+    <div className="sticky top-0 px-common-x py-2 z-[49] bg-surface shadow-md">
       <div className="flex" ref={searchGroup}>
         <div className="w-1/12 grid place-content-center md:bg-surface-secondary rounded-tl-md rounded-bl-md border border-r-0">
           <SearchIcon className="max-md:w-4 max-md:h-4 text-primary" />

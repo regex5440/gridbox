@@ -29,7 +29,7 @@ export default function Header({ homePath = "/" }) {
         <h1 className="text-4xl max-sm:text-2xl">GridBox</h1>
       </Link>
 
-      <NavigationMenu className="z-20">
+      <NavigationMenu className="z-50">
         <NavigationMenuList className="items-center">
           <NavigationMenuItem>
             <NavigationMenuTrigger
