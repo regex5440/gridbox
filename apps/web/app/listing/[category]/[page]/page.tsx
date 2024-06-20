@@ -2,23 +2,13 @@ import { Product } from "@repo/ui/types";
 import { ProductTemplate } from "../../../../components";
 import { NextPageProps } from "../../../../@types";
 import { Suspense } from "react";
-import { Pagination as PgNation } from "@repo/ui";
-
-const {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} = PgNation;
+import ServerPagination from "@components/ServerPagination";
+import SiteMap from "@utils/sitemap";
 
 export default async function ListingPage({
   params: { category, page },
   searchParams,
 }: NextPageProps) {
-  //TODO: Implement listing based on URL params and path
   const url = new URL(
     `${process.env.productAPI}/products${category !== "all" ? `/category/${category}` : ""}`
   );
@@ -27,14 +17,9 @@ export default async function ListingPage({
   url.searchParams.append("limit", String(size));
   url.searchParams.append("skip", String(size * (currentPage - 1)));
 
-  //   for (const key in searchParams) {
-  //     const value = searchParams[key];
-  //     url.searchParams.append(key, value);
-  //   }
   const data = await fetch(url.toString()).then((res) => res.json());
   const dataSize = data.limit;
   const dataTotal = data.total;
-  const dataSkipped = data.skip;
 
   return (
     <div className="col-span-4 p-4">
@@ -59,56 +44,12 @@ export default async function ListingPage({
       >
         Showing {dataSize} results
       </div>
-      {dataSize + dataSkipped <= dataTotal && (
-        <Pagination>
-          <PaginationContent>
-            {currentPage > 1 && (
-              <>
-                <PaginationItem>
-                  <PaginationPrevious href={String(currentPage - 1)} />
-                </PaginationItem>
-                {currentPage >= 3 && (
-                  <PaginationItem>
-                    <PaginationLink href={"1"}>1</PaginationLink>
-                  </PaginationItem>
-                )}
-                {currentPage > 3 && (
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                )}
-                <PaginationItem>
-                  <PaginationLink href={String(currentPage - 1)}>
-                    {currentPage - 1}
-                  </PaginationLink>
-                </PaginationItem>
-              </>
-            )}
-            <PaginationItem>
-              <PaginationLink href={String(currentPage)} isActive={true}>
-                {currentPage}
-              </PaginationLink>
-            </PaginationItem>
-            {dataSize + dataSkipped < dataTotal && (
-              <>
-                <PaginationItem>
-                  <PaginationLink href={String(currentPage + 1)}>
-                    {currentPage + 1}
-                  </PaginationLink>
-                </PaginationItem>
-                {dataTotal - dataSkipped - 2 * dataSize > 0 && (
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                )}
-                <PaginationItem>
-                  <PaginationNext href={String(currentPage + 1)} />
-                </PaginationItem>
-              </>
-            )}
-          </PaginationContent>
-        </Pagination>
-      )}
+      <ServerPagination
+        currentPage={currentPage}
+        pageSize={size}
+        totalDataCount={dataTotal}
+        pageLink={`${SiteMap.PLP.CategoryWise.path}/${category}`}
+      />
     </div>
   );
 }
