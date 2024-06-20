@@ -50,7 +50,7 @@ export default async function OrdersPage({
   );
   urlForPagination.searchParams.append("q", searchQuery);
   return (
-    <div className="px-4 lg:pb-2 max-lg:py-4">
+    <div>
       <h1 className="text-2xl semibold max-lg:hidden">Your Orders</h1>
       {(totalCount > 0 || searchQuery !== undefined) && (
         <>
