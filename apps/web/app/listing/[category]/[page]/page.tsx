@@ -48,7 +48,12 @@ export default async function ListingPage({
         currentPage={currentPage}
         pageSize={size}
         totalDataCount={dataTotal}
-        pageLink={`${SiteMap.PLP.CategoryWise.path}/${category}`}
+        pageLink={
+          new URL(
+            `${SiteMap.PLP.CategoryWise.path}/${category}`,
+            process.env.ASSIGNED_URL
+          )
+        }
       />
     </div>
   );

@@ -14,7 +14,7 @@ type PaginationProps = {
   currentPage: number;
   pageSize: number;
   totalDataCount: number;
-  pageLink: string;
+  pageLink: URL;
 };
 
 export default function ({
@@ -29,17 +29,22 @@ export default function ({
   const previousPage = currentPage - 1;
   const nextPage = currentPage + 1;
 
+  const url = new URL(pageLink);
   return pageSize < totalDataCount ? (
     <Pagination>
       <PaginationContent>
         {currentPage > 1 && (
           <PaginationItem>
-            <PaginationPrevious href={`${pageLink}/${previousPage}`} />
+            <PaginationPrevious
+              href={`${url.pathname}/${previousPage}${url.search}`}
+            />
           </PaginationItem>
         )}
         {currentPage >= 3 && (
           <PaginationItem>
-            <PaginationLink href={`${pageLink}/1`}>1</PaginationLink>
+            <PaginationLink href={`${url.pathname}/1${url.search}`}>
+              1
+            </PaginationLink>
           </PaginationItem>
         )}
         {currentPage > 3 && (
@@ -49,19 +54,24 @@ export default function ({
         )}
         {currentPage > 1 && (
           <PaginationItem>
-            <PaginationLink href={`${pageLink}/${previousPage}`}>
+            <PaginationLink
+              href={`${url.pathname}/${previousPage}${url.search}`}
+            >
               {previousPage}
             </PaginationLink>
           </PaginationItem>
         )}
         <PaginationItem>
-          <PaginationLink href={`${pageLink}/${currentPage}`} isActive={true}>
+          <PaginationLink
+            href={`${url.pathname}/${currentPage}${url.search}`}
+            isActive={true}
+          >
             {currentPage}
           </PaginationLink>
         </PaginationItem>
         {fetchedDataCount < totalDataCount && (
           <PaginationItem>
-            <PaginationLink href={`${pageLink}/${nextPage}`}>
+            <PaginationLink href={`${url.pathname}/${nextPage}${url.search}`}>
               {nextPage}
             </PaginationLink>
           </PaginationItem>
@@ -74,14 +84,14 @@ export default function ({
         )}
         {nextPage < totalPages && (
           <PaginationItem>
-            <PaginationLink href={`${pageLink}/${totalPages}`}>
+            <PaginationLink href={`${url.pathname}/${totalPages}${url.search}`}>
               {totalPages}
             </PaginationLink>
           </PaginationItem>
         )}
         {fetchedDataCount < totalDataCount && (
           <PaginationItem>
-            <PaginationNext href={`${pageLink}/${nextPage}`} />
+            <PaginationNext href={`${url.pathname}/${nextPage}${url.search}`} />
           </PaginationItem>
         )}
       </PaginationContent>
