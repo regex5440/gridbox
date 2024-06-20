@@ -17,7 +17,7 @@ export default function () {
       </Link>
       <Link
         href={SiteMap.Account.Orders.path}
-        data-current={pathName.endsWith(SiteMap.Account.Orders.path)}
+        data-current={pathName.includes(SiteMap.Account.Orders.path)}
       >
         Orders
       </Link>
