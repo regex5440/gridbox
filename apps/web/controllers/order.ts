@@ -1,5 +1,6 @@
 import prisma from "@lib/prisma/client";
 import { Order } from "@repo/ui/types";
+import { Prisma } from "prisma/prisma-client";
 
 type OrderItemParams = {
   name: string;
@@ -19,6 +20,17 @@ type OrderCreationParams = {
   paidAmount: number;
   discountPercentage: number;
   tax: number;
+};
+
+const ORDER_SELECT = {
+  id: true,
+  createdAt: true,
+  status: true,
+  contactInfo: true,
+  shippingLocation: true,
+  paidAmount: true,
+  paymentStatus: true,
+  orderItem: true,
 };
 
 export async function createOrder({
@@ -101,21 +113,71 @@ export async function getOrderInfo({
   return { data: order };
 }
 
-export async function getOrdersByUser(userId: string) {
-  const orders = await prisma.order.findMany({
-    where: {
-      createdBy: userId,
+export async function getOrderByQuery({
+  query,
+  userId,
+  offset = 0,
+  ps = 10,
+}: {
+  userId: string;
+  query: string;
+  offset?: number;
+  ps?: number;
+}) {
+  const WHERE_QUERY: Prisma.orderWhereInput = {
+    createdBy: userId,
+    orderItem: {
+      some: {
+        name: {
+          mode: "insensitive",
+          contains: query,
+        },
+      },
     },
-    select: {
-      id: true,
-      createdAt: true,
-      status: true,
-      contactInfo: true,
-      shippingLocation: true,
-      paidAmount: true,
-      paymentStatus: true,
-      orderItem: true,
-    },
-  });
-  return { data: orders };
+  };
+  const [totalCount, orders] = await Promise.all([
+    prisma.order.count({
+      where: WHERE_QUERY,
+    }),
+    prisma.order.findMany({
+      where: WHERE_QUERY,
+      select: ORDER_SELECT,
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: ps,
+      skip: offset,
+    }),
+  ]);
+  return { data: orders, total: totalCount };
+}
+
+export async function getOrdersByUser({
+  userId,
+  offset = 0,
+  ps = 10,
+}: {
+  userId: string;
+  offset?: number;
+  ps?: number;
+}) {
+  const [totalCount, orders] = await Promise.all([
+    prisma.order.count({
+      where: {
+        createdBy: userId,
+      },
+    }),
+    prisma.order.findMany({
+      where: {
+        createdBy: userId,
+      },
+      select: ORDER_SELECT,
+      orderBy: {
+        createdAt: "desc",
+      },
+      skip: offset,
+      take: ps,
+    }),
+  ]);
+  return { data: orders, total: totalCount };
 }
