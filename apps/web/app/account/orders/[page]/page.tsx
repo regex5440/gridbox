@@ -52,46 +52,48 @@ export default async function OrdersPage({
   return (
     <div className="px-4 lg:pb-2 max-lg:py-4">
       <h1 className="text-2xl semibold max-lg:hidden">Your Orders</h1>
-      {(totalCount > 0 || searchQuery !== undefined) && [
-        <form className="flex items-center gap-4">
-          <div className="flex items-center  w-full relative">
-            <Input
-              placeholder={"Search Orders"}
-              maxLength={50}
-              size={50}
-              name="q"
-              type="text"
-              defaultValue={searchQuery}
-              className="flex-1 p-0 pr-8 pl-2"
-            />
-            {searchQuery !== undefined && (
-              <Link
-                href={SiteMap.Account.Orders.path}
-                className="absolute right-1 top-0 bottom-0 grid place-content-center text-primary h-full"
-              >
-                <X />
-              </Link>
-            )}
+      {(totalCount > 0 || searchQuery !== undefined) && (
+        <>
+          <form className="flex items-center gap-4">
+            <div className="flex items-center  w-full relative">
+              <Input
+                placeholder={"Search Orders"}
+                maxLength={50}
+                size={50}
+                name="q"
+                type="text"
+                defaultValue={searchQuery}
+                className="flex-1 p-0 pr-8 pl-2"
+              />
+              {searchQuery !== undefined && (
+                <Link
+                  href={SiteMap.Account.Orders.path}
+                  className="absolute right-1 top-0 bottom-0 grid place-content-center text-primary h-full"
+                >
+                  <X />
+                </Link>
+              )}
+            </div>
+            <Button className="px-2 bg-surface-secondary">Search</Button>
+          </form>
+          <div className="flex flex-col gap-4 mt-4">
+            {orders.map((order) => (
+              <OrderTemplate order={order as Order} key={order.id} />
+            ))}
           </div>
-          <Button className="px-2 bg-surface-secondary">Search</Button>
-        </form>,
-        <div className="flex flex-col gap-4 mt-4">
-          {orders.map((order) => (
-            <OrderTemplate order={order as Order} key={order.id} />
-          ))}
-        </div>,
-        totalCount === 0 && (
-          <p className="text-center font-semibold">No orders</p>
-        ),
-        <div className="mt-4">
-          <ServerPagination
-            currentPage={parseInt(page)}
-            pageSize={pageSize}
-            totalDataCount={totalCount}
-            pageLink={urlForPagination}
-          />
-        </div>,
-      ]}
+          {totalCount === 0 && (
+            <p className="text-center font-semibold">No orders</p>
+          )}
+          <div className="mt-4">
+            <ServerPagination
+              currentPage={parseInt(page)}
+              pageSize={pageSize}
+              totalDataCount={totalCount}
+              pageLink={urlForPagination}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }
