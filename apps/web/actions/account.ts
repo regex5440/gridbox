@@ -2,10 +2,11 @@ import { AddressSchema } from "@lib/definitions/account";
 import { authenticateUser } from "./auth";
 import {
   addNewAddress,
+  deleteAddress,
   editAddress,
   getUserShippingInfo,
 } from "controllers/account";
-import { AddressFormState } from "@types";
+import { AddressFormState, DeleteAddressState } from "@types";
 
 const getUserAddresses = async () => {
   const authenticUser = await authenticateUser();
@@ -17,10 +18,7 @@ const getUserAddresses = async () => {
   return { success: { data: addresses } };
 };
 
-const handleNewAddress = async (
-  state: AddressFormState,
-  formData: FormData
-) => {
+const addressAction = async (state: AddressFormState, formData: FormData) => {
   const authenticUser = await authenticateUser();
   if (authenticUser.error) {
     return { error: { common: true, message: "Unauthorized" } };
@@ -40,34 +38,30 @@ const handleNewAddress = async (
       error: validAddress.error.flatten().fieldErrors,
     };
   }
-
-  const data = await addNewAddress({ userId, ...validAddress.data });
+  let data;
+  const addressId = formData.get("id")?.toString() || "";
+  if (addressId.length > 0) {
+    data = await editAddress({ ...validAddress.data, id: addressId });
+  } else {
+    data = await addNewAddress({ userId, ...validAddress.data });
+  }
   return { success: { data } };
 };
 
-const handleEditAddress = async (state, formData: FormData) => {
-  //TODO: handle edit address
+const deleteAddressAction = async (
+  state: DeleteAddressState,
+  formData: FormData
+) => {
   const authenticUser = await authenticateUser();
   if (authenticUser.error) {
-    return { error: { message: "Unauthorized" } };
+    return { error: { common: true, message: "Unauthorized" } };
   }
-  const userId = authenticUser.data.id;
-  const validAddress = safeParse({
-    id: formData.get("id"),
-    fullName: formData.get("name"),
-    address: formData.get("address"),
-    city: formData.get("city"),
-    state: formData.get("state"),
-    country: formData.get("country"),
-    zip: formData.get("zip"),
-    phone: formData.get("phone"),
-  });
-  if (!validAddress.success) {
-    return { error: { message: validAddress.error.flatten() } };
+  const addressId = formData.get("id")?.toString() || "";
+  if (addressId.length === 0) {
+    return { error: { common: true, message: "Address Id is required" } };
   }
-
-  const data = await editAddress({ ...validAddress.data });
-  return { success: { data } };
+  const deletedAddress = await deleteAddress(addressId);
+  return { success: { data: deletedAddress } };
 };
 
-export { getUserAddresses, handleNewAddress, handleEditAddress };
+export { getUserAddresses, addressAction, deleteAddressAction };
