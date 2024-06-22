@@ -58,6 +58,11 @@ const SiteMap = {
       absolutePath: "/account/logout",
     },
   },
+  Verify: {
+    type: "page",
+    path: "/verify",
+    absolutePath: "/verify",
+  },
   Signin: {
     type: "page",
     path: "/signin",

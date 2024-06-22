@@ -8,6 +8,7 @@ import { createUser } from "controllers/account";
 import { createEncryptedToken } from "@lib/jwt";
 import EmailTemplate from "@lib/email-template";
 import sendEmail from "@lib/mailer";
+import SiteMap from "@utils/sitemap";
 
 export default async function signup(
   state: SignupFormErrorState,
@@ -47,7 +48,7 @@ export default async function signup(
     );
     const verificationEmail = new EmailTemplate("verification")
       .values({
-        verificationLink: `${process.env.ASSIGNED_URL}/account/verify?token=${verificationToken}`,
+        verificationLink: `${process.env.ASSIGNED_URL}${SiteMap.Verify.path}?token=${verificationToken}`,
       })
       .toHTML();
     await sendEmail({
@@ -61,5 +62,5 @@ export default async function signup(
       error: { message: "Something went wrong. Please try again." },
     };
   }
-  return redirect("/account/verify");
+  return redirect(SiteMap.Verify.path);
 }
