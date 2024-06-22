@@ -159,6 +159,18 @@ async function editAddress({
   return data;
 }
 
+async function deleteAddress(addressId: string) {
+  const data = await prisma.shippingInfo.delete({
+    where: {
+      id: addressId,
+    },
+    select: {
+      id: true,
+    },
+  });
+  return data;
+}
+
 export {
   authenticateUser,
   createUser,
@@ -167,4 +179,5 @@ export {
   verifyEmail,
   addNewAddress,
   editAddress,
+  deleteAddress,
 };
