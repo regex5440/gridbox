@@ -98,4 +98,20 @@ export type AddressFormState =
     }
   | { success?: { data: AddressBook } }
   | undefined;
+
+export type DeleteAddressState =
+  | undefined
+  | {
+      success?: {
+        data: {
+          id: string;
+        };
+      };
+    }
+  | {
+      error?: {
+        message: string;
+        common: true;
+      };
+    };
 //TODO: Separate files for different types
