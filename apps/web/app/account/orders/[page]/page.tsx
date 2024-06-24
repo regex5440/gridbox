@@ -15,9 +15,11 @@ export default async function OrdersPage({
   searchParams: { q: searchQuery, ps },
 }: NextPageProps) {
   const pageSize = parseInt(ps) || 10;
-  const queryParams = new URLSearchParams(
-    searchQuery ? { q: searchQuery } : undefined
-  );
+  const queryParams = new URLSearchParams();
+  if (searchQuery !== undefined) {
+    queryParams.append("q", searchQuery);
+  }
+  queryParams.append("ps", pageSize.toString());
   const authenticUser = await authenticateUser();
   if (!authenticUser.success) {
     return redirect(
@@ -48,14 +50,20 @@ export default async function OrdersPage({
     SiteMap.Account.Orders.path,
     process.env.ASSIGNED_URL
   );
-  urlForPagination.searchParams.append("q", searchQuery);
+  queryParams.forEach((value, key) => {
+    urlForPagination.searchParams.set(key, value);
+  });
   return (
     <div className="px-1">
       <h1 className="text-2xl semibold max-lg:hidden">Your Orders</h1>
       {(totalCount > 0 || searchQuery !== undefined) && (
         <>
-          <form className="flex items-center gap-4">
+          <form
+            className="flex items-center gap-4"
+            action={SiteMap.Account.Orders.path + "/1"}
+          >
             <div className="flex items-center  w-full relative">
+              <input type="hidden" name="ps" value={pageSize} readOnly hidden />
               <Input
                 placeholder={"Search Orders"}
                 maxLength={50}
