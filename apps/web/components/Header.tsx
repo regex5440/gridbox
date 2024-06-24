@@ -24,7 +24,7 @@ export default function Header({ homePath = "/" }) {
     fetchUser();
   }, []);
   return (
-    <header className="w-full flex justify-between items-center py-4 px-8 border-b border-b-primary max-sm:px-4 max-sm:py-3">
+    <header className="w-full flex justify-between items-center sm:py-4 sm:px-8 border-b border-b-primary max-sm:px-2 max-sm:py-3">
       <Link href={homePath}>
         <h1 className="text-4xl max-sm:text-2xl">GridBox</h1>
       </Link>
@@ -55,6 +55,12 @@ export default function Header({ homePath = "/" }) {
                   <>
                     <NavigationMenuLink href={SiteMap.Account.Profile.path}>
                       My Account
+                    </NavigationMenuLink>
+                    <NavigationMenuLink
+                      href={SiteMap.Cart.path}
+                      className="sm:hidden"
+                    >
+                      Cart Items
                     </NavigationMenuLink>
                     <NavigationMenuLink href={SiteMap.Account.Addresses.path}>
                       Address Book
