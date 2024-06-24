@@ -48,7 +48,7 @@ export default function Checkout({
 
   return (
     <div className="lg:max-w-screen-lg w-11/12 mx-auto min-h-[60vh] mt-4">
-      <h1 className="text-4xl font-bold mb-4">Checkout</h1>
+      <h1 className="max-sm:text-2xl sm:text-3xl font-bold mb-4">Checkout</h1>
       <div className="max-md:flex max-md:flex-col gap-4 md:grid lg:grid-cols-[62%_38%] md:grid-cols-[55%_45%]">
         <div className="h-full">
           <AddressConfirmation
