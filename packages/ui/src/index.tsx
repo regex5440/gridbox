@@ -12,6 +12,7 @@ import * as Tabs from "./Tabs";
 import * as Dialog from "./Dialog";
 import * as Select from "./Select";
 import * as Navigation from "./Navigation";
+import * as DropDownMenu from "./DropDownMenu";
 
 export {
   Accordion,
@@ -22,6 +23,7 @@ export {
   Card,
   Carousel,
   Dialog,
+  DropDownMenu,
   Footer,
   Menu,
   Pagination,
