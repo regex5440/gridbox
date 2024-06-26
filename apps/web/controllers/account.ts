@@ -17,6 +17,10 @@ type ProfileDetails = {
   validEmail?: boolean;
 };
 
+type ProfilePrivateDetails = {
+  stripeCustomerId: string;
+};
+
 async function authenticateUser({ email }: { email: string }) {
   const user = await prisma.profile.findFirst({
     where: { email },
@@ -44,6 +48,13 @@ async function getUserById(id: string) {
   return user;
 }
 
+async function getUserWithPrivateDetails(id: string) {
+  const user = await prisma.profile.findUnique({
+    where: { id },
+  });
+  return user;
+}
+
 async function createUser({
   dob,
   email,
@@ -52,7 +63,8 @@ async function createUser({
   lastName,
   password,
   validEmail = false,
-}: ProfileDetails) {
+  stripeCustomerId,
+}: ProfileDetails & ProfilePrivateDetails) {
   const user = await prisma.profile.create({
     data: {
       dob,
@@ -62,6 +74,7 @@ async function createUser({
       password,
       gender,
       validEmail,
+      stripeCustomerId,
     },
   });
   return user;
@@ -175,6 +188,7 @@ export {
   authenticateUser,
   createUser,
   getUserById,
+  getUserWithPrivateDetails,
   getUserShippingInfo,
   verifyEmail,
   addNewAddress,
