@@ -1,5 +1,5 @@
 import { getUserAddresses } from "@actions/account";
-import { authenticateUser } from "@actions/auth";
+import { getAuthenticateUser } from "@actions/auth";
 import { getCartBreakup } from "@actions/cart";
 import { CartItem } from "@repo/ui/types";
 import { NextPageProps } from "@types";
@@ -11,7 +11,7 @@ import stripe from "@lib/payment.server";
 //TODO: can optimize by reducing number of time authentication check happens in each action
 
 export default async function CheckoutPage({ searchParams }: NextPageProps) {
-  const authenticatedUser = await authenticateUser();
+  const authenticatedUser = await getAuthenticateUser();
   const redirectURLParams = new URLSearchParams(searchParams);
   if (!authenticatedUser.success) {
     const paramsString = redirectURLParams.toString();
@@ -69,7 +69,7 @@ export default async function CheckoutPage({ searchParams }: NextPageProps) {
     getCartBreakup(cartItems),
     getUserAddresses(),
   ]);
-
+  //TODO: show saved cards and allow selection from it
   const paymentIntent = await stripe.paymentIntents.create({
     amount: Math.round(cartBreakup.payable * 100),
     currency: "inr",
@@ -78,6 +78,12 @@ export default async function CheckoutPage({ searchParams }: NextPageProps) {
       cartBreakup: JSON.stringify(cartBreakup),
       forUser: authenticatedUser.data.id,
       cartItems: JSON.stringify(cartItems),
+    },
+    customer: authenticatedUser.data.stripeCustomerId,
+    payment_method_options: {
+      card: {
+        setup_future_usage: "off_session",
+      },
     },
   });
   return (
