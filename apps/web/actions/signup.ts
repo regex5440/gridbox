@@ -9,7 +9,7 @@ import { createEncryptedToken } from "@lib/jwt";
 import EmailTemplate from "@lib/email-template";
 import sendEmail from "@lib/mailer";
 import SiteMap from "@utils/sitemap";
-import stripe from "@lib/payment.server";
+import { createStripeCustomer } from "@lib/stripe/actions.server";
 
 export default async function signup(
   state: SignupFormErrorState,
@@ -33,9 +33,10 @@ export default async function signup(
     const { email, firstName, password, lastName, dob, gender } =
       validateFields.data;
     const hashedPassword = await hash(password);
-    const stripeCustomer = await stripe.customers.create({
-      name: `${firstName} ${lastName}`.trim(),
-    });
+    const stripeCustomer = await createStripeCustomer(
+      `${firstName} ${lastName}`,
+      email
+    );
     const user = await createUser({
       email,
       firstName,
