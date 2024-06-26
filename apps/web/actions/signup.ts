@@ -9,6 +9,7 @@ import { createEncryptedToken } from "@lib/jwt";
 import EmailTemplate from "@lib/email-template";
 import sendEmail from "@lib/mailer";
 import SiteMap from "@utils/sitemap";
+import stripe from "@lib/payment.server";
 
 export default async function signup(
   state: SignupFormErrorState,
@@ -32,6 +33,9 @@ export default async function signup(
     const { email, firstName, password, lastName, dob, gender } =
       validateFields.data;
     const hashedPassword = await hash(password);
+    const stripeCustomer = await stripe.customers.create({
+      name: `${firstName} ${lastName}`.trim(),
+    });
     const user = await createUser({
       email,
       firstName,
@@ -39,6 +43,7 @@ export default async function signup(
       lastName,
       dob,
       gender,
+      stripeCustomerId: stripeCustomer.id,
     });
     console.log("User created. Sending verification email...");
     //TODO: put this task in a queue: sent a verification email with token
