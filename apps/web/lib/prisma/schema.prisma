@@ -14,21 +14,22 @@ datasource db {
 }
 
 model profile {
-  id              String         @id @default(cuid())
-  firstName       String         @db.VarChar(255)
-  lastName        String?
-  email           String         @unique
-  validEmail      Boolean        @default(false)
-  password        String
-  gender          String?
-  dob             DateTime?
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  wishlist        String[]
-  defaultShipping String?
-  addressBook     shippingInfo[]
-  cart            cartItem[]
-  orders          order[]
+  id               String         @id @default(cuid())
+  firstName        String         @db.VarChar(255)
+  lastName         String?
+  email            String         @unique
+  validEmail       Boolean        @default(false)
+  password         String
+  gender           String?
+  dob              DateTime?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  wishlist         String[]
+  stripeCustomerId String         @unique
+  defaultShipping  String?
+  addressBook      shippingInfo[]
+  cart             cartItem[]
+  orders           order[]
 }
 
 model shippingInfo {
