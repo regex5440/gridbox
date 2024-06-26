@@ -1,6 +1,6 @@
 "use server";
 
-import stripe from "@lib/payment.server";
+import stripe from "@lib/stripe/payment.server";
 import { authenticateUser } from "./auth";
 import { getOrderInfo } from "controllers/order";
 

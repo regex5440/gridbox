@@ -7,7 +7,7 @@ import { getCartItems } from "controllers/cart";
 import { redirect } from "next/navigation";
 import Checkout from "./Checkout";
 import { ProductDetail } from "./common";
-import stripe from "@lib/payment.server";
+import stripe from "@lib/stripe/payment.server";
 //TODO: can optimize by reducing number of time authentication check happens in each action
 
 export default async function CheckoutPage({ searchParams }: NextPageProps) {

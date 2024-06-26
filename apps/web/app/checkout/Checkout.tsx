@@ -12,7 +12,7 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-import { stripeClient } from "@lib/payment.client";
+import { stripeClient } from "@lib/stripe/payment.client";
 import { PaymentIntentResult, StripeElements } from "@stripe/stripe-js";
 import { Loader2 } from "lucide-react";
 import ProductImage from "@components/ProductImage";

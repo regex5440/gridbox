@@ -1,5 +1,5 @@
 import { getAuthenticateUser } from "@actions/auth";
-import stripe from "@lib/payment.server";
+import stripe from "@lib/stripe/payment.server";
 import SiteMap from "@utils/sitemap";
 import { redirect } from "next/navigation";
 import PaymentMethodUI from "./PaymentMethodUI";

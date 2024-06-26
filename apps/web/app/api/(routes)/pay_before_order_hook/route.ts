@@ -1,7 +1,7 @@
 "use server";
 import { getCartBreakup } from "@actions/cart";
 import { PaymentIntentMetadataSchema } from "@lib/definitions/order";
-import stripe from "@lib/payment.server";
+import stripe from "@lib/stripe/payment.server";
 import { CartItem } from "@repo/ui/types";
 import { PaymentIntent as PI } from "@stripe/stripe-js";
 import { NextRoute } from "@types";
