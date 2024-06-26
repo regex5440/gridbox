@@ -23,6 +23,12 @@ export type NextRoute = (
   }
 ) => Promise<Response>;
 
+export type ProductCategory = {
+  slug: string;
+  name: string;
+  url: string;
+};
+
 export type LoginFormErrorState =
   | (({
       error?: {

@@ -2,11 +2,11 @@
 import { MenuIcon, UserIcon } from "lucide-react";
 import { Accordion, SidePanel, Navigation } from "@repo/ui";
 import Link from "next/link";
-import { Category } from "../utils";
 import SiteMap from "../utils/sitemap";
 import MiniCartContent from "./MiniCartContent";
 import useUserStore from "@lib/store/user";
 import { useEffect } from "react";
+import { ProductCategory } from "@types";
 
 const {
   NavigationMenu,
@@ -17,7 +17,13 @@ const {
   NavigationMenuLink,
 } = Navigation;
 
-export default function Header({ homePath = "/" }) {
+export default function Header({
+  homePath = "/",
+  categories,
+}: {
+  homePath?: string;
+  categories: ProductCategory[];
+}) {
   const { user, fetchUser } = useUserStore();
 
   useEffect(() => {
@@ -87,45 +93,44 @@ export default function Header({ homePath = "/" }) {
               </SidePanel.SheetTrigger>
               <SidePanel.SheetContent className="overflow-y-auto bg-surface border-none data-[state=open]:animate-slide-right-in data-[state=closed]:animate-slide-right-out">
                 <Accordion.Accordion type="single" collapsible>
-                  {Object.entries(Category).map(([key, value]) => {
-                    if (typeof value === "string") {
-                      return (
-                        <SidePanel.SheetClose asChild key={key}>
-                          <Link
-                            href={`${SiteMap.PLP.CategoryWise.path}/${value}`}
-                            className="block py-4 border-b border-b-primary hover:underline"
-                          >
-                            {key}
-                          </Link>
-                        </SidePanel.SheetClose>
-                      );
-                    } else {
-                      return (
-                        <Accordion.AccordionItem
-                          value={key}
-                          key={key}
-                          className="border-b border-primary"
+                  {categories.map(({ name, slug }) => {
+                    return (
+                      <SidePanel.SheetClose asChild key={slug}>
+                        <Link
+                          href={`${SiteMap.PLP.CategoryWise.path}/${slug}`}
+                          className="block py-4 border-b border-b-primary hover:underline uppercase"
                         >
-                          <Accordion.AccordionTrigger className="hover:no-underline font-normal">
-                            {key}
-                          </Accordion.AccordionTrigger>
-                          <Accordion.AccordionContent className="pl-4 bg-surface-secondary">
-                            {Object.entries(value).map(([key, value]) => {
-                              return (
-                                <SidePanel.SheetClose asChild key={key}>
-                                  <Link
-                                    href={`${SiteMap.PLP.CategoryWise.path}/${value}`}
-                                    className="block py-4 border-b border-b-primary [&:last-child]:border-b-0 hover:underline"
-                                  >
-                                    {key}
-                                  </Link>
-                                </SidePanel.SheetClose>
-                              );
-                            })}
-                          </Accordion.AccordionContent>
-                        </Accordion.AccordionItem>
-                      );
-                    }
+                          {name}
+                        </Link>
+                      </SidePanel.SheetClose>
+                    );
+                    // } else {
+                    //   return (
+                    //     <Accordion.AccordionItem
+                    //       value={key}
+                    //       key={key}
+                    //       className="border-b border-primary"
+                    //     >
+                    //       <Accordion.AccordionTrigger className="hover:no-underline font-normal">
+                    //         {key}
+                    //       </Accordion.AccordionTrigger>
+                    //       <Accordion.AccordionContent className="pl-4 bg-surface-secondary">
+                    //         {Object.entries(value).map(([key, value]) => {
+                    //           return (
+                    //             <SidePanel.SheetClose asChild key={key}>
+                    //               <Link
+                    //                 href={`${SiteMap.PLP.CategoryWise.path}/${value}`}
+                    //                 className="block py-4 border-b border-b-primary [&:last-child]:border-b-0 hover:underline"
+                    //               >
+                    //                 {key}
+                    //               </Link>
+                    //             </SidePanel.SheetClose>
+                    //           );
+                    //         })}
+                    //       </Accordion.AccordionContent>
+                    //     </Accordion.AccordionItem>
+                    //   );
+                    // }
                   })}
                 </Accordion.Accordion>
               </SidePanel.SheetContent>

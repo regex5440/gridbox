@@ -1,20 +1,23 @@
 import Link from "next/link";
-import { Category } from "../utils";
+import { ProductCategory } from "@types";
+import SiteMap from "@utils/sitemap";
 
-export default function Footer({}) {
-  const categories = Object.entries(Category);
+export default function Footer({
+  categories,
+}: {
+  categories: ProductCategory[];
+}) {
   return (
     <div className="p-8 pb-2 max-h-[300px] mt-10 bg-footer shadow-inset-top">
       <ul className="lg:max-w-3xl max-lg:max-w-[90%] mx-auto grid grid-cols-4 max-sm:grid-cols-2 max-sm:text-sm gap-4 justify-between border-b border-b-slate-400 pb-4">
-        {categories.map(([key, value]) => {
-          if (key === "ALL" || typeof value === "object") return null;
+        {categories.map(({ name, slug }) => {
           return (
-            <li key={key} className="text-center">
+            <li key={slug} className="text-center">
               <Link
-                href={`/category/${value}`}
+                href={`${SiteMap.PLP.CategoryWise.path}/${slug}`}
                 className="text-nowrap text-sm hover:underline"
               >
-                {key}
+                {name}
               </Link>
             </li>
           );

@@ -12,21 +12,25 @@ export const metadata: Metadata = {
     "GridBox e-commerce site created with NextJs+Turbo with love by hdxdev.in Harsh Dagar",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   signin,
 }: {
   children: React.ReactNode;
   signin?: React.ReactNode;
-}): JSX.Element {
+}): Promise<JSX.Element> {
+  const categories = await fetch(
+    `${process.env.productAPI}/products/categories`
+  ).then((res) => res.json());
+
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header />
+        <Header categories={categories || []} />
         <Search />
         {signin}
         {children}
-        <Footer />
+        <Footer categories={(categories || []).slice(0, 12)} />
       </body>
     </html>
   );
