@@ -1,6 +1,6 @@
 "use client";
 import useMiniCart from "@lib/store/minicart";
-import { Button, SidePanel } from "@repo/ui";
+import { Button, Loader, SidePanel } from "@repo/ui";
 import { ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 import CartItem from "./CartItem";
@@ -34,10 +34,11 @@ export default function MiniCart() {
             </Link>
           </SidePanel.SheetTitle>
         </SidePanel.SheetHeader>
-        <div className="overflow-y-auto max-h-full">
-          {loadingCart ? (
-            <p>Loading...</p>
-          ) : cartItems.length > 0 ? (
+        <div className="overflow-y-auto max-h-full relative">
+          {loadingCart && (
+            <Loader className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
+          )}
+          {cartItems.length > 0 ? (
             cartItems.map((item) => (
               <CartItem
                 key={item.productId}

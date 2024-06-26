@@ -1,4 +1,4 @@
-import { Loader2 } from "lucide-react";
+import { Loader } from "@repo/ui";
 
 export default function Loading() {
   return (
@@ -7,9 +7,7 @@ export default function Loading() {
         <p className="text-xl">Loading...</p>
       </div>
       <div className="fixed inset-0 z-[100] bg-transparent backdrop-blur-sm flex justify-center items-center flex-col">
-        <div className="animate-spin">
-          <Loader2 className="stroke-primary" size="50" />
-        </div>
+        <Loader iconSize={50} />
         GridBox getting ready🚀
       </div>
     </div>

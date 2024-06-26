@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import { Product } from "@repo/ui/types";
 import { BannerCarousel, ProductsCarousel } from "../components";
 import RecentlyViewed from "../components/RecentlyViewed";
+import { Loader } from "@repo/ui";
 
 export default async function Page() {
   const randomSkip = Math.floor(Math.random() * 100);
@@ -33,13 +34,12 @@ export default async function Page() {
   const bannerProducts = bannerAPIResponse.products as Product[];
   const frequentProducts = frequentlyBoughtProducts.products as Product[];
   const sunglasses = sunglassesProducts.products as Product[];
-  //TODO: Create a skeleton loader
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loader className="mx-auto mt-6" />}>
         {bannerProducts && <BannerCarousel products={bannerProducts} />}
       </Suspense>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loader className="mx-auto mt-6" />}>
         {frequentProducts && (
           <ProductsCarousel
             products={frequentProducts}
@@ -47,12 +47,12 @@ export default async function Page() {
           />
         )}
       </Suspense>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loader className="mx-auto mt-6" />}>
         {sunglasses && (
           <ProductsCarousel products={sunglasses} h1="Range of Sunglass" />
         )}
       </Suspense>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loader className="mx-auto mt-6" />}>
         <RecentlyViewed />
       </Suspense>
     </div>

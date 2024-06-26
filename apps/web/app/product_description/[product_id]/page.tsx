@@ -15,6 +15,7 @@ import ProductVisitedMarker from "../../../components/ProductVisitedMarker";
 import ProductPurchaseForm from "@app/product_description/[product_id]/ProductPurchaseForm";
 import { Product } from "@repo/ui/types";
 import Link from "next/link";
+import { Loader } from "@repo/ui";
 
 type ProductPageProps = {
   params: {
@@ -257,7 +258,7 @@ export default async function ProductPage({
             </div>
           </section>
         )}
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Loader className="mx-auto mt-6" />}>
           <ProductsCarousel
             h1="Related Items"
             products={relatedProducts.products}

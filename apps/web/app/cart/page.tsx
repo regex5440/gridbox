@@ -1,6 +1,6 @@
 "use client";
 import CartItem from "../../components/CartItem";
-import { Button } from "@repo/ui";
+import { Button, Loader } from "@repo/ui";
 import { removeCartItem, updateCartItemQty } from "actions/cart";
 import useMiniCart from "@lib/store/minicart";
 import { useEffect, useState } from "react";
@@ -47,7 +47,9 @@ export default function CartPage() {
       <div className="md:w-1/2 group/items group-last:border-0">
         <h1 className="text-3xl mb-4">Cart</h1>
         {loadingCart ? (
-          <div>Loading...</div>
+          <div>
+            <Loader iconSize={30} className="mx-auto" />
+          </div>
         ) : (
           cartItems.map(({ productId, quantity }) => (
             <CartItem

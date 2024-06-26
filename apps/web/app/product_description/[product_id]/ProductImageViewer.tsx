@@ -1,5 +1,6 @@
 "use client";
 
+import { Loader } from "@repo/ui";
 import { Product } from "@repo/ui/types";
 import Image from "next/image";
 import { Suspense, useState } from "react";
@@ -21,7 +22,14 @@ export default function ProductImageSection({ product }: { product: Product }) {
       </div>
       <div className="flex gap-4 md:justify-center mt-6 max-w-full overflow-x-auto">
         {product?.images.map((img_url: string, i) => (
-          <Suspense key={img_url} fallback={<div>Loading...</div>}>
+          <Suspense
+            key={img_url}
+            fallback={
+              <div className="grid place-content-center">
+                <Loader iconSize={12} type={2} />
+              </div>
+            }
+          >
             <Image
               src={img_url}
               alt={product?.title}

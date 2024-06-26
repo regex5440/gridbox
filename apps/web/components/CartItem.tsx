@@ -4,7 +4,7 @@ import SiteMap from "../utils/sitemap";
 import Image from "next/image";
 import Link from "next/link";
 import QtySelector from "./QtySelector";
-import { Button } from "@repo/ui";
+import { Button, Loader } from "@repo/ui";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useFetchProduct } from "@hooks/index";
@@ -120,7 +120,7 @@ function CartItemProductFetch({
 
   return (
     <>
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <Loader type={2} className="mx-auto" />}
       {error && <p>Cannot load product</p>}
       {product && (
         <CartItemWithProduct

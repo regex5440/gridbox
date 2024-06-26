@@ -4,6 +4,7 @@ import { NextPageProps } from "../../../../@types";
 import { Suspense } from "react";
 import ServerPagination from "@components/ServerPagination";
 import SiteMap from "@utils/sitemap";
+import { Loader } from "@repo/ui";
 
 export default async function ListingPage({
   params: { category, page },
@@ -28,7 +29,7 @@ export default async function ListingPage({
         <span className="capitalize">{category}</span>
       </h1>
       <div className="flex flex-wrap sm:justify-center max-sm:justify-evenly gap-x-4 gap-y-8 max-md:gap-x-2 max-md:gap-y-4">
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Loader className="mx-auto mt-6" />}>
           {data.products?.map((product: Product) => (
             <ProductTemplate
               product={product}
