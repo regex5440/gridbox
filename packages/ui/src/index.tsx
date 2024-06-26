@@ -14,6 +14,8 @@ import * as Select from "./Select";
 import * as Navigation from "./Navigation";
 import * as DropDownMenu from "./DropDownMenu";
 
+export { default as Loader } from "./Loader";
+
 export {
   Accordion,
   Button,
