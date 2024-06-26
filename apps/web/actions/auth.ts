@@ -1,5 +1,5 @@
 "use server";
-import { getUserById } from "controllers/account";
+import { getUserWithPrivateDetails } from "controllers/account";
 import { decryptToken } from "@lib/jwt";
 import { cookies } from "next/headers";
 
@@ -22,7 +22,7 @@ export async function authenticateUser() {
 export async function getAuthenticateUser() {
   const authenticUser = await authenticateUser();
   if (authenticUser?.success) {
-    const user = await getUserById(authenticUser.data.id);
+    const user = await getUserWithPrivateDetails(authenticUser.data.id);
     if (user) {
       return { data: user, success: true };
     }
