@@ -1,6 +1,6 @@
 import { CircleX, Mail, MailCheck } from "lucide-react";
-import { NextPageProps } from "../../../@types";
-import emailVerify from "../../../actions/email-verify";
+import emailVerify from "@actions/email-verify";
+import { NextPageProps } from "@types";
 
 export default async function VerifyPage({
   searchParams,
