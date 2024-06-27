@@ -1,6 +1,8 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env.*local"],
+  "globalDependencies": [
+    "**/.env.*local"
+  ],
   "globalEnv": [
     "productAPI",
     "ASSIGNED_URL",
@@ -15,10 +17,17 @@
     "PAYMENT_SECRET_KEY",
     "NEXT_PUBLIC_PUBLISHABLE_KEY"
   ],
-  "pipeline": {
+  "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "build/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "!.next/cache/**",
+        "build/**"
+      ]
     },
     "lint": {},
     "type-check": {},
