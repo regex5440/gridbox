@@ -1,14 +1,31 @@
-# Turborepo Tailwind CSS starter
+# Gridbox - E-commerce (Turborepo)
 
-This is an official starter Turborepo.
+Live at https://gb.hdxdev.in
 
-## Using this example
+## Features
 
-Run the following command:
+> - User CRUD operations
+>   - Account Creation
+>   - Updating Profile information
+> - User Authentication
+> - Product Search & Listing
+> - Product details page
+> - Order creation and tracking
+> - Payment Checkout with [Stripe](https://stripe.com/)
 
-```sh
-npx create-turbo@latest -e with-tailwind
-```
+## Stack & Utilities
+
+- Next.JS 14
+- TypeScript
+- [TailwindCSS](https://tailwindcss.com/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- PostgreSQL (powered by [Supabase](https://supabase.com))
+- [Prisma ORM](https://www.prisma.io/)
+- [SWR](https://swr.vercel.app/)
+- [Zod](https://zod.dev/)
+- [Zustand](https://zustand-demo.pmnd.rs/)
+- [ESLint](https://eslint.org/)
+- [Prettier](https://prettier.io)
 
 ## What's inside?
 
@@ -16,7 +33,6 @@ This Turborepo includes the following packages/apps:
 
 ### Apps and Packages
 
-- `docs`: a [Next.js](https://nextjs.org/) app with [Tailwind CSS](https://tailwindcss.com/)
 - `web`: another [Next.js](https://nextjs.org/) app with [Tailwind CSS](https://tailwindcss.com/)
 - `ui`: a stub React component library with [Tailwind CSS](https://tailwindcss.com/) shared by both `web` and `docs` applications
 - `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
@@ -48,11 +64,23 @@ For example, in [tailwind.config.js](packages/tailwind-config/tailwind.config.js
 
 If you choose this strategy, you can remove the `tailwindcss` and `autoprefixer` dependencies from the `ui` package.
 
-### Utilities
+### Environment Variables
 
-This Turborepo has some additional tools already setup for you:
+```
+productAPI=https://dummyjson.com (Currently used)
+DATABASE_URL=<postgresql database connection uri>
+ASSIGNED_URL=<assigned url for the app>
+SECRET_KEY=<secret key for hashing>
+SESSION_EXPIRY=604800 # 7 days in seconds
+PASSWORD_HASH_SALT=10 #(optional, default is 10)
+EMAIL_SERVER=<email server endpoint>
+EMAIL_PORT=<email server port>
+EMAIL_USERNAME=<email username>
+EMAIL_PASSWORD=<email password>
+EMAIL_FROM=gb.support
 
-- [Tailwind CSS](https://tailwindcss.com/) for styles
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+#PAYMENT
+
+PAYMENT_SECRET_KEY=<secret key from payment aggregator>
+NEXT_PUBLIC_PUBLISHABLE_KEY=<public key from payment aggregator>
+```
