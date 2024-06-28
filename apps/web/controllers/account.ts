@@ -59,8 +59,7 @@ async function createUser({
   lastName,
   password,
   validEmail = false,
-  stripeCustomerId,
-}: ProfileDetails & ProfilePrivateDetails) {
+}: ProfileDetails) {
   const user = await prisma.profile.create({
     data: {
       dob,
@@ -70,13 +69,16 @@ async function createUser({
       password,
       gender,
       validEmail,
-      stripeCustomerId,
     },
   });
   return user;
 }
 
-async function verifyEmail({ email, id }: { email: string; id: string }) {
+async function verifyEmail({
+  email,
+  id,
+  stripeCustomerId,
+}: { email: string; id: string } & ProfilePrivateDetails) {
   const user = await prisma.profile.update({
     where: {
       id,
@@ -84,6 +86,7 @@ async function verifyEmail({ email, id }: { email: string; id: string }) {
     },
     data: {
       validEmail: true,
+      stripeCustomerId,
     },
     select: {
       id: true,

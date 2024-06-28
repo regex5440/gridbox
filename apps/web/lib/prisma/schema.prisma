@@ -26,7 +26,7 @@ model profile {
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
   wishlist         String[]
-  stripeCustomerId String         @unique
+  stripeCustomerId String?        @unique
   defaultShipping  String?
   addressBook      shippingInfo[]
   cart             cartItem[]

@@ -2,6 +2,7 @@
 
 import { decryptToken } from "../lib/jwt";
 import { verifyEmail } from "../controllers/account";
+import { createStripeCustomer } from "@lib/stripe/actions.server";
 
 export default async function emailVerify(token: string) {
   const payload = await decryptToken<{
@@ -17,13 +18,19 @@ export default async function emailVerify(token: string) {
     exp &&
     type === "verify" &&
     typeof email === "string" &&
-    typeof userId === "string"
+    typeof userId === "string" &&
+    typeof name === "string"
   ) {
     const expiryDate = new Date(exp * 1000);
     if (expiryDate < new Date()) {
       return { error: { message: "Token has expired" } };
     }
-    const user = await verifyEmail({ email, id: userId });
+    const stripeCustomer = await createStripeCustomer(name, email);
+    const user = await verifyEmail({
+      email,
+      id: userId,
+      stripeCustomerId: stripeCustomer.id,
+    });
     if (user) {
       return { success: true };
     }
