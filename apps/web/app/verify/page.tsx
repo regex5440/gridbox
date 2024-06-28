@@ -1,13 +1,26 @@
 import { CircleX, Mail, MailCheck } from "lucide-react";
-import emailVerify from "@actions/email-verify";
+import emailVerify, { sendVerificationEmail } from "@actions/email-verify";
 import { Metadata } from "next";
+import { getUserById } from "controllers/account";
+import { redirect } from "next/navigation";
+import SiteMap from "@utils/sitemap";
+import Link from "next/link";
 
 type VerifyPageProps = {
-  searchParams: { token?: string };
+  searchParams: { token?: string; user?: string; resend?: string };
   // resend: () => void;
 };
 
 export default async function VerifyPage({ searchParams }: VerifyPageProps) {
+  if (Number(searchParams.resend) >= 2) {
+    return (
+      <div className="grid place-content-center min-h-[50vh] lg:max-w-[40%] mx-auto">
+        <h2 className="text-xl">
+          Too many attempts, please try again after some time
+        </h2>
+      </div>
+    );
+  }
   const verifyInstructionContent = (
     <div>
       <p>
@@ -21,15 +34,15 @@ export default async function VerifyPage({ searchParams }: VerifyPageProps) {
       <p className="text-center mt-2 text-ternary text-sm">
         Please note, verification link will be valid till 24 Hrs
       </p>
-      {/* <p className="text-center mt-9">
+      <p className="text-center mt-9">
         Didn&apos;t receive the email?{" "}
-        <button
+        <Link
           className="text-blue-500 block mx-auto"
-          onClick={() => alert("Not implemented, yet!")}
+          href={`${SiteMap.Verify.path}?resend=${(Number(searchParams.resend) || 0) + 1}`}
         >
           Resend
-        </button>
-      </p> */}
+        </Link>
+      </p>
     </div>
   );
   let renderVerifyContent = null;
@@ -60,6 +73,32 @@ export default async function VerifyPage({ searchParams }: VerifyPageProps) {
           </p>
         </div>
       );
+    }
+  } else if (searchParams.user) {
+    const user = await getUserById(searchParams.user);
+    if (!user) {
+      return redirect(SiteMap.Signin.path);
+    }
+    if (!user?.validEmail) {
+      renderVerifyContent = (
+        <div>
+          <p>
+            <MailCheck className="text-primary mx-auto" size={70} />
+          </p>
+          <h1 className="text-center text-2xl">Email already verified!</h1>
+          <p className="text-center mt-5">
+            Please continue login to your account
+          </p>
+        </div>
+      );
+    } else {
+      await sendVerificationEmail({
+        email: user.email,
+        userId: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName || "",
+      });
+      renderVerifyContent = verifyInstructionContent;
     }
   }
   return (

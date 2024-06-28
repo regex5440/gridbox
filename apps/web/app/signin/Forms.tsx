@@ -32,13 +32,13 @@ export function Login({ className, withinModal = false, ...rest }: FormProps) {
       const redirect = new URLSearchParams(window.location.search).get(
         "redirect"
       );
-      if (withinModal) {
-        router.back();
+      if (redirect) {
+        router.push(redirect);
       } else {
-        router.push(redirect || "/");
+        router.back();
       }
     }
-  }, [state, router, withinModal, fetchCart, fetchUser]);
+  }, [state, router, fetchCart, fetchUser]);
 
   const singleError =
     state?.error?.message || state?.error?.email || state?.error?.password;
@@ -115,7 +115,7 @@ export function Signup({ className, ...rest }: FormProps) {
               title="Gender"
             />
           </SelectTrigger>
-          <SelectContent className="w-full bg-surface">
+          <SelectContent className="w-full bg-surface z-[53]">
             <SelectItem value="male">Male</SelectItem>
             <SelectItem value="female">Female</SelectItem>
             <SelectItem value="other">Other</SelectItem>

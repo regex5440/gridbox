@@ -31,15 +31,6 @@ async function authenticateUser({ email }: { email: string }) {
 async function getUserById(id: string) {
   const user = await prisma.profile.findUnique({
     where: { id },
-    select: {
-      id: true,
-      email: true,
-      firstName: true,
-      lastName: true,
-      dob: true,
-      gender: true,
-      defaultShipping: true,
-    },
   });
   return user;
 }

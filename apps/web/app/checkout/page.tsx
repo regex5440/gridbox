@@ -8,6 +8,7 @@ import stripe from "@lib/stripe/payment.server";
 import Checkout from "./Checkout";
 import type { ProductDetail } from "./common";
 import { Metadata } from "next";
+import SiteMap from "@utils/sitemap";
 //TODO: can optimize by reducing number of time authentication check happens in each action
 
 export default async function CheckoutPage({
@@ -22,6 +23,10 @@ export default async function CheckoutPage({
     return redirect(
       `/signin?redirect=/checkout${paramsString.length > 0 ? `?${paramsString}` : ""}`
     );
+  }
+
+  if (!authenticatedUser.data.stripeCustomerId) {
+    return redirect(SiteMap.Verify.path);
   }
 
   let cartItems: CartItem[] = [];

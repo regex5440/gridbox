@@ -27,7 +27,7 @@ export default function LoginSignupModal() {
           >
             <X />
           </div>
-          <LoginSignup withinModal />
+          <LoginSignup />
         </div>
       </div>
     </>

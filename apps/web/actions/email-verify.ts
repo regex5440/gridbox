@@ -1,8 +1,11 @@
 "use server";
 
-import { decryptToken } from "../lib/jwt";
+import { createEncryptedToken, decryptToken } from "../lib/jwt";
 import { verifyEmail } from "../controllers/account";
 import { createStripeCustomer } from "@lib/stripe/actions.server";
+import EmailTemplate from "@lib/email-template";
+import SiteMap from "@utils/sitemap";
+import sendEmail from "@lib/mailer";
 
 export default async function emailVerify(token: string) {
   const payload = await decryptToken<{
@@ -37,4 +40,36 @@ export default async function emailVerify(token: string) {
   } else {
     return { error: { message: "Invalid token" } };
   }
+}
+
+export async function sendVerificationEmail({
+  email,
+  userId,
+  firstName,
+  lastName,
+}: {
+  email: string;
+  userId: string;
+  firstName: string;
+  lastName: string;
+}) {
+  const verificationToken = await createEncryptedToken(
+    {
+      email,
+      type: "verify",
+      userId: userId,
+      name: `${firstName} ${lastName}`.trim(),
+    },
+    "2h"
+  );
+  const verificationEmail = new EmailTemplate("verification")
+    .values({
+      verificationLink: `${process.env.ASSIGNED_URL}${SiteMap.Verify.path}?token=${verificationToken}`,
+    })
+    .toHTML();
+  await sendEmail({
+    html: verificationEmail,
+    subject: "Verify your email",
+    to: email,
+  });
 }
