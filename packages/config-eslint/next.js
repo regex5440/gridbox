@@ -18,7 +18,7 @@ module.exports = {
     "@vercel/style-guide/eslint/browser",
     "@vercel/style-guide/eslint/react",
     "@vercel/style-guide/eslint/next",
-    // "eslint-config-turbo",
+    // "eslint-config-turbo", // Uncomment this line to enable Turbo, that is currently resulting in an error
   ].map(require.resolve),
   parserOptions: {
     project,
@@ -37,7 +37,7 @@ module.exports = {
       },
     },
   },
-  ignorePatterns: ["node_modules/", "dist/"],
+  ignorePatterns: ["node_modules/", "dist/", ".eslintrc.js", "**/*.css"],
   // add rules configurations here
   overrides: [
     {
