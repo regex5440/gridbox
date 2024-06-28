@@ -14,6 +14,7 @@ import ProductVisitedMarker from "@components/ProductVisitedMarker";
 import RecentlyViewed from "@components/RecentlyViewed";
 import { ProductsCarousel, StarRatings } from "@components/index";
 import ProductImageSection from "./ProductImageViewer";
+import { Metadata } from "next";
 
 type ProductPageProps = {
   params: {
@@ -267,4 +268,20 @@ export default async function ProductPage({
       </div>
     </>
   );
+}
+
+export async function generateMetadata({
+  params: { productId },
+}: {
+  params: { productId: string };
+}): Promise<Metadata> {
+  const productDetails = await fetch(
+    `${process.env.productAPI}/products/${productId}`
+  ).then<Product>((res) => res.json());
+  return {
+    title: `${productDetails.title} - GridBox`,
+    description: productDetails.description + " - GridBox",
+    keywords: productDetails.tags.join(", "),
+    category: productDetails.category,
+  };
 }

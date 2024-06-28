@@ -1,5 +1,6 @@
 import { CircleX, Mail, MailCheck } from "lucide-react";
 import emailVerify from "@actions/email-verify";
+import { Metadata } from "next";
 
 type VerifyPageProps = {
   searchParams: { token?: string };
@@ -67,3 +68,8 @@ export default async function VerifyPage({ searchParams }: VerifyPageProps) {
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Email Verification - GridBox",
+  description: "Verify your email address to access your account",
+};

@@ -3,6 +3,7 @@ import { getAuthenticateUser } from "@actions/auth";
 import stripe from "@lib/stripe/payment.server";
 import SiteMap from "@utils/sitemap";
 import PaymentMethodInterface from "./PaymentMethodInterface";
+import { Metadata } from "next";
 
 export default async function PaymentInfo() {
   const authenticUserData = await getAuthenticateUser();
@@ -29,3 +30,9 @@ export default async function PaymentInfo() {
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Account/Saved Payment Info - GridBox",
+  description:
+    "View and manage your saved payment methods on GridBox e-commerce site",
+};

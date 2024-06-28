@@ -1,3 +1,5 @@
+import { Metadata } from "next";
+
 export default function Profile() {
   //TODO: Implement update profile
   return (
@@ -7,3 +9,8 @@ export default function Profile() {
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Account/Profile - GridBox",
+  description: "Update your profile on GridBox e-commerce site",
+};

@@ -8,6 +8,7 @@ import { getOrderByQuery, getOrdersByUser } from "controllers/order";
 import SiteMap from "@utils/sitemap";
 import { authenticateUser } from "@actions/auth";
 import ServerPagination from "@components/ServerPagination";
+import { Metadata } from "next";
 
 type OrdersPageProps = {
   params: { page: string };
@@ -109,3 +110,8 @@ export default async function OrdersPage({
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Account/Orders - GridBox",
+  description: "View your orders on GridBox e-commerce site",
+};

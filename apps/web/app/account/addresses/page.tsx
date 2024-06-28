@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { getUserAddresses } from "@actions/account";
 import AddressUI from "./AddressInterface";
+import { Metadata } from "next";
 
 export default async function Addresses() {
   const userAddressList = await getUserAddresses();
@@ -26,3 +27,9 @@ export default async function Addresses() {
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Account/Saved Addresses - GridBox",
+  description:
+    "View and manage your saved addresses on GridBox e-commerce site",
+};

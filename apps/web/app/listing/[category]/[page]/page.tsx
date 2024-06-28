@@ -4,6 +4,7 @@ import { Loader } from "@repo/ui";
 import ServerPagination from "@components/ServerPagination";
 import SiteMap from "@utils/sitemap";
 import { ProductTemplate } from "../../../../components";
+import { Metadata } from "next";
 
 type ListingPageProps = {
   params: { category: string; page: string };
@@ -66,4 +67,18 @@ export default async function ListingPage({
       />
     </div>
   );
+}
+
+export async function generateMetadata({
+  params: { category },
+}: {
+  params: { category: string; page: string };
+}): Promise<Metadata> {
+  return {
+    title: `${category
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ")} - GridBox`,
+    description: `View all ${category.replace(/\-/g, " ")} products on GridBox e-commerce site`,
+  };
 }

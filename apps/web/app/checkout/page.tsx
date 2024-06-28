@@ -7,6 +7,7 @@ import { getCartItems } from "controllers/cart";
 import stripe from "@lib/stripe/payment.server";
 import Checkout from "./Checkout";
 import type { ProductDetail } from "./common";
+import { Metadata } from "next";
 //TODO: can optimize by reducing number of time authentication check happens in each action
 
 export default async function CheckoutPage({
@@ -108,3 +109,9 @@ export default async function CheckoutPage({
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Checkout - GridBox",
+  description:
+    "Checkout page for GridBox e-commerce site. Pay and place your order. Payment powered by Stripe",
+};
