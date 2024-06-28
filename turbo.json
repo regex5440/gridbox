@@ -1,33 +1,10 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": [
-    "**/.env.*local"
-  ],
-  "globalEnv": [
-    "productAPI",
-    "ASSIGNED_URL",
-    "DATABASE_URL",
-    "EMAIL_FROM",
-    "EMAIL_USERNAME",
-    "EMAIL_PASSWORD",
-    "EMAIL_SERVER",
-    "EMAIL_PORT",
-    "SESSION_EXPIRY",
-    "SECRET_KEY",
-    "PAYMENT_SECRET_KEY",
-    "NEXT_PUBLIC_PUBLISHABLE_KEY"
-  ],
+  "globalDependencies": ["**/.env.*local", "**/.env.*prod"],
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "dist/**",
-        ".next/**",
-        "!.next/cache/**",
-        "build/**"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "build/**"]
     },
     "lint": {},
     "type-check": {},
