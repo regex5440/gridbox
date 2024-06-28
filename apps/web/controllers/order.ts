@@ -1,6 +1,6 @@
+import type { Order } from "@repo/ui/types";
+import type { Prisma } from "prisma/prisma-client";
 import prisma from "@lib/prisma/client";
-import { Order } from "@repo/ui/types";
-import { Prisma } from "prisma/prisma-client";
 
 type OrderItemParams = {
   name: string;

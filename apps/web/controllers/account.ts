@@ -1,11 +1,7 @@
 "use server";
 
-import { AddressBook } from "@types";
-import prisma from "../lib/prisma/client";
-
-type LoginCredentials = {
-  email: string;
-};
+import prisma from "@lib/prisma/client";
+import type { AddressBook } from "@types";
 
 type ProfileDetails = {
   email: string;
@@ -156,11 +152,12 @@ async function editAddress({
   id,
   ...rest
 }: Partial<AddressBook> & Required<Pick<AddressBook, "id">>) {
-  const updatedFields: { [key: string]: string } = {};
+  const updatedFields: Record<string, string> = {};
   let key: keyof typeof rest;
   for (key in rest) {
-    if (typeof rest[key] === "string") {
-      updatedFields[key] = rest[key] as string;
+    const value = rest[key];
+    if (value !== undefined) {
+      updatedFields[key] = value;
     }
   }
   const data = await prisma.shippingInfo.update({
