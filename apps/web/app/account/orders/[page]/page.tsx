@@ -30,7 +30,7 @@ export default async function OrdersPage({
       `${SiteMap.Signin.path}?redirect=${SiteMap.Account.Orders.path}?${queryParams.toString()}`
     );
   }
-  let orders = [];
+  let orders: Order[] = [];
   let totalCount = 0;
   if (searchQuery) {
     const { data, total } = await getOrderByQuery({
@@ -63,7 +63,7 @@ export default async function OrdersPage({
       {(totalCount > 0 || searchQuery !== undefined) && (
         <>
           <form
-            action={`${SiteMap.Account.Orders.path  }/1`}
+            action={`${SiteMap.Account.Orders.path}/1`}
             className="flex items-center gap-4"
           >
             <div className="flex items-center  w-full relative">
@@ -90,7 +90,7 @@ export default async function OrdersPage({
           </form>
           <div className="flex flex-col gap-4 mt-4">
             {orders.map((order) => (
-              <OrderTemplate key={order.id} order={order as Order} />
+              <OrderTemplate key={order.id} order={order} />
             ))}
           </div>
           {totalCount === 0 && (

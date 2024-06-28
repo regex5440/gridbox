@@ -149,7 +149,7 @@ export async function getOrderByQuery({
       skip: offset,
     }),
   ]);
-  return { data: orders, total: totalCount };
+  return { data: orders as Order[], total: totalCount };
 }
 
 export async function getOrdersByUser({
@@ -179,5 +179,5 @@ export async function getOrdersByUser({
       take: ps,
     }),
   ]);
-  return { data: orders, total: totalCount };
+  return { data: orders as Order[], total: totalCount };
 }
