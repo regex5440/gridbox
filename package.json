@@ -6,7 +6,8 @@
     "lint": "turbo lint",
     "type-check": "turbo type-check",
     "clean": "turbo clean",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "postinstall": "prism generate"
   },
   "devDependencies": {
     "@repo/typescript-config": "*",
@@ -19,7 +20,7 @@
     "node": ">=18"
   },
   "packageManager": "npm@8.8.0",
-  "prisma":{
+  "prisma": {
     "schema": "apps/web/lib/prisma/schema.prisma"
   },
   "workspaces": [
