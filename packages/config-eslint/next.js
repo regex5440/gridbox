@@ -51,7 +51,6 @@ module.exports = {
         "error.tsx",
         "global-error.tsx",
         "default.tsx",
-        "AddressUI.tsx",
       ],
       rules: {
         "unicorn/filename-case": "off",
@@ -72,7 +71,7 @@ module.exports = {
     "@typescript-eslint/no-unsafe-member-access": "off",
     "@typescript-eslint/no-unsafe-argument": "off",
     "@typescript-eslint/no-unsafe-assignment": "off",
-    "t@typescript-eslint/no-unsafe-return": "off",
+
     "tsdoc/syntax": "off",
     "import/named": "off",
     "no-nested-ternary": "off",

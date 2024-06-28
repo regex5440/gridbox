@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { getUserAddresses } from "@actions/account";
-import AddressUI from "./AddressUI";
+import AddressUI from "./AddressInterface";
 
 export default async function Addresses() {
   const userAddressList = await getUserAddresses();
