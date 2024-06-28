@@ -50,5 +50,11 @@ module.exports = {
         node: true,
       },
     },
+    {
+      files: ["*.ts", "index.tsx"],
+      rules: {
+        "unicorn/filename-case": "off",
+      },
+    },
   ],
 };
