@@ -1,11 +1,11 @@
 "use client";
-import CartItem from "../../components/CartItem";
 import { Button, Loader } from "@repo/ui";
-import { removeCartItem, updateCartItemQty } from "actions/cart";
-import useMiniCart from "@lib/store/minicart";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import useMiniCart from "@lib/store/minicart";
+import { removeCartItem, updateCartItemQty } from "actions/cart";
+import CartItem from "../../components/CartItem";
 
 type CartTotal = {
   subTotal: number;
@@ -34,7 +34,7 @@ export default function CartPage() {
           setCartTotal({ data: resJson.success.data, loading: false });
         });
       } catch (e) {
-        console.error(e);
+        // console.error(e);
         setCartTotal((state) => ({ ...state, loading: false }));
       }
     } else {
@@ -48,21 +48,24 @@ export default function CartPage() {
         <h1 className="text-3xl mb-4">Cart</h1>
         {loadingCart ? (
           <div>
-            <Loader iconSize={30} className="mx-auto" />
+            <Loader className="mx-auto" iconSize={30} />
           </div>
         ) : (
           cartItems.map(({ productId, quantity }) => (
             <CartItem
-              key={productId}
-              productId={productId}
-              initialQty={quantity}
-              onQtyChange={(qty, productId) => {
-                updateCartItemQty({ productId, quantity: qty }).then(fetchCart);
-              }}
-              onRemove={(productId) => {
-                removeCartItem(productId).then(fetchCart);
-              }}
               className="mb-2 [&:last-child]:border-0"
+              initialQty={quantity}
+              key={productId}
+              onQtyChange={(qty, forProductId) => {
+                updateCartItemQty({
+                  productId: forProductId,
+                  quantity: qty,
+                }).then(fetchCart);
+              }}
+              onRemove={(pId) => {
+                removeCartItem(pId).then(fetchCart);
+              }}
+              productId={productId}
             />
           ))
         )}
@@ -72,16 +75,16 @@ export default function CartPage() {
       </div>
       <div
         className="md:border-l h-fit lg:w-1/3 md:w-2/5 max-md:border-t max-md:p-4 px-4 md:mt-12 sticky top-20 data-[loading=true]:pointer-events-none data-[loading=true]:opacity-50 data-[empty=true]:hidden"
-        data-loading={cartTotal.loading}
         data-empty={cartItems.length === 0}
+        data-loading={cartTotal.loading}
       >
         <div className="w-full relative">
-          {cartTotal.loading && (
+          {cartTotal.loading ? (
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[1]">
-              <Loader2 className="animate-spin" size={"40px"} />
+              <Loader2 className="animate-spin" size="40px" />
             </div>
-          )}
-          {cartTotal.data && (
+          ) : null}
+          {cartTotal.data ? (
             <div className="*:flex *:justify-between *:mb-3">
               <div>
                 <span className="text-left">Subtotal</span>{" "}
@@ -113,9 +116,9 @@ export default function CartPage() {
                 </span>
               </div>
             </div>
-          )}
+          ) : null}
         </div>
-        <Button className="bg-add-to-cart w-full text-xl h-12" asChild>
+        <Button asChild className="bg-add-to-cart w-full text-xl h-12">
           <Link href="/checkout">Proceed to Checkout</Link>
         </Button>
       </div>

@@ -1,21 +1,20 @@
 "use client";
 import { Button } from "@repo/ui";
-import AddressConfirmation from "./AddressConfirmation";
-import Image from "next/image";
-import { AddressBook } from "@types";
 import { useEffect, useState } from "react";
-import { ProductDetail } from "./common";
-import { updateAddressInIntent } from "@actions/checkout";
 import {
   Elements,
   PaymentElement,
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-import { stripeClient } from "@lib/stripe/payment.client";
-import { PaymentIntentResult, StripeElements } from "@stripe/stripe-js";
+import type { PaymentIntentResult } from "@stripe/stripe-js";
 import { Loader2 } from "lucide-react";
+import { stripeClient } from "@lib/stripe/payment.client";
+import { updateAddressInIntent } from "@actions/checkout";
+import type { AddressBook } from "@types";
 import ProductImage from "@components/ProductImage";
+import type { ProductDetail } from "./common";
+import AddressConfirmation from "./AddressConfirmation";
 
 type CheckoutPageProps = {
   productDetailList: ProductDetail[];
@@ -60,7 +59,6 @@ export default function Checkout({
           />
         </div>
         <Elements
-          stripe={stripeClient}
           options={{
             clientSecret,
             appearance: {
@@ -71,15 +69,16 @@ export default function Checkout({
               },
             },
           }}
+          stripe={stripeClient}
         >
           <CheckoutPayment
-            productDetailList={productDetailList}
-            cartBreakup={cartBreakup}
             anyItemNotInStock={anyItemNotInStock}
+            cartBreakup={cartBreakup}
+            clientSecret={clientSecret}
             formData={formData}
+            productDetailList={productDetailList}
             showAddressForm={showAddressForm}
             usingCart={usingCart}
-            clientSecret={clientSecret}
           />
         </Elements>
       </div>
@@ -100,49 +99,50 @@ function CheckoutPayment({
   clientSecret: string;
 }) {
   const stripe = useStripe();
-  const elements = useElements() as StripeElements;
+  const elements = useElements();
   const [paymentIntentId, setPaymentIntentId] = useState("");
   const [generalPageError, setGeneralPageError] = useState("");
   const [formLoading, setFormLoading] = useState(false);
 
-  const startLoader = (e: React.FormEvent<HTMLFormElement>) => {
+  const startLoader = () => {
     setGeneralPageError("");
     setFormLoading(true);
   };
-  const formSubmitHandler = async (formD: FormData) => {
+  const formSubmitHandler = async () => {
     if (formData.billing.length === 0 || formData.shipping.length === 0) {
       setGeneralPageError("Please select shipping and billing address");
       return;
     }
     await updateAddressInIntent({ ...formData, intentId: paymentIntentId });
 
-    const paymentSubmission = await elements.submit();
-    if (paymentSubmission.error) {
+    const paymentSubmission = await elements?.submit();
+    if (paymentSubmission?.error) {
       setFormLoading(false);
       return;
     }
+    //TODO: A timer can also be set here to cancel the order if payment is not confirmed within a certain time
     const paymentStatus: PaymentIntentResult | { error: { code: "timeout" } } =
       await new Promise((res, rej) => {
         setTimeout(rej, 3 * 60 * 1000, { error: { code: "timeout" } });
-        stripe
-          ?.confirmPayment({
-            elements,
-            confirmParams: {
-              return_url: `${document.location.origin}/order_confirmation`,
-            },
-          })
-          .then(res)
-          .catch(rej);
+        if (stripe && elements) {
+          stripe
+            .confirmPayment({
+              elements,
+              confirmParams: {
+                return_url: `${document.location.origin}/order_confirmation`,
+              },
+            })
+            .then(res)
+            .catch(rej);
+        }
       });
-    //TODO: A timer can also be set here to cancel the order if payment is not confirmed within a certain time
-    if (paymentStatus?.error) {
+    if (paymentStatus.error) {
       if (paymentStatus.error.code === "timeout") {
         setGeneralPageError("Payment request timeout. Please try again!");
       } else {
         setGeneralPageError("Payment Failed. Please try again!");
       }
       setFormLoading(false);
-
       return;
     }
     setFormLoading(false);
@@ -160,28 +160,30 @@ function CheckoutPayment({
           setPaymentIntentId(paymentIntent.id || "");
         });
     }
-  }, [stripe]);
+  }, [clientSecret, stripe]);
 
   return (
     <div>
       <form
+        action={() => {
+          formSubmitHandler();
+        }}
         className="max-md:mt-8"
-        action={formSubmitHandler}
         onSubmit={startLoader}
       >
         <h2 className="text-xl font-semibold">Product Overview</h2>
         <div className="pb flex flex-col gap-2 ">
           {productDetailList.map((productDetail) => (
             <div
-              key={productDetail.id}
               className="flex items-center gap-4 w-full p-1 rounded-md bg-surface-secondary data-[available=false]:border-alert border border-transparent"
               data-available={productDetail.stock > 0}
+              key={productDetail.id}
             >
               <ProductImage
-                className="w-14 h-14 border border-secondary rounded-md"
                 alt={productDetail.title}
-                src={productDetail.thumbnail}
+                className="w-14 h-14 border border-secondary rounded-md"
                 quantity={productDetail.quantity}
+                src={productDetail.thumbnail}
               />
               <div className="flex-1">
                 <h3>{productDetail.title}</h3>

@@ -1,15 +1,13 @@
-import { Button } from "@repo/ui";
-import { Order } from "@repo/ui/types";
-import { ORDER_STATUS } from "@utils/enums";
-import ProductImage from "./ProductImage";
-
-import { Accordion as Acdn } from "@repo/ui";
+import { Button, Accordion as Acdn } from "@repo/ui";
+import type { Order } from "@repo/ui/types";
 import Link from "next/link";
+import { ORDER_STATUS } from "@utils/enums";
 import SiteMap from "@utils/sitemap";
+import ProductImage from "./ProductImage";
 
 const { Accordion, AccordionItem, AccordionContent, AccordionTrigger } = Acdn;
 
-export default async function ({ order }: { order: Order }) {
+export default async function OrderTemplate({ order }: { order: Order }) {
   const orderItems = order.orderItem;
   const productDetails: (Record<"thumbnail", string> &
     (typeof orderItems)[number])[] = await Promise.all(
@@ -18,7 +16,10 @@ export default async function ({ order }: { order: Order }) {
         `${process.env.productAPI}/products/${item.productId}?select=thumbnail`
       )
         .then((res) => res.json())
-        .then((data) => ({ ...data, ...orderItems[index] }))
+        .then((data: { thumbnail: string; id: number }) => ({
+          ...data,
+          ...orderItems[index],
+        }))
     )
   );
 
@@ -27,8 +28,8 @@ export default async function ({ order }: { order: Order }) {
   return (
     <div className="rounded-lg shadow-md">
       <div
-        className="flex justify-between gap-4 items-center border-b bg-surface-secondary px-3 py-0.5"
         aria-label="top"
+        className="flex justify-between gap-4 items-center border-b bg-surface-secondary px-3 py-0.5"
       >
         <span className="text-xs text-ternary">Order ID: {order.id}</span>
         <span className="flex-grow text-sm text-right">
@@ -49,16 +50,16 @@ export default async function ({ order }: { order: Order }) {
           <Link href={`${SiteMap.PDP.path}/${firstProduct.productId}`}>
             <ProductImage
               alt={firstProduct.name}
-              src={firstProduct.thumbnail}
-              quantity={firstProduct.quantity}
               className="w-16 h-16"
+              quantity={firstProduct.quantity}
+              src={firstProduct.thumbnail}
             />
           </Link>
           <div className="flex flex-1 max-sm:flex-col w-full">
             <div className="sm:w-2/3 max-sm:w-1/2 w-full">
               <Link
-                href={`${SiteMap.PDP.path}/${firstProduct.productId}`}
                 className="line-clamp-2 sm:text-nowrap overflow-ellipsis overflow-x-hidden text-ternary w-fit hover:underline"
+                href={`${SiteMap.PDP.path}/${firstProduct.productId}`}
               >
                 {firstProduct.name}
               </Link>
@@ -77,22 +78,22 @@ export default async function ({ order }: { order: Order }) {
         </div>
         {orderItems.length > 1 && (
           <Accordion type="multiple">
-            <AccordionItem value="1" className="px-2 border-none">
+            <AccordionItem className="px-2 border-none" value="1">
               <AccordionTrigger className="text-xs text-primary text-right flex-grow underline">
                 <div>{orderItems.length - 1} more items</div>
               </AccordionTrigger>
               <AccordionContent>
                 {productDetails.slice(1).map((product) => (
                   <Link
-                    href={`${SiteMap.PDP.path}/${product.productId}`}
                     className="flex gap-4 group"
+                    href={`${SiteMap.PDP.path}/${product.productId}`}
                     key={product.productId}
                   >
                     <ProductImage
                       alt={product.name}
+                      className="w-16 h-16"
                       quantity={product.quantity}
                       src={product.thumbnail}
-                      className="w-16 h-16"
                     />
                     <div className="flex-grow text-ternary">
                       <div className="line-clamp-2 sm:text-nowrap overflow-ellipsis overflow-x-hidden group-hover:underline">

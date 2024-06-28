@@ -1,6 +1,5 @@
 "use client";
 import { EllipsisVertical } from "lucide-react";
-import { removePaymentMethod } from "@lib/stripe/actions.server";
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import {
@@ -9,8 +8,9 @@ import {
   Dialog as Dg,
   Card as Crd,
 } from "@repo/ui";
+import type { PaymentMethod } from "@stripe/stripe-js";
 import FormButton from "@components/FormButton";
-import { PaymentMethod } from "@stripe/stripe-js";
+import { removePaymentMethod } from "@lib/stripe/actions.server";
 
 const {
   DropdownMenu,
@@ -22,7 +22,6 @@ const {
 const {
   Dialog,
   DialogContent,
-  DialogClose,
   DialogTitle,
   DialogDescription,
   DialogFooter,
@@ -32,7 +31,7 @@ const {
 
 const { Card, CardContent, CardHeader, CardFooter, CardDescription } = Crd;
 
-export default function ({
+export default function CardTemplate({
   CardInfo,
   methodId,
   removeMethod,
@@ -52,7 +51,7 @@ export default function ({
       setOpenDialog(false);
       removeMethod(methodId);
     }
-  }, [state]);
+  }, [state, removeMethod, methodId]);
 
   return (
     <Card className="shadow-md rounded-lg min-w-64 w-fit aspect-video relative p-3 pr-6 flex flex-col justify-between">
@@ -76,8 +75,8 @@ export default function ({
           <EllipsisVertical className="cursor-pointer absolute top-3 right-0.5" />
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="bg-surface-secondary min-w-16"
           align="end"
+          className="bg-surface-secondary min-w-16"
         >
           <DropdownMenuItem
             className="cursor-pointer"
@@ -87,7 +86,7 @@ export default function ({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+      <Dialog onOpenChange={setOpenDialog} open={openDialog}>
         <DialogPortal>
           <DialogContent className="bg-surface-secondary text-regular">
             <DialogHeader>
@@ -98,7 +97,7 @@ export default function ({
               undone.
             </DialogDescription>
             <DialogFooter>
-              <Button onClick={() => setOpenDialog(false)} variant={"outline"}>
+              <Button onClick={() => setOpenDialog(false)} variant="outline">
                 Cancel
               </Button>
               <form action={action}>

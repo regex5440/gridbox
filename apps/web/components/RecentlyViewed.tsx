@@ -3,15 +3,13 @@ import { Carousel } from "@repo/ui";
 import { useEffect, useState } from "react";
 import { getRecentlyViewedProductIds } from "../utils";
 import ProductTemplateWithFetchHook from "./ProductTemplateFetchWrapper";
-import Link from "next/link";
-import SiteMap from "../utils/sitemap";
 
 export default function RecentlyViewed() {
   const [productIds, setProductIds] = useState<string[] | undefined>(undefined);
 
   useEffect(() => {
-    const productIds = getRecentlyViewedProductIds() || [];
-    setProductIds(productIds);
+    const pIds = getRecentlyViewedProductIds() || [];
+    setProductIds(pIds);
   }, []);
 
   return (
@@ -20,10 +18,10 @@ export default function RecentlyViewed() {
       {productIds?.length ? (
         <Carousel.Carousel opts={{ slidesToScroll: "auto" }}>
           <Carousel.CarouselContent>
-            {productIds?.map((productId, index) => (
+            {productIds.map((productId, index) => (
               <Carousel.CarouselItem
-                key={"rv" + productId}
                 className={`max-sm:basis-[50%] max-lg:basis-[15%] basis-[10%] ${index === 0 ? "ml-auto" : ""} ${index === productIds.length - 1 ? "mr-auto" : ""}`}
+                key={`rv${productId}`}
               >
                 <ProductTemplateWithFetchHook productId={productId} />
               </Carousel.CarouselItem>

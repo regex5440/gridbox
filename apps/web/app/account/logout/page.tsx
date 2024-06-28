@@ -1,8 +1,8 @@
 "use client";
-import useMiniCart from "@lib/store/minicart";
-import useUserStore from "@lib/store/user";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import useMiniCart from "@lib/store/minicart";
+import useUserStore from "@lib/store/user";
 
 export default function Logout() {
   const { removeUser } = useUserStore();
@@ -12,9 +12,13 @@ export default function Logout() {
   useEffect(() => {
     removeUser();
     clearCart();
-    fetch("/api/account/logout");
-    router.push("/");
-  }, []);
+    fetch("/api/account/logout")
+      .then(() => {})
+      .catch(() => {})
+      .finally(() => {
+        router.push("/");
+      });
+  }, [router, removeUser, clearCart]);
 
   return null;
 }

@@ -1,9 +1,9 @@
 import { authenticateUser } from "actions/auth";
 import { addItemsToCart, getCartItems } from "controllers/cart";
 import { CartProductAddSchema } from "@lib/definitions/account";
-import { NextRoute } from "@types";
+import type { NextRoute } from "@types";
 
-export const GET: NextRoute = async (request, { params }) => {
+export const GET: NextRoute = async () => {
   const authenticUser = await authenticateUser();
   if (!authenticUser.success) {
     return Response.json(
@@ -22,7 +22,7 @@ export const GET: NextRoute = async (request, { params }) => {
   return Response.json({ success: true, data: cartProducts.data });
 };
 
-export const POST: NextRoute = async (request, { params }) => {
+export const POST: NextRoute = async (request) => {
   const authenticUser = await authenticateUser();
   if (!authenticUser.success) {
     return Response.json(
@@ -31,7 +31,10 @@ export const POST: NextRoute = async (request, { params }) => {
     );
   }
   const userId = authenticUser.data.id;
-  const body = await request.json();
+  const body = (await request.json()) as {
+    productId: string;
+    quantity: number;
+  };
   const validated = CartProductAddSchema.safeParse(body);
   if (!validated.success) {
     return Response.json(

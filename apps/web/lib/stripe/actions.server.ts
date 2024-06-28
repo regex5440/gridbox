@@ -7,7 +7,7 @@ export const removePaymentMethod = async (paymentMethodId: string) => {
 };
 
 export const createStripeCustomer = async (name: string, email: string) => {
-  return await stripe.customers.create({
+  return stripe.customers.create({
     name: name.trim(),
     email: email.trim(),
   });

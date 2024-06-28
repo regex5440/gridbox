@@ -1,4 +1,4 @@
-import { CartItem } from "@repo/ui/types";
+import type { CartItem } from "@repo/ui/types";
 import { create } from "zustand";
 
 type State = {
@@ -9,7 +9,7 @@ type State = {
 
 type Actions = {
   toggle: (value?: boolean) => void;
-  fetchCart: () => void;
+  fetchCart: () => Promise<void>;
   setCartItems: (items: CartItem[]) => void;
   addCartItem: (item: CartItem) => void;
   clearCart: () => void;
@@ -26,12 +26,15 @@ const useMiniCart = create<State & Actions>((set) => ({
     try {
       set({ loadingCart: true });
       const response = await fetch("/api/cart");
-      const data = await response.json();
+      const data = (await response.json()) as {
+        success: boolean;
+        data: CartItem[];
+      };
       if (data.success) {
         set({ cartItems: data.data });
       }
     } catch (e) {
-      console.error(e);
+      // console.error(e);
     } finally {
       set({ loadingCart: false });
     }

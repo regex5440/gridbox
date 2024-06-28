@@ -2,17 +2,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Loader2, SearchIcon, X } from "lucide-react";
 import { Button, Input } from "@repo/ui";
-import { useDebounce } from "@hooks/index";
-import { Product } from "@repo/ui/types";
+import type { Product } from "@repo/ui/types";
 import Image from "next/image";
 import Link from "next/link";
+import { useDebounce } from "@hooks/index";
 import SiteMap from "@utils/sitemap";
 
 export default function Search(): React.ReactNode {
   const [showDialog, setShowDialog] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [searchResults, setSearchResults] = React.useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<Product[]>([]);
   const requestSignal = useRef<AbortController | null>(null);
   const searchGroup = useRef<HTMLDivElement | null>(null);
 
@@ -27,23 +27,23 @@ export default function Search(): React.ReactNode {
     };
   }, []);
 
-  const curateSearchResults = useDebounce((query: string = "") => {
+  const curateSearchResults = useDebounce((query = "") => {
     try {
       requestSignal.current?.abort("duplicate");
-      if (query.length === 0) throw new Error("Empty query");
+      if (!query) throw new Error("Empty query");
       setLoading(true);
       requestSignal.current = new AbortController();
-      fetch(`/api/products/search?q=${encodeURIComponent(query)}`, {
+      fetch(`/api/products/search?q=${encodeURIComponent(query as string)}`, {
         signal: requestSignal.current.signal,
       })
         .then((res) => res.json())
-        .then((data) => {
+        .then((data: { products: Product[] }) => {
           setSearchResults(data.products);
           setLoading(false);
         })
         .finally(() => setShowDialog(true));
     } catch (e) {
-      if (query.length === 0) {
+      if ((query as string).length === 0) {
         setLoading(false);
       }
     }
@@ -67,23 +67,23 @@ export default function Search(): React.ReactNode {
         </div>
         <div className="relative flex-auto">
           <Input
-            type="text"
-            placeholder="Search"
             className="md:pl-10 rounded-br-md rounded-tr-md pr-10 max-md:pl-5 md:border max-md:border-l-0"
-            value={searchQuery}
             onChange={handleInputChange}
             onFocus={() => searchQuery.length > 0 && setShowDialog(true)}
+            placeholder="Search"
+            type="text"
+            value={searchQuery}
           />
           <div className="absolute right-0 top-0 h-full w-10 grid place-content-center">
-            {loading && <Loader2 className="animate-spin" />}
+            {loading ? <Loader2 className="animate-spin" /> : null}
             {searchQuery.length > 0 && !loading && (
               <Button
-                onClick={(e) => {
+                className="h-full w-full box-border p-0"
+                onClick={() => {
                   setShowDialog(false);
                   handleInput("");
                 }}
-                variant={"link"}
-                className="h-full w-full box-border p-0"
+                variant="link"
               >
                 <X />
               </Button>
@@ -109,18 +109,18 @@ export default function Search(): React.ReactNode {
                 (product: Pick<Product, "title" | "id" | "thumbnail">) => (
                   <Link
                     className="flex hover:bg-surface-secondary cursor-pointer items-center gap-2"
-                    key={product.id}
                     href={`${SiteMap.PDP.path}/${product.id}`}
-                    onClick={(e) => {
+                    key={product.id}
+                    onClick={() => {
                       setShowDialog(false);
                     }}
                   >
                     <div>
                       <Image
-                        src={product.thumbnail}
                         alt={product.title}
-                        width={50}
                         height={50}
+                        src={product.thumbnail}
+                        width={50}
                       />
                     </div>
                     <div className="whitespace-nowrap overflow-x-hidden text-ellipsis">

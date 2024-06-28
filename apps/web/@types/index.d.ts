@@ -1,16 +1,6 @@
 import { NextRequest } from "next/server";
 
-export type RestProps = {
-  [key: string]: any;
-};
-export type NextPageProps = {
-  params: {
-    [key: string]: string;
-  };
-  searchParams: {
-    [key: string]: string;
-  };
-} & RestProps;
+export type RestProps = Record<string, any>;
 
 export type NextRoute = (
   request: NextRequest,
@@ -86,23 +76,24 @@ export type AddressBook = {
 };
 
 export type AddressFormState =
-  | {
-      error?:
-        | {
-            fullName?: string[];
-            address?: string[];
-            city?: string[];
-            state?: string[];
-            zip?: string[];
-            country?: string[];
-            phone?: string[];
-          }
-        | {
-            message?: string;
-            common: true;
-          };
-    }
-  | { success?: { data: AddressBook } }
+  | (({
+      error?: {
+        address?: string[] | undefined;
+        state?: string[] | undefined;
+        fullName?: string[] | undefined;
+        city?: string[] | undefined;
+        zip?: string[] | undefined;
+        country?: string[] | undefined;
+        phone?: string[] | undefined;
+      };
+    } & {
+      error?: {
+        common?: true;
+        message?: string;
+      };
+    }) & {
+      success?: { data: AddressBook };
+    })
   | undefined;
 
 export type DeleteAddressState =

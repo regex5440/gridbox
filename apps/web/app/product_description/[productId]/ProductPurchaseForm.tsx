@@ -1,12 +1,12 @@
 "use client";
 import { Button } from "@repo/ui";
-import { buyNowAction } from "actions/cart";
 import { useEffect, useState } from "react";
-import useMiniCart from "@lib/store/minicart";
 import { LoaderCircle } from "lucide-react";
-import QtySelector from "@components/QtySelector";
 import { useRouter } from "next/navigation";
 import { useFormState } from "react-dom";
+import QtySelector from "@components/QtySelector";
+import useMiniCart from "@lib/store/minicart";
+import { buyNowAction } from "actions/cart";
 import FormButton from "@components/FormButton";
 
 export default function ProductPurchaseForm({
@@ -27,7 +27,7 @@ export default function ProductPurchaseForm({
     } else if (formState?.success?.redirect) {
       router.push(formState.success.redirect);
     }
-  }, [formState]);
+  }, [router, formState]);
 
   useEffect(() => {
     const timeout = setTimeout(() => setToggleAdded(false), 2000);
@@ -36,8 +36,8 @@ export default function ProductPurchaseForm({
 
   return (
     <div>
-      <form className="text-center" action={formAction}>
-        <input type="hidden" name="productId" value={productId} />
+      <form action={formAction} className="text-center">
+        <input name="productId" type="hidden" value={productId} />
         <div className="flex gap-4 items-end">
           <QtySelector
             count={quantity}
@@ -51,9 +51,9 @@ export default function ProductPurchaseForm({
         </div>
       </form>
       <Button
-        data-loading={loadingAddToCart}
         className="bg-add-to-cart p-2 rounded-md mt-3 w-full"
-        onClick={(e) => {
+        data-loading={loadingAddToCart}
+        onClick={() => {
           setLoadingAddToCart(true);
           fetch("/api/cart", {
             method: "POST",
@@ -69,8 +69,8 @@ export default function ProductPurchaseForm({
                 window.matchMedia("(min-width: 768px)").matches && toggle(true);
               }
             })
-            .catch((err) => {
-              console.log("Unauthorized");
+            .catch(() => {
+              // console.log("Unauthorized");
             })
             .finally(() => {
               setLoadingAddToCart(false);

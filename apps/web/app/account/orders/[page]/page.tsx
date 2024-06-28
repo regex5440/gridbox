@@ -1,20 +1,24 @@
-import { authenticateUser } from "@actions/auth";
 import { Button, Input } from "@repo/ui";
-import SiteMap from "@utils/sitemap";
-import { getOrderByQuery, getOrdersByUser } from "controllers/order";
 import { X } from "lucide-react";
 import { redirect } from "next/navigation";
-import OrderTemplate from "@components/OrderTemplate";
-import { Order } from "@repo/ui/types";
-import { NextPageProps } from "@types";
+import type { Order } from "@repo/ui/types";
 import Link from "next/link";
+import OrderTemplate from "@components/OrderTemplate";
+import { getOrderByQuery, getOrdersByUser } from "controllers/order";
+import SiteMap from "@utils/sitemap";
+import { authenticateUser } from "@actions/auth";
 import ServerPagination from "@components/ServerPagination";
+
+type OrdersPageProps = {
+  params: { page: string };
+  searchParams: { q?: string; ps?: string };
+};
 
 export default async function OrdersPage({
   params: { page },
   searchParams: { q: searchQuery, ps },
-}: NextPageProps) {
-  const pageSize = parseInt(ps) || 10;
+}: OrdersPageProps) {
+  const pageSize = ps ? parseInt(ps) : 10;
   const queryParams = new URLSearchParams();
   if (searchQuery !== undefined) {
     queryParams.append("q", searchQuery);
@@ -59,24 +63,24 @@ export default async function OrdersPage({
       {(totalCount > 0 || searchQuery !== undefined) && (
         <>
           <form
+            action={`${SiteMap.Account.Orders.path  }/1`}
             className="flex items-center gap-4"
-            action={SiteMap.Account.Orders.path + "/1"}
           >
             <div className="flex items-center  w-full relative">
-              <input type="hidden" name="ps" value={pageSize} readOnly hidden />
+              <input hidden name="ps" readOnly type="hidden" value={pageSize} />
               <Input
-                placeholder={"Search Orders"}
-                maxLength={50}
-                size={50}
-                name="q"
-                type="text"
-                defaultValue={searchQuery}
                 className="flex-1 p-0 pr-8 pl-2"
+                defaultValue={searchQuery}
+                maxLength={50}
+                name="q"
+                placeholder="Search Orders"
+                size={50}
+                type="text"
               />
               {searchQuery !== undefined && (
                 <Link
-                  href={SiteMap.Account.Orders.path}
                   className="absolute right-1 top-0 bottom-0 grid place-content-center text-primary h-full"
+                  href={SiteMap.Account.Orders.path}
                 >
                   <X />
                 </Link>
@@ -86,7 +90,7 @@ export default async function OrdersPage({
           </form>
           <div className="flex flex-col gap-4 mt-4">
             {orders.map((order) => (
-              <OrderTemplate order={order as Order} key={order.id} />
+              <OrderTemplate key={order.id} order={order as Order} />
             ))}
           </div>
           {totalCount === 0 && (
@@ -95,9 +99,9 @@ export default async function OrdersPage({
           <div className="mt-4">
             <ServerPagination
               currentPage={parseInt(page)}
+              pageLink={urlForPagination}
               pageSize={pageSize}
               totalDataCount={totalCount}
-              pageLink={urlForPagination}
             />
           </div>
         </>

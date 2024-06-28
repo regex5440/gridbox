@@ -1,15 +1,16 @@
 import { CircleX, Mail, MailCheck } from "lucide-react";
 import emailVerify from "@actions/email-verify";
-import { NextPageProps } from "@types";
 
-export default async function VerifyPage({
-  searchParams,
-  resend,
-}: NextPageProps) {
-  let verifyInstructionContent = (
+type VerifyPageProps = {
+  searchParams: { token?: string };
+  // resend: () => void;
+};
+
+export default async function VerifyPage({ searchParams }: VerifyPageProps) {
+  const verifyInstructionContent = (
     <div>
       <p>
-        <Mail size={70} className="text-primary mx-auto" />
+        <Mail className="text-primary mx-auto" size={70} />
       </p>
       <h1 className="text-center text-2xl">Verify your email</h1>
       <p className="text-center mt-5">
@@ -19,12 +20,15 @@ export default async function VerifyPage({
       <p className="text-center mt-2 text-ternary text-sm">
         Please note, verification link will be valid till 24 Hrs
       </p>
-      <p className="text-center mt-9">
-        Didn't receive the email?{" "}
-        <button className="text-blue-500 block mx-auto" onClick={resend}>
+      {/* <p className="text-center mt-9">
+        Didn&apos;t receive the email?{" "}
+        <button
+          className="text-blue-500 block mx-auto"
+          onClick={() => alert("Not implemented, yet!")}
+        >
           Resend
         </button>
-      </p>
+      </p> */}
     </div>
   );
   let renderVerifyContent = null;
@@ -35,7 +39,7 @@ export default async function VerifyPage({
       renderVerifyContent = (
         <div>
           <p>
-            <CircleX size={70} className="text-alert mx-auto" />
+            <CircleX className="text-alert mx-auto" size={70} />
           </p>
           <h1 className="text-center text-2xl">Verification link expired</h1>
           <p className="text-center mt-5">
@@ -47,7 +51,7 @@ export default async function VerifyPage({
       renderVerifyContent = (
         <div>
           <p>
-            <MailCheck size={70} className="text-primary mx-auto" />
+            <MailCheck className="text-primary mx-auto" size={70} />
           </p>
           <h1 className="text-center text-2xl">Email verified</h1>
           <p className="text-center mt-5">

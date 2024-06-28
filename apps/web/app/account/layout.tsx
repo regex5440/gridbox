@@ -1,6 +1,6 @@
 import ActiveLink from "./ActiveLink";
 
-export default async function AccountLayout({
+export default function AccountLayout({
   children,
 }: {
   children: React.ReactNode;

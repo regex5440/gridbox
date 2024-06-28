@@ -1,16 +1,14 @@
 "use client";
 
-import { getOrderByIntent } from "@actions/checkout";
-import useMiniCart from "@lib/store/minicart";
-import SiteMap from "@utils/sitemap";
 import { Loader2, PackageCheck, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { getOrderByIntent } from "@actions/checkout";
+import useMiniCart from "@lib/store/minicart";
+import SiteMap from "@utils/sitemap";
 
 type OrderDetailsProps = {
-  params: {
-    [key: string]: string;
-  };
+  params: Record<string, string>;
   searchParams: {
     payment_intent: string;
     payment_intent_client_secret: string;
@@ -67,13 +65,13 @@ export default function OrderConfirmation({ searchParams }: OrderDetailsProps) {
         } else if (res.data) {
           setOrderStatus("success");
           clearCart();
-          setTimeout(router.push, 3000, SiteMap.Account.Orders.path);
+          setTimeout(router.push.bind(null, SiteMap.Account.Orders.path), 3000);
         }
       }
     );
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [clearCart, router, searchParams.payment_intent]);
 
   return (
     <div className="w-10/12 max-w-screen-lg mx-auto mt-4 h-[40vh]">

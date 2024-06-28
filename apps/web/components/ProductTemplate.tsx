@@ -1,9 +1,9 @@
 import { Loader } from "lucide-react";
-import { Product } from "@repo/ui/types";
+import type { Product } from "@repo/ui/types";
 import Image from "next/image";
 import Link from "next/link";
-import SiteMap from "../utils/sitemap";
 import { cn } from "@repo/ui/utils";
+import SiteMap from "../utils/sitemap";
 import StarRatings from "./StarRating";
 
 type ProductTemplateProps = {
@@ -19,21 +19,21 @@ type ProductTemplateProps = {
  * @param {string} props.showLoader - (Optional) Show skeleton loader
  * @returns
  */
-const ProductTemplate = ({
+function ProductTemplate({
   product,
   showLoader,
   className,
   ...rest
-}: ProductTemplateProps) => {
+}: ProductTemplateProps) {
   return (
     <>
       {product ? (
         <div
-          title={product.title}
           className={cn(
             "group/product-template cursor-pointer h-auto flex flex-col justify-start p-1 select-none relative",
             className
           )}
+          title={product.title}
           {...rest}
         >
           <div className="absolute -right-0.5 top-1 bg-surface-secondary px-2 text-sm rounded-l">
@@ -41,12 +41,12 @@ const ProductTemplate = ({
           </div>
           <Link href={`${SiteMap.PDP.path}/${product.id}`}>
             <Image
-              src={product.thumbnail}
               alt={product.title}
-              className="w-full aspect-square object-fill border-b"
-              width={240}
-              height={240}
               blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII="
+              className="w-full aspect-square object-fill border-b"
+              height={240}
+              src={product.thumbnail}
+              width={240}
             />
             <div className="px-2">
               <h1 className="capitalize mt-2 line-clamp-2 group-hover/product-template:underline text-center">
@@ -73,14 +73,14 @@ const ProductTemplate = ({
       )}
     </>
   );
-};
+}
 
-const ProductTemplateWithControl = () => {
+function ProductTemplateWithControl() {
   return (
     <div>
       <h1>ProductWithControl</h1>
     </div>
   );
-};
+}
 
 export { ProductTemplate, ProductTemplateWithControl };

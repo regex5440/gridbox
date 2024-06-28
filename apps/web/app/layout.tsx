@@ -2,6 +2,7 @@ import "./globals.css";
 import "@repo/ui/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import type { ProductCategory } from "@types";
 import { Header, Footer, Search } from "../components";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,9 +20,9 @@ export default async function RootLayout({
   children: React.ReactNode;
   signin?: React.ReactNode;
 }): Promise<JSX.Element> {
-  const categories = await fetch(
+  const categories = (await fetch(
     `${process.env.productAPI}/products/categories`
-  ).then((res) => res.json());
+  ).then((res) => res.json())) as ProductCategory[] | null;
 
   return (
     <html lang="en">

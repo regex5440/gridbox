@@ -1,8 +1,8 @@
 "use server";
 
 import stripe from "@lib/stripe/payment.server";
-import { authenticateUser } from "./auth";
 import { getOrderInfo } from "controllers/order";
+import { authenticateUser } from "./auth";
 
 export async function updateAddressInIntent({
   billing,

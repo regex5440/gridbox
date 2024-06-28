@@ -1,9 +1,9 @@
 import { authenticateUser } from "actions/auth";
 import { getCartItems } from "controllers/cart";
-import { NextRoute } from "@types";
+import type { NextRoute } from "@types";
 import { getCartBreakup } from "@actions/cart";
 
-export const GET: NextRoute = async (request, { params }) => {
+export const GET: NextRoute = async () => {
   try {
     const authenticUser = await authenticateUser();
     if (!authenticUser.success) {

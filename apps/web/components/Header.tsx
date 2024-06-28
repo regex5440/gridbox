@@ -2,11 +2,11 @@
 import { MenuIcon, UserIcon } from "lucide-react";
 import { Accordion, SidePanel, Navigation } from "@repo/ui";
 import Link from "next/link";
+import { useEffect } from "react";
+import useUserStore from "@lib/store/user";
+import type { ProductCategory } from "@types";
 import SiteMap from "../utils/sitemap";
 import MiniCartContent from "./MiniCartContent";
-import useUserStore from "@lib/store/user";
-import { useEffect } from "react";
-import { ProductCategory } from "@types";
 
 const {
   NavigationMenu,
@@ -28,7 +28,7 @@ export default function Header({
 
   useEffect(() => {
     fetchUser();
-  }, []);
+  }, [fetchUser]);
   return (
     <header className="w-full flex justify-between items-center sm:py-4 sm:px-8 border-b border-b-primary max-sm:px-2 max-sm:py-3">
       <Link href={homePath}>
@@ -39,15 +39,15 @@ export default function Header({
         <NavigationMenuList className="items-center">
           <NavigationMenuItem>
             <NavigationMenuTrigger
-              title="Account"
-              className="px-3 cursor-pointer rounded-[50%]"
               asChild
+              className="px-3 cursor-pointer rounded-[50%]"
+              title="Account"
             >
               {!user ? (
                 <UserIcon />
               ) : (
                 <span className="text-ternary border">
-                  {user.firstName?.charAt(0) + user.lastName?.charAt(0)}
+                  {user.firstName.charAt(0) + user.lastName?.charAt(0)}
                 </span>
               )}
             </NavigationMenuTrigger>
@@ -63,8 +63,8 @@ export default function Header({
                       My Account
                     </NavigationMenuLink>
                     <NavigationMenuLink
-                      href={SiteMap.Cart.path}
                       className="sm:hidden"
+                      href={SiteMap.Cart.path}
                     >
                       Cart Items
                     </NavigationMenuLink>
@@ -92,13 +92,13 @@ export default function Header({
                 <MenuIcon />
               </SidePanel.SheetTrigger>
               <SidePanel.SheetContent className="overflow-y-auto bg-surface border-none data-[state=open]:animate-slide-right-in data-[state=closed]:animate-slide-right-out">
-                <Accordion.Accordion type="single" collapsible>
+                <Accordion.Accordion collapsible type="single">
                   {categories.map(({ name, slug }) => {
                     return (
                       <SidePanel.SheetClose asChild key={slug}>
                         <Link
-                          href={`${SiteMap.PLP.CategoryWise.path}/${slug}`}
                           className="block py-4 border-b border-b-primary hover:underline uppercase"
+                          href={`${SiteMap.PLP.CategoryWise.path}/${slug}`}
                         >
                           {name}
                         </Link>

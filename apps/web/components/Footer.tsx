@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ProductCategory } from "@types";
+import type { ProductCategory } from "@types";
 import SiteMap from "@utils/sitemap";
 
 export default function Footer({
@@ -12,10 +12,10 @@ export default function Footer({
       <ul className="lg:max-w-3xl max-lg:max-w-[90%] mx-auto grid grid-cols-4 max-sm:grid-cols-2 max-sm:text-sm gap-4 justify-between border-b border-b-slate-400 pb-4">
         {categories.map(({ name, slug }) => {
           return (
-            <li key={slug} className="text-center">
+            <li className="text-center" key={slug}>
               <Link
-                href={`${SiteMap.PLP.CategoryWise.path}/${slug}`}
                 className="text-nowrap text-sm hover:underline"
+                href={`${SiteMap.PLP.CategoryWise.path}/${slug}`}
               >
                 {name}
               </Link>
@@ -29,9 +29,9 @@ export default function Footer({
         <p className="max-sm:mt-3">
           Designed & Developed by{" "}
           <Link
+            className="hover:underline text-nowrap"
             href="https://hdxdev.in"
             target="_blank"
-            className="hover:underline text-nowrap"
           >
             Harsh Dagar (hdxdev.in)
           </Link>

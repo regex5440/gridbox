@@ -1,9 +1,10 @@
 "use client";
 
-import { MouseEventHandler, SetStateAction, useRef, useState } from "react";
-import { AddressBook } from "@types";
+import type { MouseEventHandler, SetStateAction } from "react";
+import { useRef, useState } from "react";
 import { Check, Circle, CircleCheckBig } from "lucide-react";
 import { Badge, Button } from "@repo/ui";
+import type { AddressBook } from "@types";
 import AddressForm from "@components/AddressForm";
 
 export default function AddressConfirmation({
@@ -24,7 +25,7 @@ export default function AddressConfirmation({
   const [activeStep, setActiveStep] = useState(0);
   const previousStep = useRef(-1);
 
-  const [addressListState, setAddressList] = useState<AddressBook[]>(
+  const [addressListState, setAddressListState] = useState<AddressBook[]>(
     addressList || []
   );
 
@@ -36,7 +37,7 @@ export default function AddressConfirmation({
     setActiveStep(step);
   };
   const handleNewAddress = (address: AddressBook) => {
-    setAddressList((state) =>
+    setAddressListState((state) =>
       state.filter((add) => add.id !== address.id).concat(address)
     );
   };
@@ -77,43 +78,45 @@ export default function AddressConfirmation({
       <div
         className="flex justify-center gap-8 *:cursor-pointer"
         onClick={handleStepChange}
+        role="tablist"
+        tabIndex={0}
       >
         <Badge
+          className="relative after:border-t-4 after:border-t-gray-300 after:h-0 after:w-8 after:border-dashed after:absolute after:-right-1/2 after:z-0 data-[done=true]:after:border-t-primary"
+          data-active={activeStep === 0}
+          data-done={selectedAddress.shipping.length > 0}
+          data-step={0}
           variant={
             activeStep === 0
               ? "primary"
               : (selectedAddress.shipping.length > 0 && "outline") || "default"
           }
-          data-active={activeStep === 0}
-          data-step={0}
-          data-done={selectedAddress.shipping.length > 0}
-          className="relative after:border-t-4 after:border-t-gray-300 after:h-0 after:w-8 after:border-dashed after:absolute after:-right-1/2 after:z-0 data-[done=true]:after:border-t-primary"
         >
-          {selectedAddress.shipping && (
-            <Check size="16" className="pointer-events-none" />
-          )}{" "}
+          {selectedAddress.shipping ? (
+            <Check className="pointer-events-none" size="16" />
+          ) : null}{" "}
           Shipping
         </Badge>
         <Badge
+          className="relative after:border-t-4 after:border-t-gray-300 after:h-0 after:w-8 after:border-dashed after:absolute after:-right-1/2 after:-z-[1] data-[done=true]:after:border-t-primary"
+          data-active={activeStep === 1}
+          data-done={selectedAddress.billing.length > 0}
+          data-step={1}
           variant={
             activeStep === 1
               ? "primary"
               : (selectedAddress.billing.length > 0 && "outline") || "default"
           }
-          data-active={activeStep === 1}
-          data-step={1}
-          data-done={selectedAddress.billing.length > 0}
-          className="relative after:border-t-4 after:border-t-gray-300 after:h-0 after:w-8 after:border-dashed after:absolute after:-right-1/2 after:-z-[1] data-[done=true]:after:border-t-primary"
         >
-          {selectedAddress.billing && (
-            <Check size="16" className="pointer-events-none" />
-          )}{" "}
+          {selectedAddress.billing ? (
+            <Check className="pointer-events-none" size="16" />
+          ) : null}{" "}
           Billing
         </Badge>
         <Badge
-          variant={activeStep === 2 ? "primary" : "default"}
           data-active={activeStep === 2}
           data-step={2}
+          variant={activeStep === 2 ? "primary" : "default"}
         >
           Confirm
         </Badge>
@@ -129,24 +132,24 @@ export default function AddressConfirmation({
         >
           <h2 className="text-base my-4 underline">Shipping Address</h2>
           <div className="mb-4 flex flex-col gap-2">
-            {addressListState.map((add, index) => (
+            {addressListState.map((add) => (
               <label className="group" key={add.id}>
                 <fieldset className="flex gap-8 items-center border border-gray-400 rounded-lg px-4 cursor-pointer group-has-[input:checked]:border-primary group-has-[input:checked]:border-2 py-1">
                   <input
-                    type="radio"
-                    name="shipping"
-                    value={add.id}
-                    hidden
                     className="w-0 h-0 appearance-none"
                     defaultChecked={add.id === selectedAddress.shipping}
-                    required
+                    hidden
+                    name="shipping"
                     onChange={(e) => setShippingAddress(e.target.value)}
+                    required
+                    type="radio"
+                    value={add.id}
                   />
                   <legend className="text-xl font-bold leading-none">
                     {add.fullName}
                   </legend>
                   <div>
-                    <Circle size="24" className="group-has-[:checked]:hidden" />
+                    <Circle className="group-has-[:checked]:hidden" size="24" />
                     <CircleCheckBig
                       className="hidden text-primary group-has-[:checked]:block"
                       size="24"
@@ -181,24 +184,24 @@ export default function AddressConfirmation({
         >
           <h2 className="text-base my-4 underline">Billing Address</h2>
           <div className="mb-4 flex flex-col gap-2">
-            {addressListState.map((add, index) => (
+            {addressListState.map((add) => (
               <label className="group" key={add.id}>
                 <fieldset className="flex gap-8 items-center border border-gray-400 rounded-lg px-4 cursor-pointer group-has-[input:checked]:border-primary group-has-[input:checked]:border-2 py-1">
                   <input
-                    type="radio"
-                    name="shipping"
-                    value={add.id}
-                    hidden
                     className="w-0 h-0 appearance-none"
                     defaultChecked={add.id === selectedAddress.billing}
-                    required
+                    hidden
+                    name="shipping"
                     onChange={(e) => setBillingAddress(e.target.value)}
+                    required
+                    type="radio"
+                    value={add.id}
                   />
                   <legend className="text-xl font-bold leading-none">
                     {add.fullName}
                   </legend>
                   <div>
-                    <Circle size="24" className="group-has-[:checked]:hidden" />
+                    <Circle className="group-has-[:checked]:hidden" size="24" />
                     <CircleCheckBig
                       className="hidden text-primary group-has-[:checked]:block"
                       size="24"
@@ -272,7 +275,7 @@ export default function AddressConfirmation({
           New Address
         </Button>
       )}
-      {showAddressForm && (
+      {showAddressForm ? (
         <div className="mt-4">
           <h2 className="text-xl">Add new address</h2>
           <AddressForm
@@ -280,7 +283,7 @@ export default function AddressConfirmation({
             onConfirm={handleNewAddress}
           />
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

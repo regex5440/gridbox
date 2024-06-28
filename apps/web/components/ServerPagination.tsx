@@ -17,7 +17,7 @@ type PaginationProps = {
   pageLink: URL;
 };
 
-export default function ({
+export default function ServerPagination({
   currentPage,
   pageSize,
   totalDataCount,
@@ -64,7 +64,7 @@ export default function ({
         <PaginationItem>
           <PaginationLink
             href={`${url.pathname}/${currentPage}${url.search}`}
-            isActive={true}
+            isActive
           >
             {currentPage}
           </PaginationLink>

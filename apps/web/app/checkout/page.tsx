@@ -1,16 +1,19 @@
+import type { CartItem } from "@repo/ui/types";
+import { redirect } from "next/navigation";
 import { getUserAddresses } from "@actions/account";
 import { getAuthenticateUser } from "@actions/auth";
 import { getCartBreakup } from "@actions/cart";
-import { CartItem } from "@repo/ui/types";
-import { NextPageProps } from "@types";
 import { getCartItems } from "controllers/cart";
-import { redirect } from "next/navigation";
-import Checkout from "./Checkout";
-import { ProductDetail } from "./common";
 import stripe from "@lib/stripe/payment.server";
+import Checkout from "./Checkout";
+import type { ProductDetail } from "./common";
 //TODO: can optimize by reducing number of time authentication check happens in each action
 
-export default async function CheckoutPage({ searchParams }: NextPageProps) {
+export default async function CheckoutPage({
+  searchParams,
+}: {
+  searchParams: string;
+}) {
   const authenticatedUser = await getAuthenticateUser();
   const redirectURLParams = new URLSearchParams(searchParams);
   if (!authenticatedUser.success) {
@@ -49,11 +52,11 @@ export default async function CheckoutPage({ searchParams }: NextPageProps) {
   }
 
   let anyItemNotInStock = false;
-  const productDetails: ProductDetail[] = await Promise.all(
-    cartItems?.map(({ productId, quantity }) =>
+  const productDetails = await Promise.all(
+    cartItems.map(({ productId, quantity }) =>
       fetch(`${process.env.productAPI}/products/${productId}`)
         .then((res) => res.json())
-        .then((data) => {
+        .then((data: ProductDetail) => {
           if (data.stock <= 0) {
             anyItemNotInStock = true;
           }
@@ -89,16 +92,16 @@ export default async function CheckoutPage({ searchParams }: NextPageProps) {
   return (
     <div>
       {cartBreakup === undefined ||
-      userAddress?.error ||
+      userAddress.error ||
       !paymentIntent.client_secret ? (
         <div className="text-center text-2xl">Something went wrong</div>
       ) : (
         <Checkout
-          productDetailList={productDetails}
-          userAddress={userAddress.success?.data || []}
-          cartBreakup={cartBreakup}
           anyItemNotInStock={anyItemNotInStock}
+          cartBreakup={cartBreakup}
           clientSecret={paymentIntent.client_secret}
+          productDetailList={productDetails}
+          userAddress={userAddress.success.data || []}
           usingCart={usingCartItems}
         />
       )}

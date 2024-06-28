@@ -1,6 +1,7 @@
-import { decryptToken } from "@lib/jwt";
 import { cookies } from "next/headers";
-import { NextMiddleware, NextResponse } from "next/server";
+import type { NextMiddleware } from "next/server";
+import { NextResponse } from "next/server";
+import { decryptToken } from "@lib/jwt";
 
 // declare global {
 //   namespace NextRequest {
@@ -10,11 +11,11 @@ import { NextMiddleware, NextResponse } from "next/server";
 //   }
 // }
 
-const authMiddleware: NextMiddleware = async (req, event) => {
+const authMiddleware: NextMiddleware = async (req) => {
   const requestedPath = req.nextUrl.pathname;
   const sessionToken = cookies().get("session.token")?.value;
 
-  let customRedirectURL = requestedPath.startsWith("/api")
+  const customRedirectURL = requestedPath.startsWith("/api")
     ? "/signin"
     : `/signin?redirect=${requestedPath}`;
   if (sessionToken) {

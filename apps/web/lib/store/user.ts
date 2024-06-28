@@ -1,5 +1,5 @@
-import { getAuthenticateUser } from "actions/auth";
 import { create } from "zustand";
+import { getAuthenticateUser } from "actions/auth";
 
 type State = {
   user: {
@@ -14,7 +14,7 @@ type State = {
 };
 
 type Action = {
-  fetchUser: () => void;
+  fetchUser: () => Promise<void>;
   removeUser: () => void;
 };
 

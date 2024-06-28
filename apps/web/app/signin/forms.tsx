@@ -1,9 +1,10 @@
 "use client";
 import { Input, Select as SelectElem } from "@repo/ui";
 import { useFormState } from "react-dom";
-import { HTMLAttributes, useEffect } from "react";
+import type { HTMLAttributes } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { LoginFormErrorState, SignupFormErrorState } from "@types";
+import type { LoginFormErrorState, SignupFormErrorState } from "@types";
 import FormButton from "@components/FormButton";
 import login from "actions/login";
 import signup from "actions/signup";
@@ -37,27 +38,29 @@ export function Login({ className, withinModal = false, ...rest }: FormProps) {
         router.push(redirect || "/");
       }
     }
-  }, [state, router, withinModal]);
+  }, [state, router, withinModal, fetchCart, fetchUser]);
 
   const singleError =
     state?.error?.message || state?.error?.email || state?.error?.password;
   return (
     <form action={action} className={`mt-4 *:mb-4 w-60 ${className}`} {...rest}>
       <Input
-        type="email"
+        className={singleError ? `border-2 border-alert` : ""}
         id="email"
         name="email"
         placeholder="Email Address"
-        className={singleError ? `border-2 border-alert` : ""}
+        type="email"
       />
       <Input
-        type="password"
+        className={singleError ? `border-2 border-alert` : ""}
         id="password"
         name="password"
         placeholder="Password"
-        className={singleError ? `border-2 border-alert` : ""}
+        type="password"
       />
-      {singleError && <div className="text-alert text-sm">{singleError}</div>}
+      {singleError ? (
+        <div className="text-alert text-sm">{singleError}</div>
+      ) : null}
       <FormButton className="bg-primary text-regular-inverted w-full">
         Login
       </FormButton>
@@ -68,49 +71,47 @@ export function Login({ className, withinModal = false, ...rest }: FormProps) {
 const { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } =
   SelectElem;
 
-export function Signup({ className, withinModal, ...rest }: FormProps) {
+export function Signup({ className, ...rest }: FormProps) {
   const [state, action] = useFormState<SignupFormErrorState, FormData>(
     signup,
     undefined
   );
   return (
     <form action={action} className={`mt-4 *:mb-2 w-72 ${className}`} {...rest}>
-      {state?.error?.message && (
+      {state?.error?.message ? (
         <div className="text-alert text-sm">{state.error.message}</div>
-      )}
+      ) : null}
       <div className="flex justify-between gap-3">
         <Input
-          type="text"
+          className={`${state?.error?.firstName ? "border-2 border-alert" : ""} w-1/2`}
           name="firstName"
           placeholder="First Name"
-          className={
-            (state?.error?.firstName ? "border-2 border-alert" : "") + " w-1/2"
-          }
+          type="text"
         />
         <Input
-          type="text"
+          className="w-1/2"
           name="lastName"
           placeholder="Last Name"
-          className="w-1/2"
+          type="text"
         />
       </div>
-      {state?.error?.firstName && (
-        <div className="text-alert text-sm">{state?.error.firstName?.[0]}</div>
-      )}
+      {state?.error?.firstName ? (
+        <div className="text-alert text-sm">{state.error.firstName[0]}</div>
+      ) : null}
       <div className="flex justify-between gap-3">
         <Input
-          type="date"
+          className={state?.error?.dob ? "border-2 border-alert" : ""}
+          defaultValue="2000-01-01"
           name="dob"
           placeholder="Date of Birth"
           title="Date of Birth"
-          defaultValue={"2000-01-01"}
-          className={state?.error?.dob ? "border-2 border-alert" : ""}
+          type="date"
         />
         <Select>
           <SelectTrigger>
             <SelectValue
-              placeholder="Gender"
               className="w-5/12"
+              placeholder="Gender"
               title="Gender"
             />
           </SelectTrigger>
@@ -121,39 +122,39 @@ export function Signup({ className, withinModal, ...rest }: FormProps) {
           </SelectContent>
         </Select>
       </div>
-      {state?.error?.dob && (
-        <div className="text-alert text-sm">{state?.error.dob?.[0]}</div>
-      )}
+      {state?.error?.dob ? (
+        <div className="text-alert text-sm">{state.error.dob[0]}</div>
+      ) : null}
       <Input
-        type="email"
+        className={state?.error?.email ? "border-2 border-alert" : ""}
         name="email"
         placeholder="Email Address"
-        className={state?.error?.email ? "border-2 border-alert" : ""}
+        type="email"
       />
-      {state?.error?.email && (
-        <div className="text-alert text-sm">{state?.error.email?.[0]}</div>
-      )}
+      {state?.error?.email ? (
+        <div className="text-alert text-sm">{state.error.email[0]}</div>
+      ) : null}
       <Input
-        type="password"
-        name="password"
-        placeholder="Password"
         className={
           state?.error?.password || state?.error?.passwordConfirm
             ? "border-2 border-alert"
             : ""
         }
+        name="password"
+        placeholder="Password"
+        type="password"
       />
       <Input
-        type="password"
+        className={state?.error?.passwordConfirm ? "border-2 border-alert" : ""}
         name="passwordConfirm"
         placeholder="Confirm Password"
-        className={state?.error?.passwordConfirm ? "border-2 border-alert" : ""}
+        type="password"
       />
-      {(state?.error?.password || state?.error?.passwordConfirm) && (
+      {state?.error?.password || state?.error?.passwordConfirm ? (
         <div className="text-alert text-sm">
-          {state?.error?.password?.[0] || state?.error.passwordConfirm?.[0]}
+          {state.error.password?.[0] || state.error.passwordConfirm?.[0]}
         </div>
-      )}
+      ) : null}
       <FormButton className="bg-primary text-regular-inverted w-full">
         Signup
       </FormButton>

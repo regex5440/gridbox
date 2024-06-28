@@ -1,10 +1,10 @@
 "use client";
 import { Button, Input } from "@repo/ui";
-import FormButton from "./FormButton";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useFormState } from "react-dom";
 import { addressAction } from "@actions/account";
-import { AddressBook } from "@types";
+import type { AddressBook } from "@types";
+import FormButton from "./FormButton";
 
 type AddressFormProps = {
   onCancel?: (show: boolean) => void;
@@ -26,84 +26,80 @@ export default function AddressForm({
       const newAddress = state.success.data;
       onConfirm?.(newAddress);
     }
-  }, [onCancel, state]);
+  }, [onCancel, state, onConfirm]);
   return (
     <form action={formAction} className={className}>
       <input
-        type="text"
-        value={editableAddress?.id || ""}
+        hidden
         name="id"
         readOnly
-        hidden
+        type="text"
+        value={editableAddress?.id || ""}
       />
       <div className="flex flex-col gap-2">
         <Input
-          type="text"
-          placeholder="Full Name"
           className="border border-gray-400 p-2 rounded-md data-[error=true]:border-alert"
-          name="name"
-          data-error={
-            state?.error?.fullName?.length > 0 || state?.error?.common
-          }
+          data-error={state?.error?.fullName ? true : state?.error?.common}
           defaultValue={editableAddress?.fullName}
+          name="name"
+          placeholder="Full Name"
+          type="text"
         />
         <textarea
-          placeholder="Address"
           className="border border-gray-400 p-2 rounded-md data-[error=true]:border-alert"
-          name="address"
-          data-error={state?.error?.address?.length > 0 || state?.error?.common}
+          data-error={state?.error?.address ? true : state?.error?.common}
           defaultValue={editableAddress?.address}
+          name="address"
+          placeholder="Address"
         />
         <div className="flex gap-4 sm:gap-2 max-sm:w-full">
           <Input
-            type="text"
-            placeholder="City"
             className="border border-gray-400 p-2 rounded-md data-[error=true]:border-alert w-full"
-            name="city"
-            data-error={state?.error?.city?.length > 0 || state?.error?.common}
+            data-error={state?.error?.city ? true : state?.error?.common}
             defaultValue={editableAddress?.city}
+            name="city"
+            placeholder="City"
+            type="text"
           />
           <Input
-            type="text"
-            placeholder="State"
             className="border border-gray-400 p-2 rounded-md data-[error=true]:border-alert w-full"
-            name="state"
-            data-error={state?.error?.state?.length > 0 || state?.error?.common}
+            data-error={state?.error?.state ? true : state?.error?.common}
             defaultValue={editableAddress?.state}
+            name="state"
+            placeholder="State"
+            type="text"
           />
         </div>
         <div className="flex gap-4 sm:gap-2 max-sm:w-full">
           <Input
-            type="text"
-            placeholder="Zip Code"
             className="border border-gray-400 p-2 rounded-md data-[error=true]:border-alert w-full"
-            name="zip"
-            data-error={state?.error?.zip?.length > 0 || state?.error?.common}
+            data-error={state?.error?.zip ? true : state?.error?.common}
             defaultValue={editableAddress?.zip}
+            name="zip"
+            placeholder="Zip Code"
+            type="text"
           />
           <Input
-            type="text"
-            placeholder="Country"
             className="border border-gray-400 p-2 rounded-md data-[error=true]:border-alert w-full"
-            name="country"
-            data-error={
-              state?.error?.country?.length > 0 || state?.error?.common
-            }
+            data-error={state?.error?.country ? true : state?.error?.common}
             defaultValue={editableAddress?.country}
+            name="country"
+            placeholder="Country"
+            type="text"
           />
         </div>
         <fieldset className="border-t-2 py-2">
           <legend>Contact</legend>
           <Input
-            type="tel"
-            placeholder="Phone without country code"
             className="border border-gray-400 p-2 rounded-md data-[error=true]:border-alert w-fit"
-            name="phone"
-            data-error={state?.error?.phone?.length > 0 || state?.error?.common}
+            data-error={state?.error?.phone ? true : state?.error?.common}
             defaultValue={editableAddress?.phone}
+            name="phone"
+            placeholder="Phone without country code"
+            type="tel"
           />
         </fieldset>
-        {state?.error?.common && <div>{state?.error?.message}</div>}
+        {state?.error?.common ? <div>{state.error.message}</div> : null}
         <div className="flex gap-2 justify-end">
           <FormButton
             className="text-regular-inverted"

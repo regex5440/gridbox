@@ -1,39 +1,37 @@
 import { Suspense } from "react";
-import ProductImageSection from "./ProductImageViewer";
-import { ProductsCarousel, StarRatings } from "../../../components";
-import RecentlyViewed from "../../../components/RecentlyViewed";
 import {
   CircleCheckBig,
   Info,
   RefreshCcw,
   RefreshCwOff,
-  RotateCcw,
   ShieldCheck,
-  Star,
 } from "lucide-react";
-import ProductVisitedMarker from "../../../components/ProductVisitedMarker";
-import ProductPurchaseForm from "@app/product_description/[product_id]/ProductPurchaseForm";
-import { Product } from "@repo/ui/types";
+import type { Product } from "@repo/ui/types";
 import Link from "next/link";
 import { Loader } from "@repo/ui";
+import ProductPurchaseForm from "@app/product_description/[productId]/ProductPurchaseForm";
+import ProductVisitedMarker from "@components/ProductVisitedMarker";
+import RecentlyViewed from "@components/RecentlyViewed";
+import { ProductsCarousel, StarRatings } from "@components/index";
+import ProductImageSection from "./ProductImageViewer";
 
 type ProductPageProps = {
   params: {
-    product_id: string;
+    productId: string;
   };
   searchParams: URLSearchParams;
 };
 
 export default async function ProductPage({
-  params: { product_id },
+  params: { productId },
 }: ProductPageProps) {
   const productDetails = await fetch(
-    `${process.env.productAPI}/products/${product_id}`
+    `${process.env.productAPI}/products/${productId}`
   ).then<Product>((res) => res.json());
 
-  const relatedProducts = await fetch(
+  const relatedProducts = (await fetch(
     `${process.env.productAPI}/products/category/${productDetails.category}?limit=10`
-  ).then((res) => res.json());
+  ).then((res) => res.json())) as { products: Product[] };
 
   const visibleStarRating = String(productDetails.rating).substring(0, 3);
   const productPrice =
@@ -41,7 +39,7 @@ export default async function ProductPage({
     (productDetails.price * productDetails.discountPercentage) / 100;
   return (
     <>
-      <ProductVisitedMarker product_id={product_id} />
+      <ProductVisitedMarker productId={productId} />
       <div className="px-common-x">
         <section className="mx-auto w-full lg:max-w-[80%] sm:flex gap-8 justify-evenly mt-10 max-sm:flex-wrap">
           <div className="sm:sticky top-16 h-fit">
@@ -49,11 +47,11 @@ export default async function ProductPage({
           </div>
           <div className="sm:min-w-80 sm:max-w-[30%] flex flex-col w-full max-sm:mt-10 sm:max-lg:mx-auto">
             <h1 className="text-3xl">{productDetails.title}</h1>
-            {productDetails.brand && (
+            {productDetails.brand ? (
               <p className="text-sm">by {productDetails.brand}</p>
-            )}
+            ) : null}
             <p className="text-xs flex gap-2 overflow-x-auto mt-2">
-              {productDetails.tags?.map((label: string, i) => (
+              {productDetails.tags.map((label: string, i) => (
                 <span
                   className="bg-surface-secondary px-1.5 py-0.5 rounded-full"
                   key={`tag${i}`}
@@ -62,7 +60,7 @@ export default async function ProductPage({
                 </span>
               ))}
             </p>
-            <Link title={visibleStarRating} href={"#reviews"}>
+            <Link href="#reviews" title={visibleStarRating}>
               <StarRatings rating={productDetails.rating} /> (
               {visibleStarRating})
             </Link>
@@ -82,19 +80,19 @@ export default async function ProductPage({
                 <span className="text-red-500">Out of Stock</span>
               )}
             </p>
-            {productDetails.shippingInformation && (
+            {productDetails.shippingInformation ? (
               <p className="text-sm flex items-center gap-1 mt-1 font-semibold">
                 {/* <span className="font-bold">Shipping:</span>{" "} */}
                 {/month/gi.test(productDetails.shippingInformation) ? (
-                  <Info size={16} className="text-yellow-500" />
+                  <Info className="text-yellow-500" size={16} />
                 ) : (
-                  <CircleCheckBig size={16} className="text-green-500" />
+                  <CircleCheckBig className="text-green-500" size={16} />
                 )}{" "}
                 {productDetails.shippingInformation}
               </p>
-            )}
+            ) : null}
             <div className="mt-14 text-center">
-              <ProductPurchaseForm productId={product_id} />
+              <ProductPurchaseForm productId={productId} />
               {/* //TODO: Add wishlist button in the image area */}
               {/* <p className="my-2 fieldset-legend">OR</p>
               <Button className="border rounded-lg w-8/12">
@@ -102,7 +100,7 @@ export default async function ProductPage({
               </Button> */}
             </div>
             <div className="flex gap-4 text-center justify-center my-4 text-primary text-xs *:flex *:flex-col *:items-center *:w-1/4 overflow-x-auto *:capitalize">
-              {productDetails?.returnPolicy?.length > 0 && (
+              {productDetails.returnPolicy.length > 0 && (
                 <div className="">
                   {/no/gi.test(productDetails.returnPolicy) ? (
                     <RefreshCwOff size={32} />
@@ -112,7 +110,7 @@ export default async function ProductPage({
                   <p>{productDetails.returnPolicy}</p>
                 </div>
               )}
-              {productDetails?.warrantyInformation?.length > 0 && (
+              {productDetails.warrantyInformation.length > 0 && (
                 <div>
                   <ShieldCheck size={32} />
                   <p>{productDetails.warrantyInformation}</p>
@@ -139,7 +137,7 @@ export default async function ProductPage({
                   {Object.entries(productDetails.dimensions).map(
                     ([label, value]: [label: string, value: number]) => {
                       return (
-                        <div key={label} className="capitalize">
+                        <div className="capitalize" key={label}>
                           {label}: {Math.round(value)}{" "}
                           <span className="lowercase">cm</span>
                         </div>
@@ -150,8 +148,8 @@ export default async function ProductPage({
               </div>
             </fieldset>
             <Link
-              href="#product-details"
               className="text-primary font-bold text-xs text-right"
+              href="#product-details"
             >
               More info...
             </Link>
@@ -190,7 +188,7 @@ export default async function ProductPage({
                     {Object.entries(productDetails.dimensions).map(
                       ([label, value]: [label: string, value: number]) => {
                         return (
-                          <div key={label} className="capitalize">
+                          <div className="capitalize" key={label}>
                             {label}: {Math.round(value)}{" "}
                             <span className="lowercase">cm</span>
                           </div>
@@ -218,7 +216,7 @@ export default async function ProductPage({
                   <div>{productDetails.meta.barcode}</div>
                 </div>
               </div>
-              <div className="*:flex *:mt-1 *:*:flex-1 *:border-b last:*:border-none *border text-sm *:py-1"></div>
+              <div className="*:flex *:mt-1 *:*:flex-1 *:border-b last:*:border-none *border text-sm *:py-1" />
             </div>
           </fieldset>
         </section>

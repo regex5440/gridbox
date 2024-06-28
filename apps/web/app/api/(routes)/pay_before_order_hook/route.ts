@@ -1,17 +1,18 @@
 "use server";
+import type { CartItem } from "@repo/ui/types";
+import type { PaymentIntent as PI } from "@stripe/stripe-js";
 import { getCartBreakup } from "@actions/cart";
 import { PaymentIntentMetadataSchema } from "@lib/definitions/order";
 import stripe from "@lib/stripe/payment.server";
-import { CartItem } from "@repo/ui/types";
-import { PaymentIntent as PI } from "@stripe/stripe-js";
-import { NextRoute } from "@types";
+import type { NextRoute } from "@types";
 import { getUserShippingInfo } from "controllers/account";
 import { clearCart } from "controllers/cart";
 import { createOrder } from "controllers/order";
 
-const IntentStatusMap: {
-  [key: string]: Parameters<typeof createOrder>[0]["paymentStatus"];
-} = {
+const IntentStatusMap: Record<
+  string,
+  Parameters<typeof createOrder>[0]["paymentStatus"]
+> = {
   succeeded: "success",
   processing: "pending",
   canceled: "failed",
@@ -30,7 +31,7 @@ interface PaymentIntent extends PI {
     billingId: string;
   };
 }
-export const POST: NextRoute = async (request, { params }) => {
+export const POST: NextRoute = async (request) => {
   //TODO: Initiate refund if order creation fails
 
   const paymentIntentEvent = await request.json();
@@ -119,7 +120,7 @@ export const POST: NextRoute = async (request, { params }) => {
   });
 
   //? Clear the cart
-  if (typeof orderCreationResponse?.data?.id === "undefined") {
+  if (typeof orderCreationResponse.data.id === "undefined") {
     await stripe.refunds.create({
       payment_intent: paymentIntent.id,
     });

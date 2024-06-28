@@ -1,11 +1,9 @@
 type ListingProp = {
   children: React.ReactNode;
-  params: {
-    [key: string]: string;
-  };
+  params: Record<string, string>;
 };
 
-export default function ListingTemplate({ children, ...rest }: ListingProp) {
+export default function ListingTemplate({ children }: ListingProp) {
   return (
     <div className="grid grid-cols-4 px-common-x gap-10">
       {/* <div className="border max-64">Filters</div> */}

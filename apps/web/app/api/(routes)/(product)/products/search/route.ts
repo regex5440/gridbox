@@ -1,6 +1,6 @@
-import { NextRoute } from "@types";
+import type { NextRoute } from "@types";
 
-export const GET: NextRoute = async (req, { params }) => {
+export const GET: NextRoute = async (req) => {
   const url = new URL(req.url);
 
   const fetchedResponse = await fetch(

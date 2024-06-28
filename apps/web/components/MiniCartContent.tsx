@@ -1,21 +1,21 @@
 "use client";
-import useMiniCart from "@lib/store/minicart";
-import { Button, Loader, SidePanel } from "@repo/ui";
+import { Loader, SidePanel } from "@repo/ui";
 import { ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
-import CartItem from "./CartItem";
 import { useEffect } from "react";
+import useMiniCart from "@lib/store/minicart";
 import { removeCartItem, updateCartItemQty } from "actions/cart";
+import CartItem from "./CartItem";
 
 export default function MiniCart() {
   const { open, toggle, loadingCart, cartItems, fetchCart } = useMiniCart();
 
   useEffect(() => {
     fetchCart();
-  }, []);
+  }, [fetchCart]);
 
   return (
-    <SidePanel.Sheet open={open} onOpenChange={toggle}>
+    <SidePanel.Sheet onOpenChange={toggle} open={open}>
       <SidePanel.SheetTrigger asChild className="px-3 cursor-pointer relative">
         <div>
           <ShoppingCartIcon />
@@ -26,44 +26,46 @@ export default function MiniCart() {
           )}
         </div>
       </SidePanel.SheetTrigger>
-      <SidePanel.SheetContent className="bg-surface border-none data-[state=open]:animate-slide-right-in data-[state=closed]:animate-slide-right-out group minicart">
-        <SidePanel.SheetHeader>
+      <SidePanel.SheetContent className="bg-surface border-none data-[state=open]:animate-slide-right-in data-[state=closed]:animate-slide-right-out group minicart p-0 flex flex-col">
+        <SidePanel.SheetHeader className="px-6 pt-6">
           <SidePanel.SheetTitle className="text-2xl mb-3">
-            <Link href="/cart" className="hover:underline">
+            <Link className="hover:underline" href="/cart">
               <SidePanel.SheetClose>Cart</SidePanel.SheetClose>
             </Link>
           </SidePanel.SheetTitle>
         </SidePanel.SheetHeader>
-        <div className="overflow-y-auto max-h-full relative">
-          {loadingCart && (
-            <Loader className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
-          )}
-          {cartItems.length > 0 ? (
-            cartItems.map((item) => (
-              <CartItem
-                key={item.productId}
-                productId={String(item.productId)}
-                initialQty={item.quantity}
-                onQtyChange={(qty, productId) => {
-                  updateCartItemQty({ productId, quantity: qty }).then(
-                    fetchCart
-                  );
-                }}
-                onRemove={(productId) => {
-                  removeCartItem(productId).then(fetchCart);
-                }}
-                className="mb-1"
-              />
-            ))
-          ) : (
-            <p>Cart is empty</p>
-          )}
+        <div className="overflow-y-auto relative px-6 thin-scrollbar">
+          <div className="pb-12">
+            {loadingCart ? (
+              <Loader className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
+            ) : null}
+            {cartItems.length > 0 ? (
+              cartItems.map((item) => (
+                <CartItem
+                  className="mb-1"
+                  initialQty={item.quantity}
+                  key={item.productId}
+                  onQtyChange={(qty, productId) => {
+                    updateCartItemQty({ productId, quantity: qty }).then(
+                      fetchCart
+                    );
+                  }}
+                  onRemove={(productId) => {
+                    removeCartItem(productId).then(fetchCart);
+                  }}
+                  productId={String(item.productId)}
+                />
+              ))
+            ) : (
+              <p>Cart is empty</p>
+            )}
+          </div>
         </div>
-        {cartItems?.length > 0 && (
+        {cartItems.length > 0 && (
           <SidePanel.SheetFooter className="absolute bottom-0 left-0 w-full">
             <Link
-              href="/checkout"
               className="bg-add-to-cart text-regular-inverted w-full text-center py-2 text-xl"
+              href="/checkout"
             >
               <SidePanel.SheetClose className="w-full h-full text-center">
                 Checkout

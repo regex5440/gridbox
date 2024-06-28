@@ -1,12 +1,12 @@
 import { Star, StarHalf } from "lucide-react";
 
-const StarRatings = ({
+function StarRatings({
   rating,
   starSize = 16,
 }: {
   rating: number;
   starSize?: number;
-}) => {
+}) {
   const ratingStarCount = Math.ceil(rating);
 
   return (
@@ -16,8 +16,8 @@ const StarRatings = ({
           return (
             <span key={`starTop${i}`}>
               <StarHalf
-                size={starSize}
                 className="fill-star-color stroke-star-color"
+                size={starSize}
               />
             </span>
           );
@@ -25,14 +25,14 @@ const StarRatings = ({
         return (
           <span key={`starTop${i}`}>
             <Star
-              size={starSize}
               className="fill-star-color stroke-star-color"
+              size={starSize}
             />
           </span>
         );
       })}
     </div>
   );
-};
+}
 
 export default StarRatings;

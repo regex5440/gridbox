@@ -1,9 +1,9 @@
 "use client";
-import CardTemplate from "./CardTemplate";
 import { useState } from "react";
-import Stripe from "stripe";
+import type Stripe from "stripe";
+import CardTemplate from "./CardTemplate";
 
-export default function ({
+export default function PaymentMethodInterface({
   PaymentMethodList,
 }: {
   PaymentMethodList: Stripe.PaymentMethod[];
@@ -25,8 +25,8 @@ export default function ({
           paymentMethod.card ? (
             <CardTemplate
               CardInfo={paymentMethod.card}
-              methodId={paymentMethod.id}
               key={paymentMethod.id}
+              methodId={paymentMethod.id}
               removeMethod={removePaymentMethod}
             />
           ) : null

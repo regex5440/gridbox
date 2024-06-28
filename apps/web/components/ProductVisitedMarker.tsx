@@ -4,12 +4,12 @@ import { useEffect } from "react";
 import { setRecentlyViewedProductIds } from "../utils";
 
 export default function ProductVisitedMarker({
-  product_id,
+  productId,
 }: {
-  product_id: string;
+  productId: string;
 }) {
   useEffect(() => {
-    setRecentlyViewedProductIds(product_id);
-  }, []);
-  return <></>;
+    setRecentlyViewedProductIds(productId);
+  }, [productId]);
+  return null;
 }

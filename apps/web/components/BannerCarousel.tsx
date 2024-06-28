@@ -1,15 +1,16 @@
 "use client";
-import { Button, Carousel } from "@repo/ui";
+import { Carousel } from "@repo/ui";
 import { Circle } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import React, { useEffect, useState } from "react";
-import { discountedPrice } from "../utils";
 import Link from "next/link";
-import SiteMap from "@utils/sitemap";
 import { useFormState } from "react-dom";
-import { buyNowAction } from "@actions/cart";
-import FormButton from "./FormButton";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import SiteMap from "@utils/sitemap";
+import { buyNowAction } from "@actions/cart";
+import { discountedPrice } from "../utils";
+import FormButton from "./FormButton";
 
 export default function BannerCarousel({ products }: { products: any[] }) {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function BannerCarousel({ products }: { products: any[] }) {
 
   useEffect(() => {
     api?.on("select", () => {
-      setActiveSlideIndex(api?.selectedScrollSnap());
+      setActiveSlideIndex(api.selectedScrollSnap());
     });
   }, [api]);
 
@@ -29,7 +30,7 @@ export default function BannerCarousel({ products }: { products: any[] }) {
     } else if (state?.success?.redirect) {
       router.push(state.success.redirect);
     }
-  }, [state]);
+  }, [state, router]);
   const moveToSlide = (index: number) => {
     api?.scrollTo(index);
   };
@@ -37,40 +38,42 @@ export default function BannerCarousel({ products }: { products: any[] }) {
   return (
     <div>
       <Carousel.Carousel
-        opts={{ loop: true }}
         className="group/banner"
-        setApi={setApi}
+        opts={{ loop: true }}
         plugins={[
           Autoplay({
             delay: 8000,
             stopOnInteraction: false,
           }),
         ]}
+        setApi={setApi}
       >
         <Carousel.CarouselContent className="h-2/3screen max-md:h-1/3screen">
-          {products?.map((product: any, index: number) => (
+          {products.map((product: any, index: number) => (
             <Carousel.CarouselItem
-              key={product.id}
               className="h-full basis-full group/item select-none"
               data-active={activeSlideIndex === index}
+              key={product.id}
             >
-              <div className={`w-full h-full relative`}>
-                <img
-                  src={product.thumbnail}
+              <div className="w-full h-full relative">
+                <Image
+                  alt={product.title}
                   className="h-full w-full mx-auto object-cover object-center"
+                  fill
+                  src={product.thumbnail}
                 />
                 <div className="absolute left-0 bottom-0 w-full h-2/3 max-md:h-full bg-gradient-to-t flex md:items-center justify-center max-md:pb-10">
                   <div className="flex justify-between w-10/12 max-md:w-11/12 items-end text-regular-inverted">
                     <Link
-                      href={`${SiteMap.PDP.path}/${product.id}`}
                       className="transition-all group-data-[active=true]/item:animate-slideFadeLeftIn max-w-[50%] group"
+                      href={`${SiteMap.PDP.path}/${product.id}`}
                     >
                       <h2 className="md:text-4xl max-md:text-lg group-hover:underline">
                         {product.title}
                       </h2>
                       <p
-                        title={product.description}
                         className="max-md:hidden mt-2"
+                        title={product.description}
                       >
                         {product.description}
                       </p>
@@ -100,18 +103,18 @@ export default function BannerCarousel({ products }: { products: any[] }) {
                         className="col-start-1 col-span-2 max-md:hidden overflow-hidden"
                       >
                         <input
-                          type="hidden"
-                          name="productId"
-                          value={product.id}
-                          readOnly
                           hidden
+                          name="productId"
+                          readOnly
+                          type="hidden"
+                          value={product.id}
                         />
                         <input
-                          type="hidden"
-                          name="quantity"
-                          value="1"
-                          readOnly
                           hidden
+                          name="quantity"
+                          readOnly
+                          type="hidden"
+                          value="1"
                         />
                         <FormButton className="w-full mt-4 bg-buy-now text-xl text-black opacity-0 group-data-[active=true]/item:animate-[slideBottomUp_0.7s_ease-out_0.5s,fadeIn_0.6s_ease-out_0.5s_forwards]">
                           Buy Now
@@ -125,19 +128,19 @@ export default function BannerCarousel({ products }: { products: any[] }) {
           ))}
         </Carousel.CarouselContent>
         <Carousel.CarouselPrevious
-          iconProp={{ className: "w-10 h-8" }}
           className="bg-primary text-regular-inverted w-10 h-10 opacity-0 transition-all duration-300 md:group-hover/banner:opacity-100 md:group-hover/banner:translate-x-8 max-md:pointer-events-none max-md:invisible"
+          iconProp={{ className: "w-10 h-8" }}
         />
         <Carousel.CarouselNext
-          iconProp={{ className: "w-10 h-8" }}
           className="bg-primary text-regular-inverted dark w-10 h-10 opacity-0 transition-all duration-300 md:group-hover/banner:opacity-100 md:group-hover/banner:-translate-x-8 max-md:pointer-events-none max-md:invisible"
+          iconProp={{ className: "w-10 h-8" }}
         />
         <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
-          {products?.map((_: any, index: number) => (
+          {products.map((_: any, index: number) => (
             <Circle
-              key={index}
               className="cursor-pointer stroke-secondary data-[selected=true]:fill-primary w-5 max-md:w-3"
               data-selected={activeSlideIndex === index}
+              key={index}
               onClick={moveToSlide.bind(null, index)}
             />
           ))}

@@ -1,13 +1,12 @@
 "use client";
-import AddressForm from "@components/AddressForm";
-import { Button } from "@repo/ui";
-import { AddressBook } from "@types";
-import { Pencil, Trash2, X } from "lucide-react";
+import { Button, Dialog as Dg } from "@repo/ui";
+import { Pencil, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Dialog as Dg } from "@repo/ui";
-import FormButton from "@components/FormButton";
-import { deleteAddressAction } from "@actions/account";
 import { useFormState } from "react-dom";
+import { deleteAddressAction } from "@actions/account";
+import type { AddressBook } from "@types";
+import FormButton from "@components/FormButton";
+import AddressForm from "@components/AddressForm";
 
 const {
   Dialog,
@@ -22,8 +21,12 @@ const {
   DialogPortal,
 } = Dg;
 
-export default function ({ addressList }: { addressList?: AddressBook[] }) {
-  const [addressListState, setAddressList] = useState(addressList || []);
+export default function AddressUI({
+  addressList,
+}: {
+  addressList?: AddressBook[];
+}) {
+  const [addressListState, setAddressListState] = useState(addressList || []);
   const [showForm, setShowForm] = useState(false);
   const [editableAddress, setEditableAddress] = useState<
     AddressBook | undefined
@@ -34,7 +37,7 @@ export default function ({ addressList }: { addressList?: AddressBook[] }) {
   );
 
   const handleNewAddress = (address: AddressBook) => {
-    setAddressList((prev) => {
+    setAddressListState((prev) => {
       const index = prev.findIndex((item) => item.id === address.id);
       if (index > -1) {
         prev[index] = address;
@@ -50,7 +53,7 @@ export default function ({ addressList }: { addressList?: AddressBook[] }) {
 
   useEffect(() => {
     if (deleteAddressState?.success) {
-      setAddressList((prev) => {
+      setAddressListState((prev) => {
         return prev.filter(
           (item) => item.id !== deleteAddressState.success.data.id
         );
@@ -67,7 +70,7 @@ export default function ({ addressList }: { addressList?: AddressBook[] }) {
     <div>
       <div className="flex flex-col gap-3">
         {!showForm &&
-          addressListState?.map((address) => (
+          addressListState.map((address) => (
             <div
               className="border rounded p-2 text-sm flex max-sm:flex-col justify-between gap-4"
               key={address.id}
@@ -92,14 +95,14 @@ export default function ({ addressList }: { addressList?: AddressBook[] }) {
               <div className="text-right flex flex-col gap-2">
                 <Button
                   className="btn text-regular"
-                  variant={"outline"}
                   onClick={handleEditAddress.bind(null, address)}
+                  variant="outline"
                 >
                   <Pencil size="16" />
                 </Button>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button className="btn text-regular" variant={"outline"}>
+                    <Button className="btn text-regular" variant="outline">
                       <Trash2 size="16" />
                     </Button>
                   </DialogTrigger>
@@ -111,11 +114,11 @@ export default function ({ addressList }: { addressList?: AddressBook[] }) {
                           Are you sure you want to delete this address?
                         </DialogTitle>
                       </DialogHeader>
-                      <DialogDescription className="bg-surface p-1" asChild>
+                      <DialogDescription asChild className="bg-surface p-1">
                         <div>
-                          {deleteAddressState?.error && (
+                          {deleteAddressState?.error ? (
                             <p className="text-alert">Something went wrong!</p>
-                          )}
+                          ) : null}
                           <div className="border-l border-r border-primary px-2">
                             <p className="font-semibold">{address.fullName}</p>
                             <p>
@@ -134,11 +137,11 @@ export default function ({ addressList }: { addressList?: AddressBook[] }) {
                       <DialogFooter className="text-regular-inverted">
                         <form action={deleteAction}>
                           <input
-                            type="hidden"
-                            name="id"
-                            value={address.id}
                             hidden
+                            name="id"
                             readOnly
+                            type="hidden"
+                            value={address.id}
                           />
                           <FormButton className="btn text-regular-inverted">
                             Delete
@@ -146,9 +149,9 @@ export default function ({ addressList }: { addressList?: AddressBook[] }) {
                         </form>
                         <DialogClose asChild>
                           <Button
-                            onClick={() => {}}
                             className="btn text-regular"
-                            variant={"outline"}
+                            onClick={() => {}}
+                            variant="outline"
                           >
                             Cancel
                           </Button>
@@ -161,18 +164,18 @@ export default function ({ addressList }: { addressList?: AddressBook[] }) {
             </div>
           ))}
       </div>
-      {showForm && (
+      {showForm ? (
         <AddressForm
-          onCancel={setShowForm}
-          onConfirm={handleNewAddress}
           className="mt-4"
           editableAddress={editableAddress}
+          onCancel={setShowForm}
+          onConfirm={handleNewAddress}
         />
-      )}
+      ) : null}
       {!showForm && (
         <Button
-          onClick={() => setShowForm(true)}
           className="btn text-regular-inverted mt-4"
+          onClick={() => setShowForm(true)}
         >
           Add New Address
         </Button>

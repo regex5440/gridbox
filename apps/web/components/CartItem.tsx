@@ -1,13 +1,13 @@
 "use client";
-import { Product } from "@repo/ui/types";
-import SiteMap from "../utils/sitemap";
+import type { Product } from "@repo/ui/types";
 import Image from "next/image";
 import Link from "next/link";
-import QtySelector from "./QtySelector";
 import { Button, Loader } from "@repo/ui";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useFetchProduct } from "@hooks/index";
+import SiteMap from "../utils/sitemap";
+import QtySelector from "./QtySelector";
 
 type CartItemProps = {
   initialQty?: number;
@@ -43,20 +43,20 @@ export default function CartItem({
   //TODO: style the qty selector based on minicart/cart page/product page
 
   return (
-    <div className={"flex gap-4 border-b pb-2 lg:max-w-lg w-full " + className}>
+    <div className={`flex gap-4 border-b pb-2 lg:max-w-lg w-full ${  className}`}>
       {productObj ? (
         <CartItemWithProduct
-          product={productObj}
-          quantity={quantity}
           handleQtyChange={handleQtyChange}
           onRemove={onRemove}
+          product={productObj}
+          quantity={quantity}
         />
       ) : productId ? (
         <CartItemProductFetch
-          productId={productId}
-          quantity={quantity}
           handleQtyChange={handleQtyChange}
           onRemove={onRemove}
+          productId={productId}
+          quantity={quantity}
         />
       ) : null}
     </div>
@@ -79,7 +79,7 @@ function CartItemWithProduct({
     <>
       <Link href={`${SiteMap.PDP.path}/${product.id}`}>
         <div className="relative w-24 h-24">
-          <Image src={product.thumbnail} alt={product.title} fill />
+          <Image alt={product.title} fill src={product.thumbnail} />
           {/* <div className="absolute bottom-0.5 right-0.5 rounded-full aspect-square w-fit p-1 flex justify-center items-center backdrop-invert">
     <span className="text-sm font-semibold"></span>
   </div> */}
@@ -94,13 +94,13 @@ function CartItemWithProduct({
           <QtySelector
             count={quantity}
             onChange={(c) => handleQtyChange(c, String(product.id))}
-            triggerClassName="group-[.minicart]:w-10 w-12 h-5 px-1 py-0.5"
             optionClassName="py-0 px-0 "
+            triggerClassName="group-[.minicart]:w-10 w-12 h-5 px-1 py-0.5"
           />
           <Button
+            className="text-secondary w-7 h-7 p-1 bg-transparent"
             onClick={onRemove?.bind(null, String(product.id))}
             title="Remove"
-            className="text-secondary w-7 h-7 p-1 bg-transparent"
           >
             <Trash2 />
           </Button>
@@ -120,16 +120,14 @@ function CartItemProductFetch({
 
   return (
     <>
-      {isLoading && <Loader type={2} className="mx-auto" />}
-      {error && <p>Cannot load product</p>}
-      {product && (
-        <CartItemWithProduct
-          product={product}
-          quantity={quantity}
+      {isLoading ? <Loader className="mx-auto" type={2} /> : null}
+      {error ? <p>Cannot load product</p> : null}
+      {product ? <CartItemWithProduct
           handleQtyChange={handleQtyChange}
           onRemove={onRemove}
-        />
-      )}
+          product={product}
+          quantity={quantity}
+        /> : null}
     </>
   );
 }

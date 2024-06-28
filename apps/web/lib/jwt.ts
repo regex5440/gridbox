@@ -1,4 +1,5 @@
-import { JWTPayload, jwtVerify, SignJWT } from "jose";
+import type { JWTPayload } from "jose";
+import { jwtVerify, SignJWT } from "jose";
 
 const secretKey = process.env.SECRET_KEY;
 const encodedKey = new TextEncoder().encode(secretKey);
@@ -7,7 +8,7 @@ const createEncryptedToken = async (
   payload: JWTPayload,
   tokenExpiry?: string | number | Date
 ) => {
-  return await new SignJWT({ ...payload, issuedBy: "https://hdxdev.in" })
+  return new SignJWT({ ...payload, issuedBy: "https://hdxdev.in" })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(
@@ -31,7 +32,7 @@ const decryptToken = async <T>(
     }
     return payload;
   } catch (e) {
-    console.error(e);
+    // console.error(e);
     return null;
   }
 };

@@ -18,7 +18,10 @@ const getUserAddresses = async () => {
   return { success: { data: addresses } };
 };
 
-const addressAction = async (state: AddressFormState, formData: FormData) => {
+const addressAction = async (
+  state: AddressFormState,
+  formData: FormData
+): Promise<AddressFormState> => {
   const authenticUser = await authenticateUser();
   if (authenticUser.error) {
     return { error: { common: true, message: "Unauthorized" } };

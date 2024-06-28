@@ -1,15 +1,9 @@
 "use client";
 import { Select as Sel } from "@repo/ui";
-import React, { HTMLAttributes, useState } from "react";
+import type { HTMLAttributes } from "react";
+import React, { useState } from "react";
 
-const {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  SelectSeparator,
-} = Sel;
+const { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } = Sel;
 
 type QtySelectorProps = {
   count: number;
@@ -29,32 +23,33 @@ export default function QtySelector({
   const qtyChangeHandler = (strVal: string) => {
     const qty = Number(strVal);
     setCount(qty);
-    onChange?.(qty);
+    onChange(qty);
   };
   return (
     <Select
-      onValueChange={qtyChangeHandler}
       defaultValue={String(count)}
       name="quantity"
+      onValueChange={qtyChangeHandler}
     >
       <SelectTrigger className={triggerClassName}>
         <SelectValue placeholder={count} />
       </SelectTrigger>
       <SelectContent className="bg-surface min-w-10 px-0">
-        {[...Array(MAX_QUANTITY)].map((_, i) => (
-          <React.Fragment key={i}>
-            <SelectItem
-              value={String(i + 1)}
-              className={
-                "justify-center data-[state=checked]:bg-surface-inverted data-[state=checked]:text-regular-inverted hover:bg-surface-dark cursor-pointer " +
-                optionClassName
-              }
-              withIndicator={false}
-            >
-              {i + 1}
-            </SelectItem>
-          </React.Fragment>
-        ))}
+        {Array(MAX_QUANTITY)
+          .fill(0)
+          .map((_, i) => (
+            <React.Fragment key={i}>
+              <SelectItem
+                className={`justify-center data-[state=checked]:bg-surface-inverted data-[state=checked]:text-regular-inverted hover:bg-surface-dark cursor-pointer ${
+                  optionClassName
+                }`}
+                value={String(i + 1)}
+                withIndicator={false}
+              >
+                {i + 1}
+              </SelectItem>
+            </React.Fragment>
+          ))}
       </SelectContent>
     </Select>
     // <div className="text-xl flex gap-1 items-center">

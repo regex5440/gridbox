@@ -80,6 +80,20 @@ html {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.thin-scrollbar {
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 100%;
+  }
+  &:hover::-webkit-scrollbar {
+    width: 10px;
+    height: 100%;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 999999px;
+  }
+}
 
 @media screen and (max-width: 768px) {
   .hide-mobile-view {
