@@ -13,6 +13,11 @@ export default async function PaymentInfo() {
       `${SiteMap.Signin.path}?redirect=${SiteMap.Account.Payment.path}`
     );
   }
+  if (!authenticUserData.data.stripeCustomerId) {
+    return redirect(
+      `${SiteMap.Verify.path}?user=${authenticUserData.data.id}&resend=1`
+    );
+  }
 
   const paymentMethods = await stripe.customers.listPaymentMethods(
     authenticUserData.data.stripeCustomerId,
