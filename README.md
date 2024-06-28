@@ -68,7 +68,8 @@ If you choose this strategy, you can remove the `tailwindcss` and `autoprefixer`
 
 ```
 productAPI=https://dummyjson.com (Currently used)
-DATABASE_URL=<postgresql database connection uri>
+POSTGRES_PRISMA_URL=<postgresql database connection uri, pooling>
+POSTGRES_URL_NON_POOLING=<postgresql data connection uri, direct>
 ASSIGNED_URL=<assigned url for the app>
 SECRET_KEY=<secret key for hashing>
 SESSION_EXPIRY=604800 # 7 days in seconds
