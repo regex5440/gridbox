@@ -19,6 +19,9 @@
     "node": ">=18"
   },
   "packageManager": "npm@8.8.0",
+  "prisma":{
+    "schema": "apps/web/lib/prisma/schema.prisma"
+  },
   "workspaces": [
     "apps/*",
     "packages/*"
