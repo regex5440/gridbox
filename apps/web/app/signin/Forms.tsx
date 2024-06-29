@@ -31,14 +31,14 @@ export function Login({ className, withinModal = false, ...rest }: FormProps) {
       fetchUser();
       const redirect = window.location.search?.split("redirect=")[1];
       if (redirect) {
-        router.push(redirect);
+        router.push(decodeURIComponent(redirect));
       } else if (withinModal) {
         router.back();
       } else {
         router.push("/");
       }
     }
-  }, [state, router, fetchCart, fetchUser]);
+  }, [state, router, fetchCart, fetchUser, withinModal]);
 
   const singleError =
     state?.error?.message || state?.error?.email || state?.error?.password;

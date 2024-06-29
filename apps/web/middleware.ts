@@ -4,16 +4,19 @@ import { NextMiddleware, NextResponse } from "next/server";
 
 const combinedMiddleware: (middlewares: NextMiddleware[]) => NextMiddleware =
   (middlewares) => (req, event) => {
-    const requestedRedirect = req.nextUrl.searchParams.get("redirect");
+    const requestedRedirect = req.nextUrl.href.split("redirect=")[1];
     if (req.nextUrl.pathname.startsWith("/signin")) {
       const session = cookies().get("session.token")?.value;
       if (session) {
         return NextResponse.redirect(
-          new URL(requestedRedirect || "/", req.url)
+          new URL(
+            decodeURIComponent(requestedRedirect) || "/",
+            req.nextUrl.origin
+          )
         );
       }
     } else {
-      middlewares.forEach((middleware) => middleware.apply(null, [req, event]));
+      middlewares.forEach((middleware) => middleware(req, event));
     }
   };
 
@@ -23,8 +26,8 @@ export const config = {
   matcher: [
     "/api/account/:path*",
     "/api/cart/:path*",
-    "/checkout",
-    "/account/:path*",
-    // "/signin",
+    // "/checkout",
+    // "/account/:path*",
+    "/signin",
   ],
 };

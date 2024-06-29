@@ -3,12 +3,12 @@ import { X } from "lucide-react";
 import { redirect } from "next/navigation";
 import type { Order } from "@repo/ui/types";
 import Link from "next/link";
+import type { Metadata } from "next";
 import OrderTemplate from "@components/OrderTemplate";
 import { getOrderByQuery, getOrdersByUser } from "controllers/order";
 import SiteMap from "@utils/sitemap";
 import { authenticateUser } from "@actions/auth";
 import ServerPagination from "@components/ServerPagination";
-import { Metadata } from "next";
 
 type OrdersPageProps = {
   params: { page: string };

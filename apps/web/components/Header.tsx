@@ -51,6 +51,7 @@ export default function Header({
                 </span>
               )}
             </NavigationMenuTrigger>
+
             <NavigationMenuContent asChild>
               <div className="bg-surface min-w-32 flex flex-col items-start *:block *:px-2 *:py-2 *:m-0 *:w-full *:rounded-md *:text-base *:font-sans hover:*:bg-primary hover:*:text-regular-inverted">
                 {!user ? (
