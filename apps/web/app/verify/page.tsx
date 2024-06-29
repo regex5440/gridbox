@@ -2,9 +2,10 @@ import { CircleX, Mail, MailCheck } from "lucide-react";
 import emailVerify, { sendVerificationEmail } from "@actions/email-verify";
 import { Metadata } from "next";
 import { getUserById } from "controllers/account";
-import { redirect } from "next/navigation";
+import { RedirectType, redirect } from "next/navigation";
 import SiteMap from "@utils/sitemap";
 import Link from "next/link";
+import FormButton from "@components/FormButton";
 
 type VerifyPageProps = {
   searchParams: { token?: string; user?: string; resend?: string };
@@ -12,41 +13,14 @@ type VerifyPageProps = {
 };
 
 export default async function VerifyPage({ searchParams }: VerifyPageProps) {
-  if (Number(searchParams.resend) >= 2) {
-    return (
-      <div className="grid place-content-center min-h-[50vh] lg:max-w-[40%] mx-auto">
-        <h2 className="text-xl">
-          Too many attempts, please try again after some time
-        </h2>
-      </div>
-    );
-  }
-  const verifyInstructionContent = (
-    <div>
-      <p>
-        <Mail className="text-primary mx-auto" size={70} />
-      </p>
-      <h1 className="text-center text-2xl">Verify your email</h1>
-      <p className="text-center mt-5">
-        We have sent an email to your registered email address. Click the link
-        in the email to verify your email address.
-      </p>
-      <p className="text-center mt-2 text-ternary text-sm">
-        Please note, verification link will be valid till 24 Hrs
-      </p>
-      <p className="text-center mt-9">
-        Didn&apos;t receive the email?{" "}
-        <Link
-          className="text-blue-500 block mx-auto"
-          href={`${SiteMap.Verify.path}?resend=${(Number(searchParams.resend) || 0) + 1}`}
-        >
-          Resend
-        </Link>
-      </p>
-    </div>
-  );
   let renderVerifyContent = null;
-  if (searchParams.token) {
+  if (Number(searchParams.resend) >= 2) {
+    renderVerifyContent = (
+      <h2 className="text-xl">
+        Too many attempts, please try again after some time
+      </h2>
+    );
+  } else if (searchParams.token) {
     const emailVerification = await emailVerify(searchParams.token);
 
     if (emailVerification?.error) {
@@ -77,9 +51,9 @@ export default async function VerifyPage({ searchParams }: VerifyPageProps) {
   } else if (searchParams.user) {
     const user = await getUserById(searchParams.user);
     if (!user) {
-      return redirect(SiteMap.Signin.path);
+      return redirect("/", RedirectType.replace);
     }
-    if (!user?.validEmail) {
+    if (user?.validEmail) {
       renderVerifyContent = (
         <div>
           <p>
@@ -98,13 +72,45 @@ export default async function VerifyPage({ searchParams }: VerifyPageProps) {
         firstName: user.firstName,
         lastName: user.lastName || "",
       });
-      renderVerifyContent = verifyInstructionContent;
+      renderVerifyContent = (
+        <div>
+          <p>
+            <Mail className="text-primary mx-auto" size={70} />
+          </p>
+          <h1 className="text-center text-2xl">Verify your email</h1>
+          <p className="text-center mt-5">
+            We have sent an email to your registered email address. Click the
+            link in the email to verify your email address.
+          </p>
+          <p className="text-center mt-2 text-ternary text-sm">
+            Please note, verification link will be valid till 24 Hrs
+          </p>
+          <p className="text-center mt-9">
+            Didn&apos;t receive the email?{" "}
+            <form
+              action={async () => {
+                "use server";
+                redirect(
+                  `${SiteMap.Verify.path}?user=${searchParams.user}&resend=${Number(searchParams.resend || 0) + 1}`
+                );
+              }}
+            >
+              <FormButton className="text-blue-500 block mx-auto bg-transparent">
+                Resend
+              </FormButton>
+            </form>
+          </p>
+        </div>
+      );
     }
   }
-  return (
+
+  return renderVerifyContent ? (
     <div className="grid place-content-center min-h-[50vh] lg:max-w-[40%] mx-auto">
-      {renderVerifyContent || verifyInstructionContent}
+      {renderVerifyContent}
     </div>
+  ) : (
+    redirect("/", RedirectType.replace)
   );
 }
 
