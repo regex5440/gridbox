@@ -55,7 +55,7 @@ export default function OrderConfirmation({ searchParams }: OrderDetailsProps) {
     }
     const timer = setTimeout(() => {
       setOrderStatus("failed");
-    }, 8000);
+    }, 1000 * 30);
 
     getOrderByIntent({ paymentIntent: searchParams.payment_intent }).then(
       (res) => {
