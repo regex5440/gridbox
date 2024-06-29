@@ -15,6 +15,7 @@ import RecentlyViewed from "@components/RecentlyViewed";
 import { ProductsCarousel, StarRatings } from "@components/index";
 import ProductImageSection from "./ProductImageViewer";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 type ProductPageProps = {
   params: {
@@ -29,6 +30,8 @@ export default async function ProductPage({
   const productDetails = await fetch(
     `${process.env.productAPI}/products/${productId}`
   ).then<Product>((res) => res.json());
+
+  if (!productDetails.id) return notFound();
 
   const relatedProducts = (await fetch(
     `${process.env.productAPI}/products/category/${productDetails.category}?limit=10`
@@ -278,10 +281,16 @@ export async function generateMetadata({
   const productDetails = await fetch(
     `${process.env.productAPI}/products/${productId}`
   ).then<Product>((res) => res.json());
+  if (productDetails.id) {
+    return {
+      title: `${productDetails.title} - GridBox`,
+      description: productDetails.description + " - GridBox",
+      keywords: productDetails.tags.join(", "),
+      category: productDetails.category,
+    };
+  }
   return {
-    title: `${productDetails.title} - GridBox`,
-    description: productDetails.description + " - GridBox",
-    keywords: productDetails.tags.join(", "),
-    category: productDetails.category,
+    title: "Product Not Found - GridBox",
+    description: "Product not found in our database",
   };
 }
