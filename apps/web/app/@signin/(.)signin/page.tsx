@@ -2,9 +2,18 @@
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import LoginSignup from "@app/signin/LoginSignupTabView";
+import { useEffect } from "react";
 
 export default function LoginSignupModal() {
   const router = useRouter();
+
+  useEffect(() => {
+    document.onkeydown = (e) => {
+      if (e.key === "Escape") {
+        router.back();
+      }
+    };
+  }, [router]);
 
   const routeBack = () => {
     router.back();
@@ -27,7 +36,7 @@ export default function LoginSignupModal() {
           >
             <X />
           </div>
-          <LoginSignup />
+          <LoginSignup withinModal={true} />
         </div>
       </div>
     </>
