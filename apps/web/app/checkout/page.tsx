@@ -26,7 +26,9 @@ export default async function CheckoutPage({
   }
 
   if (!authenticatedUser.data.stripeCustomerId) {
-    return redirect(SiteMap.Verify.path);
+    return redirect(
+      `${SiteMap.Verify.path}?user=${authenticatedUser.data.id}&resent=0`
+    );
   }
 
   let cartItems: CartItem[] = [];
