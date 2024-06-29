@@ -23,8 +23,8 @@ export const config = {
   matcher: [
     "/api/account/:path*",
     "/api/cart/:path*",
-    // "/checkout",
-    // "/account",
+    "/checkout",
+    "/account/:path*",
     // "/signin",
   ],
 };
