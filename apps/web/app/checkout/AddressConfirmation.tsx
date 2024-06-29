@@ -266,6 +266,11 @@ export default function AddressConfirmation({
           </div>
         </div>
       )}
+      {addressListState.length === 0 && !showAddressForm && (
+        <p className="text-lg my-4">
+          No saved addresses found. Please add a new address.
+        </p>
+      )}
 
       {!showAddressForm && activeStep < 2 && (
         <Button
