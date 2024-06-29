@@ -4,12 +4,10 @@ import { Metadata } from "next";
 import { getUserById } from "controllers/account";
 import { RedirectType, redirect } from "next/navigation";
 import SiteMap from "@utils/sitemap";
-import Link from "next/link";
 import FormButton from "@components/FormButton";
 
 type VerifyPageProps = {
   searchParams: { token?: string; user?: string; resend?: string };
-  // resend: () => void;
 };
 
 export default async function VerifyPage({ searchParams }: VerifyPageProps) {
@@ -66,7 +64,7 @@ export default async function VerifyPage({ searchParams }: VerifyPageProps) {
         </div>
       );
     } else {
-      sendVerificationEmail({
+      await sendVerificationEmail({
         email: user.email,
         userId: user.id,
         firstName: user.firstName,
