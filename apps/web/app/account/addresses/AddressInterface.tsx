@@ -135,7 +135,7 @@ export default function AddressUI({
                         </div>
                       </DialogDescription>
                       <DialogFooter className="text-regular-inverted">
-                        <form action={deleteAction}>
+                        <form action={deleteAction} className="max-sm:w-full">
                           <input
                             hidden
                             name="id"
@@ -143,7 +143,7 @@ export default function AddressUI({
                             type="hidden"
                             value={address.id}
                           />
-                          <FormButton className="btn text-regular-inverted">
+                          <FormButton className="btn text-regular-inverted max-sm:w-full">
                             Delete
                           </FormButton>
                         </form>
@@ -174,7 +174,7 @@ export default function AddressUI({
       ) : null}
       {!showForm && (
         <Button
-          className="btn text-regular-inverted mt-4"
+          className="btn text-regular-inverted mt-4 block max-lg:mx-auto"
           onClick={() => setShowForm(true)}
         >
           Add New Address

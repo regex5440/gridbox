@@ -3,7 +3,8 @@
 import stripe from "@lib/stripe/payment.server";
 
 export const removePaymentMethod = async (paymentMethodId: string) => {
-  return stripe.paymentMethods.detach(paymentMethodId);
+  await stripe.paymentMethods.detach(paymentMethodId);
+  return true;
 };
 
 export const createStripeCustomer = async (name: string, email: string) => {

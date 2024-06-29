@@ -34,11 +34,9 @@ const { Card, CardContent, CardHeader, CardFooter, CardDescription } = Crd;
 export default function CardTemplate({
   CardInfo,
   methodId,
-  removeMethod,
 }: {
   CardInfo: PaymentMethod.Card;
   methodId: string;
-  removeMethod: (methodId: string) => void;
 }) {
   const [openDialog, setOpenDialog] = useState(false);
   const [state, action] = useFormState(
@@ -49,9 +47,9 @@ export default function CardTemplate({
   useEffect(() => {
     if (state) {
       setOpenDialog(false);
-      removeMethod(methodId);
+      document.location.reload();
     }
-  }, [state, removeMethod, methodId]);
+  }, [state, methodId]);
 
   return (
     <Card className="shadow-md rounded-lg min-w-64 w-fit aspect-video relative p-3 pr-6 flex flex-col justify-between">
@@ -100,8 +98,8 @@ export default function CardTemplate({
               <Button onClick={() => setOpenDialog(false)} variant="outline">
                 Cancel
               </Button>
-              <form action={action}>
-                <FormButton className="text-regular-inverted">
+              <form action={action} className="max-sm:w-full">
+                <FormButton className="text-regular-inverted max-sm:w-full">
                   Delete
                 </FormButton>
               </form>

@@ -94,9 +94,6 @@ export default async function OrdersPage({
               <OrderTemplate key={order.id} order={order} />
             ))}
           </div>
-          {totalCount === 0 && (
-            <p className="text-center font-semibold">No orders</p>
-          )}
           <div className="mt-4">
             <ServerPagination
               currentPage={parseInt(page)}
@@ -106,6 +103,9 @@ export default async function OrdersPage({
             />
           </div>
         </>
+      )}
+      {totalCount === 0 && (
+        <p className="text-center font-semibold">No orders</p>
       )}
     </div>
   );
