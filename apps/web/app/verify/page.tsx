@@ -66,7 +66,7 @@ export default async function VerifyPage({ searchParams }: VerifyPageProps) {
         </div>
       );
     } else {
-      await sendVerificationEmail({
+      sendVerificationEmail({
         email: user.email,
         userId: user.id,
         firstName: user.firstName,
@@ -85,21 +85,19 @@ export default async function VerifyPage({ searchParams }: VerifyPageProps) {
           <p className="text-center mt-2 text-ternary text-sm">
             Please note, verification link will be valid till 24 Hrs
           </p>
-          <p className="text-center mt-9">
-            Didn&apos;t receive the email?{" "}
-            <form
-              action={async () => {
-                "use server";
-                redirect(
-                  `${SiteMap.Verify.path}?user=${searchParams.user}&resend=${Number(searchParams.resend || 0) + 1}`
-                );
-              }}
-            >
-              <FormButton className="text-blue-500 block mx-auto bg-transparent">
-                Resend
-              </FormButton>
-            </form>
-          </p>
+          <p className="text-center mt-9">Didn&apos;t receive the email? </p>
+          <form
+            action={async () => {
+              "use server";
+              redirect(
+                `${SiteMap.Verify.path}?user=${searchParams.user}&resend=${Number(searchParams.resend || 0) + 1}`
+              );
+            }}
+          >
+            <FormButton className="text-blue-500 block mx-auto bg-transparent">
+              Resend
+            </FormButton>
+          </form>
         </div>
       );
     }
