@@ -28,6 +28,6 @@ export const config = {
     "/api/cart/:path*",
     // "/checkout",
     // "/account/:path*",
-    "/signin",
+    // "/signin",
   ],
 };

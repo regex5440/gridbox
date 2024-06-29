@@ -23,12 +23,14 @@ export function Login({ className, withinModal = false, ...rest }: FormProps) {
   );
   const router = useRouter();
   const { fetchCart } = useMiniCart();
-  const { fetchUser } = useUserStore();
+  const { fetchUser, user } = useUserStore();
 
   useEffect(() => {
-    if (state?.success) {
-      fetchCart();
-      fetchUser();
+    if (state?.success || user?.id) {
+      if (!user) {
+        fetchCart();
+        fetchUser();
+      }
       const redirect = window.location.search?.split("redirect=")[1];
       if (redirect) {
         router.push(decodeURIComponent(redirect));
@@ -38,7 +40,7 @@ export function Login({ className, withinModal = false, ...rest }: FormProps) {
         router.push("/");
       }
     }
-  }, [state, router, fetchCart, fetchUser, withinModal]);
+  }, [state, router, fetchCart, fetchUser, withinModal, user?.id]);
 
   const singleError =
     state?.error?.message || state?.error?.email || state?.error?.password;
