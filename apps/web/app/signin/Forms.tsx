@@ -29,13 +29,13 @@ export function Login({ className, withinModal = false, ...rest }: FormProps) {
     if (state?.success) {
       fetchCart();
       fetchUser();
-      const redirect = new URLSearchParams(window.location.search).get(
-        "redirect"
-      );
+      const redirect = window.location.search?.split("redirect=")[1];
       if (redirect) {
         router.push(redirect);
-      } else {
+      } else if (withinModal) {
         router.back();
+      } else {
+        router.push("/");
       }
     }
   }, [state, router, fetchCart, fetchUser]);
@@ -110,15 +110,33 @@ export function Signup({ className, ...rest }: FormProps) {
         <Select>
           <SelectTrigger>
             <SelectValue
-              className="w-5/12"
+              className="flex-auto"
               placeholder="Gender"
               title="Gender"
             />
           </SelectTrigger>
-          <SelectContent className="w-full bg-surface z-[53]">
-            <SelectItem value="male">Male</SelectItem>
-            <SelectItem value="female">Female</SelectItem>
-            <SelectItem value="other">Other</SelectItem>
+          <SelectContent className="w-fit bg-surface z-[53]" align="end">
+            <SelectItem
+              value="male"
+              className="px-2 data-[highlighted]:bg-surface-secondary hover:bg-surface-secondary data-[state=checked]:bg-surface-inverted data-[state=checked]:text-regular-inverted"
+              withIndicator={false}
+            >
+              Male
+            </SelectItem>
+            <SelectItem
+              value="female"
+              className="px-2 data-[highlighted]:bg-surface-secondary hover:bg-surface-secondary data-[state=checked]:bg-surface-inverted data-[state=checked]:text-regular-inverted"
+              withIndicator={false}
+            >
+              Female
+            </SelectItem>
+            <SelectItem
+              value="other"
+              className="px-2 data-[highlighted]:border hover:bg-surface-secondary data-[state=checked]:bg-surface-dark data-[state=checked]:text-regular-inverted"
+              withIndicator={false}
+            >
+              Other
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>
