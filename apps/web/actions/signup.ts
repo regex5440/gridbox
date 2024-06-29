@@ -4,7 +4,7 @@ import { RedirectType, redirect } from "next/navigation";
 import { SignupFormErrorState } from "@types";
 import { SignupSchema } from "@lib/definitions/account";
 import { hash } from "@lib/bcrypt";
-import { createUser } from "controllers/account";
+import { authenticateUser, createUser } from "controllers/account";
 import SiteMap from "@utils/sitemap";
 
 export default async function signup(
@@ -29,6 +29,13 @@ export default async function signup(
     }
     const { email, firstName, password, lastName, dob, gender } =
       validateFields.data;
+
+    const userExists = await authenticateUser({ email });
+    if (userExists) {
+      return {
+        error: { email: ["User with this email already exists."] },
+      };
+    }
     const hashedPassword = await hash(password);
     const user = await createUser({
       email,
