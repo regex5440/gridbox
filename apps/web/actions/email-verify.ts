@@ -12,11 +12,12 @@ export default async function emailVerify(token: string) {
     userId?: string;
     email?: string;
     type?: string;
+    name?: string;
   }>(token);
   if (!payload) {
     return { error: { message: "Invalid token" } };
   }
-  const { email, userId, type, exp } = payload;
+  const { email, userId, type, exp, name } = payload;
   if (
     exp &&
     type === "verify" &&
