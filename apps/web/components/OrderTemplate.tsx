@@ -69,7 +69,10 @@ export default async function OrderTemplate({ order }: { order: Order }) {
               {!["shipped", "delivered", "cancelled"].includes(
                 order.status
               ) && (
-                <Button className="p-1 h-fit bg-surface border border-primary shadow-md shadow-primary text-sm mt-2">
+                <Button
+                  className="p-1 h-fit bg-surface border border-primary shadow-md shadow-primary text-sm mt-2"
+                  disabled
+                >
                   Cancel
                 </Button>
               )}
