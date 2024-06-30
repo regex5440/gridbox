@@ -85,7 +85,7 @@ export default async function VerifyPage({ searchParams }: VerifyPageProps) {
           </p>
           <p className="text-center mt-9">Didn&apos;t receive the email? </p>
           <form
-            action={() => {
+            action={async () => {
               "use server";
               redirect(
                 `${SiteMap.Verify.path}?user=${searchParams.user}&resend=${Number(searchParams.resend || 0) + 1}`
