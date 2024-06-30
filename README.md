@@ -19,8 +19,8 @@ Live at https://gb.hdxdev.in
 
 ## Stack & Utilities
 
-- Next.JS 14
-- TypeScript
+- [NextJs 14](https://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
 - [TailwindCSS](https://tailwindcss.com/)
 - [shadcn/ui](https://ui.shadcn.com/)
 - PostgreSQL (powered by [Supabase](https://supabase.com))
@@ -30,6 +30,7 @@ Live at https://gb.hdxdev.in
 - [Zustand](https://zustand-demo.pmnd.rs/)
 - [ESLint](https://eslint.org/)
 - [Prettier](https://prettier.io)
+- [jose (jwt)](https://github.com/panva/jose)
 
 ## What's inside?
 
