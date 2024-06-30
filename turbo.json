@@ -15,11 +15,8 @@
         "ASSIGNED_UR",
         "SECRET_KEY",
         "SESSION_EXPIRY",
-        "EMAIL_SERVER",
-        "EMAIL_FROM",
-        "EMAIL_PASSWORD",
-        "EMAIL_PORT",
-        "EMAIL_USERNAME",
+        "EMAIL_SERVICE",
+        "EMAIL_SERVICE_TOKEN",
         "PAYMENT_SECRET_KEY",
         "NEXT_PUBLIC_PUBLISHABLE_KEY"
       ],
