@@ -51,6 +51,7 @@ module.exports = {
         "error.tsx",
         "global-error.tsx",
         "default.tsx",
+        "not-found.tsx",
       ],
       rules: {
         "unicorn/filename-case": "off",
