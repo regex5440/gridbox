@@ -13,6 +13,10 @@ Live at https://gb.hdxdev.in
 > - Order creation and tracking
 > - Payment Checkout with [Stripe](https://stripe.com/)
 
+## Pre-requisites
+
+- Node >= 20.10.0
+
 ## Stack & Utilities
 
 - Next.JS 14
@@ -74,11 +78,8 @@ ASSIGNED_URL=<assigned url for the app>
 SECRET_KEY=<secret key for hashing>
 SESSION_EXPIRY=604800 # 7 days in seconds
 PASSWORD_HASH_SALT=10 #(optional, default is 10)
-EMAIL_SERVER=<email server endpoint>
-EMAIL_PORT=<email server port>
-EMAIL_USERNAME=<email username>
-EMAIL_PASSWORD=<email password>
-EMAIL_FROM=gb.support
+EMAIL_SERVICE=<Url for mailer service>
+EMAIL_SERVICE_TOKEN=<mailer service static auth token>
 
 #PAYMENT
 
