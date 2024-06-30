@@ -9,11 +9,11 @@ const sendEmail = async ({
   subject: string;
   html: string;
 }) => {
-  return fetch(process.env.EMAIL_SERVICE, {
+  return fetch(process.env.EMAIL_SERVICE ?? "", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.EMAIL_SERVICE_TOKEN}`,
+      Authorization: `Bearer ${process.env.EMAIL_SERVICE_TOKEN ?? ""}`,
     },
     body: JSON.stringify({
       fromService: "GridBox",
