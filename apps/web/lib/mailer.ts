@@ -9,7 +9,7 @@ const sendEmail = async ({
   subject: string;
   html: string;
 }) => {
-  return fetch(process.env.EMAIL_SERVICE as string, {
+  return fetch(process.env.EMAIL_SERVICE, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

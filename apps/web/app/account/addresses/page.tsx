@@ -1,7 +1,7 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import { getUserAddresses } from "@actions/account";
 import AddressUI from "./AddressInterface";
-import { Metadata } from "next";
 
 export default async function Addresses() {
   const userAddressList = await getUserAddresses();

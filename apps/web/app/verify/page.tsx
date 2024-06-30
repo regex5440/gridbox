@@ -1,8 +1,8 @@
 import { CircleX, Mail, MailCheck } from "lucide-react";
-import emailVerify, { sendVerificationEmail } from "@actions/email-verify";
-import { Metadata } from "next";
-import { getUserById } from "controllers/account";
+import type { Metadata } from "next";
 import { RedirectType, redirect } from "next/navigation";
+import emailVerify, { sendVerificationEmail } from "@actions/email-verify";
+import { getUserById } from "controllers/account";
 import SiteMap from "@utils/sitemap";
 import FormButton from "@components/FormButton";
 
@@ -85,7 +85,7 @@ export default async function VerifyPage({ searchParams }: VerifyPageProps) {
           </p>
           <p className="text-center mt-9">Didn&apos;t receive the email? </p>
           <form
-            action={async () => {
+            action={() => {
               "use server";
               redirect(
                 `${SiteMap.Verify.path}?user=${searchParams.user}&resend=${Number(searchParams.resend || 0) + 1}`

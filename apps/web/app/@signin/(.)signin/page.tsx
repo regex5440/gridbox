@@ -1,8 +1,8 @@
 "use client";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import LoginSignup from "@app/signin/LoginSignupTabView";
 import { useEffect } from "react";
+import LoginSignup from "@app/signin/LoginSignupTabView";
 
 export default function LoginSignupModal() {
   const router = useRouter();
@@ -36,7 +36,7 @@ export default function LoginSignupModal() {
           >
             <X />
           </div>
-          <LoginSignup withinModal={true} />
+          <LoginSignup withinModal />
         </div>
       </div>
     </>

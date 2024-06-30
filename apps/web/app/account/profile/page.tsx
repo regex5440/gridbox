@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export default function Profile() {
   //TODO: Implement update profile

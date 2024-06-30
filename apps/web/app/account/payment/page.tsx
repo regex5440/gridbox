@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
 import { getAuthenticateUser } from "@actions/auth";
 import stripe from "@lib/stripe/payment.server";
 import SiteMap from "@utils/sitemap";
 import PaymentMethodInterface from "./PaymentMethodInterface";
-import { Metadata } from "next";
 
 export default async function PaymentInfo() {
   const authenticUserData = await getAuthenticateUser();

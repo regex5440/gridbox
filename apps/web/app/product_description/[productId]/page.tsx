@@ -9,13 +9,13 @@ import {
 import type { Product } from "@repo/ui/types";
 import Link from "next/link";
 import { Loader } from "@repo/ui";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import ProductPurchaseForm from "@app/product_description/[productId]/ProductPurchaseForm";
 import ProductVisitedMarker from "@components/ProductVisitedMarker";
 import RecentlyViewed from "@components/RecentlyViewed";
 import { ProductsCarousel, StarRatings } from "@components/index";
 import ProductImageSection from "./ProductImageViewer";
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
 
 type ProductPageProps = {
   params: {
@@ -284,7 +284,7 @@ export async function generateMetadata({
   if (productDetails.id) {
     return {
       title: `${productDetails.title} - GridBox`,
-      description: productDetails.description + " - GridBox",
+      description: `${productDetails.description  } - GridBox`,
       keywords: productDetails.tags.join(", "),
       category: productDetails.category,
     };

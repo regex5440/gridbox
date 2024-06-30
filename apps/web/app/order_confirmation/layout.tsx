@@ -1,6 +1,6 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
-export default async function OrderConfirmationLayout({
+export default function OrderConfirmationLayout({
   children,
 }: {
   children: React.ReactNode;

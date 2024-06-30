@@ -1,7 +1,7 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import LoginSignup from "./LoginSignupTabView";
 
-export default async function Page() {
+export default function Page() {
   return <LoginSignup />;
 }
 

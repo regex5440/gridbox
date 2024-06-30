@@ -1,14 +1,14 @@
 import type { CartItem } from "@repo/ui/types";
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
 import { getUserAddresses } from "@actions/account";
 import { getAuthenticateUser } from "@actions/auth";
 import { getCartBreakup } from "@actions/cart";
 import { getCartItems } from "controllers/cart";
 import stripe from "@lib/stripe/payment.server";
+import SiteMap from "@utils/sitemap";
 import Checkout from "./Checkout";
 import type { ProductDetail } from "./common";
-import { Metadata } from "next";
-import SiteMap from "@utils/sitemap";
 //TODO: can optimize by reducing number of time authentication check happens in each action
 
 export default async function CheckoutPage({

@@ -1,10 +1,10 @@
 import type { Product } from "@repo/ui/types";
 import { Suspense } from "react";
 import { Loader } from "@repo/ui";
+import type { Metadata } from "next";
 import ServerPagination from "@components/ServerPagination";
 import SiteMap from "@utils/sitemap";
 import { ProductTemplate } from "../../../../components";
-import { Metadata } from "next";
 
 type ListingPageProps = {
   params: { category: string; page: string };
@@ -69,16 +69,16 @@ export default async function ListingPage({
   );
 }
 
-export async function generateMetadata({
+export function generateMetadata({
   params: { category },
 }: {
   params: { category: string; page: string };
-}): Promise<Metadata> {
+}): Metadata {
   return {
     title: `${category
       .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ")} - GridBox`,
-    description: `View all ${category.replace(/\-/g, " ")} products on GridBox e-commerce site`,
+    description: `View all ${category.replace(/-/g, " ")} products on GridBox e-commerce site`,
   };
 }

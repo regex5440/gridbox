@@ -20,13 +20,14 @@ export default async function RootLayout({
   children: React.ReactNode;
   signin?: React.ReactNode;
 }): Promise<JSX.Element> {
-  const categories = (
-    await fetch(`${process.env.productAPI}/products/categories`).then((res) =>
-      res.json()
-    )
-  ).then((data: ProductCategory[]) =>
-    data.unshift({ slug: "all", name: "All", url: "/all" })
-  );
+  const categories = await fetch(
+    `${process.env.productAPI}/products/categories`
+  )
+    .then((res) => res.json())
+    .then((data: ProductCategory[]) => [
+      { slug: "all", name: "All", url: "/all" },
+      ...data,
+    ]);
 
   return (
     <html lang="en">

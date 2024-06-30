@@ -40,7 +40,7 @@ export function Login({ className, withinModal = false, ...rest }: FormProps) {
         router.push("/");
       }
     }
-  }, [state, router, fetchCart, fetchUser, withinModal, user?.id]);
+  }, [state, router, fetchCart, fetchUser, withinModal, user?.id, user]);
 
   const singleError =
     state?.error?.message || state?.error?.email || state?.error?.password;
@@ -117,24 +117,24 @@ export function Signup({ className, ...rest }: FormProps) {
               title="Gender"
             />
           </SelectTrigger>
-          <SelectContent className="w-fit bg-surface z-[53]" align="end">
+          <SelectContent align="end" className="w-fit bg-surface z-[53]">
             <SelectItem
-              value="male"
               className="px-2 data-[highlighted]:bg-surface-secondary hover:bg-surface-secondary data-[state=checked]:bg-surface-inverted data-[state=checked]:text-regular-inverted"
+              value="male"
               withIndicator={false}
             >
               Male
             </SelectItem>
             <SelectItem
-              value="female"
               className="px-2 data-[highlighted]:bg-surface-secondary hover:bg-surface-secondary data-[state=checked]:bg-surface-inverted data-[state=checked]:text-regular-inverted"
+              value="female"
               withIndicator={false}
             >
               Female
             </SelectItem>
             <SelectItem
-              value="other"
               className="px-2 data-[highlighted]:border hover:bg-surface-secondary data-[state=checked]:bg-surface-dark data-[state=checked]:text-regular-inverted"
+              value="other"
               withIndicator={false}
             >
               Other
