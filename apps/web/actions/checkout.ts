@@ -25,6 +25,18 @@ export async function getPaymentMethods(customerId: string) {
   return stripe.customers.listPaymentMethods(customerId, { type: "card" });
 }
 
+export async function updateMetadataInIntent({
+  intentId,
+  metadata,
+}: {
+  intentId: string;
+  metadata: Record<string, string>;
+}) {
+  await stripe.paymentIntents.update(intentId, {
+    metadata,
+  });
+}
+
 export async function getOrderByIntent({
   paymentIntent,
 }: {

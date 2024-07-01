@@ -13,6 +13,7 @@ export const PaymentIntentMetadataSchema = z.object({
       })
     )
     .min(1, "At least one item is required"),
+  savePayment: z.literal(0).or(z.literal(1)).default(0),
 });
 
 export type CheckoutFormState =

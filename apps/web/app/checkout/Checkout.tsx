@@ -8,11 +8,14 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import type { PaymentIntentResult } from "@stripe/stripe-js";
-import { Loader2, X } from "lucide-react";
+import { Loader2, Square, SquareCheckBig, X } from "lucide-react";
 import type Stripe from "stripe";
 import { useRouter } from "next/navigation";
 import { stripeClient } from "@lib/stripe/payment.client";
-import { updateAddressInIntent } from "@actions/checkout";
+import {
+  updateAddressInIntent,
+  updateMetadataInIntent,
+} from "@actions/checkout";
 import type { AddressBook } from "@types";
 import ProductImage from "@components/ProductImage";
 import type { ProductDetail } from "./common";
@@ -111,7 +114,7 @@ function CheckoutPayment({
     loading: boolean;
   }>({ data: [], loading: true });
   const [selectedSavedPaymentId, setSelectedSavedPaymentId] = useState("");
-  // const [savePayment, setSavePayment] = useState(false); //TODO: Implement optional save of card
+  const [savePayment, setSavePayment] = useState(true);
 
   const startLoader = () => {
     setGeneralPageError("");
@@ -122,22 +125,34 @@ function CheckoutPayment({
       setGeneralPageError("Please select shipping and billing address");
       return;
     }
+    if (savePayment) {
+      await updateMetadataInIntent({
+        intentId: paymentIntentId,
+        metadata: {
+          savePayment: "1",
+        },
+      });
+    }
+    await updateAddressInIntent({ ...formData, intentId: paymentIntentId });
     let paymentStatus: PaymentIntentResult | undefined;
+    if (!stripe) {
+      setGeneralPageError("Stripe not initialized. Please try again!");
+      setFormLoading(false);
+      return;
+    }
+
     if (selectedSavedPaymentId) {
-      paymentStatus = await stripe?.confirmCardPayment(clientSecret, {
+      paymentStatus = await stripe.confirmCardPayment(clientSecret, {
         payment_method: selectedSavedPaymentId,
       });
-    } else {
-      await updateAddressInIntent({ ...formData, intentId: paymentIntentId });
       //TODO: A timer can also be set here to cancel the order if payment is not confirmed within a certain time
-      if (stripe && elements) {
-        paymentStatus = await stripe.confirmPayment({
-          elements,
-          confirmParams: {
-            return_url: `${document.location.origin}/order_confirmation`,
-          },
-        });
-      }
+    } else if (elements) {
+      paymentStatus = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: `${document.location.origin}/order_confirmation`,
+        },
+      });
     }
     if (paymentStatus?.error) {
       if (paymentStatus.error.message) {
@@ -282,10 +297,29 @@ function CheckoutPayment({
               <PaymentElement options={{ layout: "accordion" }} />
               {elements !== null && (
                 <div className="my-2">
-                  <span className="text-ternary text-sm cursor-pointer">
-                    Your payment credentials will be secured & save for future
-                    payments
-                  </span>
+                  <input
+                    checked={savePayment}
+                    className="hidden"
+                    hidden
+                    id="savePayment"
+                    onChange={(e) => setSavePayment(e.currentTarget.checked)}
+                    type="checkbox"
+                  />
+                  <label
+                    className="flex items-start justify-center gap-2 cursor-pointer"
+                    htmlFor="savePayment"
+                  >
+                    <div>
+                      {savePayment ? (
+                        <SquareCheckBig size={18} />
+                      ) : (
+                        <Square size={18} />
+                      )}
+                    </div>
+                    <div className="text-ternary text-sm cursor-pointer">
+                      Secure & save this card for future payments
+                    </div>
+                  </label>
                 </div>
               )}
             </>
