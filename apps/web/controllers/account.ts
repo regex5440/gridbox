@@ -31,6 +31,18 @@ async function authenticateUser({ email }: { email: string }) {
 async function getUserById(id: string) {
   const user = await prisma.profile.findUnique({
     where: { id },
+    select: {
+      addressBook: true,
+      email: true,
+      firstName: true,
+      lastName: true,
+      createdAt: true,
+      defaultShipping: true,
+      dob: true,
+      gender: true,
+      id: true,
+      validEmail: true,
+    },
   });
   return user;
 }
@@ -38,6 +50,19 @@ async function getUserById(id: string) {
 async function getUserWithPrivateDetails(id: string) {
   const user = await prisma.profile.findUnique({
     where: { id },
+    select: {
+      addressBook: true,
+      email: true,
+      firstName: true,
+      lastName: true,
+      createdAt: true,
+      defaultShipping: true,
+      dob: true,
+      gender: true,
+      id: true,
+      validEmail: true,
+      stripeCustomerId: true,
+    },
   });
   return user;
 }
