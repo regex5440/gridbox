@@ -68,6 +68,16 @@ const SiteMap = {
     path: "/signin",
     absolutePath: "/signin",
   },
+  Policy: {
+    type: "page",
+    path: "/privacy",
+    absolutePath: "/privacy",
+  },
+  Terms: {
+    type: "page",
+    path: "/tos",
+    absolutePath: "/tos",
+  },
 };
 
 export default SiteMap;

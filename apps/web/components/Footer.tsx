@@ -23,9 +23,14 @@ export default function Footer({
           );
         })}
       </ul>
+      <div className="text-center py-2 px-2 border-b border-b-slate-400 w-fit mx-auto">
+        <Link href={SiteMap.Policy.path}>Privacy</Link>
+        <span className="mx-10">|</span>
+        <Link href={SiteMap.Terms.path}>Terms</Link>
+      </div>
       {/* <hr className="w-7/12 my-4 mx-auto max-lg:w-11/12" /> */}
       <div className="text-center mt-4">
-        <p>© 2023-2024, GridBox, Inc. or its affiliates</p>
+        <p>© GridBox {new Date().getFullYear()}, Inc. or its affiliates</p>
         <p className="max-sm:mt-3">
           Designed & Developed by{" "}
           <Link
