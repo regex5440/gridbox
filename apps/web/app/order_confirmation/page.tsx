@@ -50,6 +50,7 @@ export default function OrderConfirmation({
   const router = useRouter();
 
   useEffect(() => {
+    console.log(searchParams.payment_intent, "searchParams.payment_intent");
     if (!searchParams.payment_intent) {
       setOrderStatus("failed");
       router.push(SiteMap.Home.path);
