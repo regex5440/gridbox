@@ -103,6 +103,7 @@ function CheckoutPayment({
   const [paymentIntentId, setPaymentIntentId] = useState("");
   const [generalPageError, setGeneralPageError] = useState("");
   const [formLoading, setFormLoading] = useState(false);
+  // const [savePayment, setSavePayment] = useState(false); //TODO: Implement optional save of card
 
   const startLoader = () => {
     setGeneralPageError("");
@@ -129,6 +130,10 @@ function CheckoutPayment({
             .confirmPayment({
               elements,
               confirmParams: {
+                // save_payment_method: savePayment,
+                // payment_method_data: {
+                //   allow_redisplay: savePayment ? "always" : undefined,
+                // },
                 return_url: `${document.location.origin}/order_confirmation`,
               },
             })
@@ -200,6 +205,15 @@ function CheckoutPayment({
         <div className="py-2 rounded-l ">
           {!elements && <Loader className="mx-auto my-4" />}
           <PaymentElement options={{ layout: "accordion" }} />
+
+          {elements !== null && (
+            <div className="my-2">
+              <span className="text-ternary text-sm cursor-pointer">
+                Your payment credentials will be secured & save for future
+                payments
+              </span>
+            </div>
+          )}
           {generalPageError.length > 0 && (
             <div className="text-center text-base text-alert mt-2">
               {generalPageError}
