@@ -125,14 +125,6 @@ function CheckoutPayment({
       setGeneralPageError("Please select shipping and billing address");
       return;
     }
-    if (savePayment) {
-      await updateMetadataInIntent({
-        intentId: paymentIntentId,
-        metadata: {
-          savePayment: "1",
-        },
-      });
-    }
     await updateAddressInIntent({ ...formData, intentId: paymentIntentId });
     let paymentStatus: PaymentIntentResult | undefined;
     if (!stripe) {
@@ -147,6 +139,14 @@ function CheckoutPayment({
       });
       //TODO: A timer can also be set here to cancel the order if payment is not confirmed within a certain time
     } else if (elements) {
+      if (savePayment) {
+        await updateMetadataInIntent({
+          intentId: paymentIntentId,
+          metadata: {
+            savePayment: "1",
+          },
+        });
+      }
       paymentStatus = await stripe.confirmPayment({
         elements,
         confirmParams: {
