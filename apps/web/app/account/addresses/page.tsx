@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
 import { getUserAddresses } from "@actions/account";
 import AddressUI from "./AddressInterface";
@@ -21,9 +20,7 @@ export default async function Addresses() {
           <p className="text-center">No address found!</p>
         )}
       </div>
-      <Suspense fallback="Loading">
-        <AddressUI addressList={userAddressList.success?.data} />
-      </Suspense>
+      <AddressUI addressList={userAddressList.success?.data} />
     </div>
   );
 }
