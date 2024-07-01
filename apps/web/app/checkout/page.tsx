@@ -80,10 +80,9 @@ export default async function CheckoutPage({
     getCartBreakup(cartItems),
     getUserAddresses(),
   ]);
-  //TODO: show saved cards and allow selection from it
+
   const paymentIntent = await stripe.paymentIntents.create({
     amount: Math.round(cartBreakup.payable * 100),
-    automatic_payment_methods: { enabled: true },
     currency: "inr",
     metadata: {
       buyNowOrder: redirectURLParams.get("type") === "buy_now" ? 1 : 0,

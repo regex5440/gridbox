@@ -8,7 +8,9 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import type { PaymentIntentResult } from "@stripe/stripe-js";
-import { Loader2 } from "lucide-react";
+import { Loader2, X } from "lucide-react";
+import type Stripe from "stripe";
+import { useRouter } from "next/navigation";
 import { stripeClient } from "@lib/stripe/payment.client";
 import { updateAddressInIntent } from "@actions/checkout";
 import type { AddressBook } from "@types";
@@ -98,11 +100,17 @@ function CheckoutPayment({
   showAddressForm: boolean;
   clientSecret: string;
 }) {
+  const router = useRouter();
   const stripe = useStripe();
   const elements = useElements();
   const [paymentIntentId, setPaymentIntentId] = useState("");
   const [generalPageError, setGeneralPageError] = useState("");
   const [formLoading, setFormLoading] = useState(false);
+  const [paymentMethods, setPaymentMethods] = useState<{
+    data: Stripe.PaymentMethod[];
+    loading: boolean;
+  }>({ data: [], loading: true });
+  const [selectedSavedPaymentId, setSelectedSavedPaymentId] = useState("");
   // const [savePayment, setSavePayment] = useState(false); //TODO: Implement optional save of card
 
   const startLoader = () => {
@@ -114,44 +122,50 @@ function CheckoutPayment({
       setGeneralPageError("Please select shipping and billing address");
       return;
     }
-    await updateAddressInIntent({ ...formData, intentId: paymentIntentId });
-
-    const paymentSubmission = await elements?.submit();
-    if (paymentSubmission?.error) {
-      setFormLoading(false);
-      return;
-    }
-    //TODO: A timer can also be set here to cancel the order if payment is not confirmed within a certain time
-    const paymentStatus: PaymentIntentResult | { error: { code: "timeout" } } =
-      await new Promise((res, rej) => {
-        setTimeout(rej, 3 * 60 * 1000, { error: { code: "timeout" } });
-        if (stripe && elements) {
-          stripe
-            .confirmPayment({
-              elements,
-              confirmParams: {
-                // save_payment_method: savePayment,
-                // payment_method_data: {
-                //   allow_redisplay: savePayment ? "always" : undefined,
-                // },
-                return_url: `${document.location.origin}/order_confirmation`,
-              },
-            })
-            .then(res)
-            .catch(rej);
-        }
+    let paymentStatus: PaymentIntentResult | undefined;
+    if (selectedSavedPaymentId) {
+      paymentStatus = await stripe?.confirmCardPayment(clientSecret, {
+        payment_method: selectedSavedPaymentId,
       });
-    if (paymentStatus.error) {
-      if (paymentStatus.error.code === "timeout") {
-        setGeneralPageError("Payment request timeout. Please try again!");
+    } else {
+      await updateAddressInIntent({ ...formData, intentId: paymentIntentId });
+      //TODO: A timer can also be set here to cancel the order if payment is not confirmed within a certain time
+      if (stripe && elements) {
+        paymentStatus = await stripe.confirmPayment({
+          elements,
+          confirmParams: {
+            return_url: `${document.location.origin}/order_confirmation`,
+          },
+        });
+      }
+    }
+    if (paymentStatus?.error) {
+      if (paymentStatus.error.message) {
+        setGeneralPageError(paymentStatus.error.message);
       } else {
         setGeneralPageError("Payment Failed. Please try again!");
       }
-      setFormLoading(false);
-      return;
+    } else if (
+      paymentStatus?.paymentIntent?.confirmation_method === "automatic"
+    ) {
+      router.push(
+        `${document.location.origin}/order_confirmation?success=true&payment_intent=${paymentIntentId}`
+      );
     }
     setFormLoading(false);
   };
+
+  useEffect(() => {
+    setPaymentMethods({ data: [], loading: true });
+    fetch("/api/account/payment-list")
+      .then((res) => res.json())
+      .then((resJson) => {
+        setPaymentMethods({ data: resJson.data || [], loading: false });
+      })
+      .finally(() => {
+        setPaymentMethods((prev) => ({ ...prev, loading: false }));
+      });
+  }, []);
 
   useEffect(() => {
     if (stripe) {
@@ -203,17 +217,80 @@ function CheckoutPayment({
           ))}
         </div>
         <div className="py-2 rounded-l ">
-          {!elements && <Loader className="mx-auto my-4" />}
-          <PaymentElement options={{ layout: "accordion" }} />
-
-          {elements !== null && (
-            <div className="my-2">
-              <span className="text-ternary text-sm cursor-pointer">
-                Your payment credentials will be secured & save for future
-                payments
-              </span>
+          <div>
+            <div className="flex justify-between items-end">
+              <h3 className="font-medium text-lg">Saved Cards</h3>
+              {selectedSavedPaymentId.length > 0 && (
+                <Button
+                  className="underline text-sm text-primary p-0 bg-transparent border-none m-0 h-auto"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setSelectedSavedPaymentId("");
+                  }}
+                  type="button"
+                >
+                  Clear
+                  <X className="inline" size={18} />
+                </Button>
+              )}
             </div>
+            {paymentMethods.data.length > 0 ? (
+              <fieldset className="flex flex-col gap-1 my-2">
+                {paymentMethods.data.map((method) => (
+                  <div className="group/saved" key={method.id}>
+                    <input
+                      checked={selectedSavedPaymentId === method.id}
+                      hidden
+                      id={method.id}
+                      name="paymentMethod"
+                      onChange={(e) => {
+                        setSelectedSavedPaymentId(e.currentTarget.value);
+                      }}
+                      type="radio"
+                      value={method.id}
+                    />
+                    <label
+                      className="flex gap-4 items-center border rounded-lg w-full p-4 cursor-pointer group-has-[:checked]/saved:bg-surface-secondary"
+                      htmlFor={method.id}
+                    >
+                      <div className="w-2.5 h-2.5 box-border rounded-[50%] outline outline-offset-2 outline-primary group-has-[:checked]/saved:bg-primary" />
+                      <div className="flex justify-between align-center flex-1">
+                        <div className="text-lg font-mono">
+                          **** **** **** {method.card?.last4}
+                        </div>
+                        <div className="text-xl uppercase">
+                          <span className="mr-4 text-sm">
+                            {method.card?.country}
+                          </span>
+                          {method.card?.brand}
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                ))}
+              </fieldset>
+            ) : paymentMethods.loading ? (
+              <Loader className="mx-auto my-4" />
+            ) : (
+              <p className="text-center my-4 italic text-sm">No cards saved!</p>
+            )}
+          </div>
+          {!elements && <Loader className="mx-auto my-4" />}
+          {selectedSavedPaymentId.length === 0 && (
+            <>
+              <PaymentElement options={{ layout: "accordion" }} />
+              {elements !== null && (
+                <div className="my-2">
+                  <span className="text-ternary text-sm cursor-pointer">
+                    Your payment credentials will be secured & save for future
+                    payments
+                  </span>
+                </div>
+              )}
+            </>
           )}
+
           {generalPageError.length > 0 && (
             <div className="text-center text-base text-alert mt-2">
               {generalPageError}
