@@ -80,6 +80,5 @@ module.exports = {
     "react/no-array-index-key": "off",
     "jsx-a11y/click-events-have-key-events": "off",
     "jsx-a11y/label-has-associated-control": "off",
-    "no-console": "off", //! TEMP
   },
 };

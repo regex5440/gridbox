@@ -7,15 +7,6 @@ import { getOrderByIntent } from "@actions/checkout";
 import useMiniCart from "@lib/store/minicart";
 import SiteMap from "@utils/sitemap";
 
-type OrderDetailsProps = {
-  params: Record<string, string>;
-  searchParams: {
-    payment_intent: string;
-    payment_intent_client_secret: string;
-    redirect_status: string;
-  };
-};
-
 const OrderConfirmationState = {
   loading: (
     <div className="flex gap-2">
@@ -41,17 +32,16 @@ const OrderConfirmationState = {
   ),
 };
 
-export default function OrderConfirmation({
-  searchParams,
-}: OrderDetailsProps): JSX.Element {
+export default function OrderConfirmation(): JSX.Element {
   const [orderStatus, setOrderStatus] =
     useState<keyof typeof OrderConfirmationState>("loading");
   const { clearCart } = useMiniCart();
   const router = useRouter();
 
   useEffect(() => {
-    console.log(searchParams.payment_intent, "searchParams.payment_intent");
-    if (!searchParams.payment_intent) {
+    const url = new URL(document.location.href);
+    const paymentIntent = url.searchParams.get("payment_intent");
+    if (!paymentIntent) {
       setOrderStatus("failed");
       router.push(SiteMap.Home.path);
       return;
@@ -63,15 +53,13 @@ export default function OrderConfirmation({
         rej(new Error("FAILED"));
       }, 1000 * 10);
       interval = setInterval(() => {
-        getOrderByIntent({ paymentIntent: searchParams.payment_intent }).then(
-          (orderInfo) => {
-            if (orderInfo.data) {
-              clearTimeout(timer);
-              interval && clearInterval(interval);
-              res(orderInfo.data);
-            }
+        getOrderByIntent({ paymentIntent }).then((orderInfo) => {
+          if (orderInfo.data) {
+            clearTimeout(timer);
+            interval && clearInterval(interval);
+            res(orderInfo.data);
           }
-        );
+        });
       }, 2000) as unknown as number;
     });
 
@@ -84,7 +72,7 @@ export default function OrderConfirmation({
       .catch(() => {
         setOrderStatus("failed");
       });
-  }, [clearCart, router, searchParams.payment_intent]);
+  }, [clearCart, router]);
 
   return (
     <div className="w-10/12 max-w-screen-lg mx-auto mt-4 h-[40vh]">
