@@ -41,7 +41,9 @@ const OrderConfirmationState = {
   ),
 };
 
-export default function OrderConfirmation({ searchParams }: OrderDetailsProps) {
+export default function OrderConfirmation({
+  searchParams,
+}: OrderDetailsProps): JSX.Element {
   const [orderStatus, setOrderStatus] =
     useState<keyof typeof OrderConfirmationState>("loading");
   const { clearCart } = useMiniCart();
@@ -53,24 +55,34 @@ export default function OrderConfirmation({ searchParams }: OrderDetailsProps) {
       router.push(SiteMap.Home.path);
       return;
     }
-    const timer = setTimeout(() => {
-      setOrderStatus("failed");
-    }, 1000 * 60);
+    const orderConfirmation = new Promise((res, rej) => {
+      let interval: number | null = null;
+      const timer = setTimeout(() => {
+        interval && clearInterval(interval);
+        rej(new Error("FAILED"));
+      }, 1000 * 10);
+      interval = setInterval(() => {
+        getOrderByIntent({ paymentIntent: searchParams.payment_intent }).then(
+          (orderInfo) => {
+            if (orderInfo.data) {
+              clearTimeout(timer);
+              interval && clearInterval(interval);
+              res(orderInfo.data);
+            }
+          }
+        );
+      }, 2000) as unknown as number;
+    });
 
-    getOrderByIntent({ paymentIntent: searchParams.payment_intent }).then(
-      (res) => {
-        clearTimeout(timer);
-        if (res.error) {
-          setOrderStatus("failed");
-        } else if (res.data) {
-          setOrderStatus("success");
-          clearCart();
-          setTimeout(router.push.bind(null, SiteMap.Account.Orders.path), 3000);
-        }
-      }
-    );
-
-    return () => clearTimeout(timer);
+    orderConfirmation
+      .then(() => {
+        setOrderStatus("success");
+        clearCart();
+        router.push(SiteMap.Account.Orders.path, { scroll: true });
+      })
+      .catch(() => {
+        setOrderStatus("failed");
+      });
   }, [clearCart, router, searchParams.payment_intent]);
 
   return (
