@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { getAuthenticateUser } from "actions/auth";
+import { getAuthenticUserGeneralInfo } from "actions/auth";
 
 type State = {
   user: {
@@ -23,7 +23,7 @@ const useUserStore = create<State & Action>((set) => ({
   loading: false,
   fetchUser: async () => {
     set({ loading: true });
-    const user = await getAuthenticateUser();
+    const user = await getAuthenticUserGeneralInfo();
     set({ user: user.data, loading: false });
   },
   removeUser: () => set({ user: null }),
