@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@repo/ui";
+import { Button, Loader } from "@repo/ui";
 import { useEffect, useState } from "react";
 import {
   Elements,
@@ -31,7 +31,7 @@ type CheckoutPageProps = {
   usingCart: boolean;
 };
 
-export default function Checkout({
+export default function CheckoutProvider({
   productDetailList,
   userAddress,
   cartBreakup,
@@ -198,6 +198,7 @@ function CheckoutPayment({
           ))}
         </div>
         <div className="py-2 rounded-l ">
+          {!elements && <Loader className="mx-auto my-4" />}
           <PaymentElement options={{ layout: "accordion" }} />
           {generalPageError.length > 0 && (
             <div className="text-center text-base text-alert mt-2">
