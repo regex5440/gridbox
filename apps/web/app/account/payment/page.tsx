@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { getAuthenticateUser } from "@actions/auth";
-import stripe from "@lib/stripe/payment.server";
 import SiteMap from "@utils/sitemap";
+import { getPaymentMethods } from "@actions/checkout";
 import PaymentMethodInterface from "./PaymentMethodInterface";
 
 export default async function PaymentInfo() {
@@ -19,9 +19,8 @@ export default async function PaymentInfo() {
     );
   }
 
-  const paymentMethods = await stripe.customers.listPaymentMethods(
-    authenticUserData.data.stripeCustomerId,
-    { type: "card" }
+  const paymentMethods = await getPaymentMethods(
+    authenticUserData.data.stripeCustomerId
   );
 
   return (
