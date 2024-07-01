@@ -21,6 +21,10 @@ export async function updateAddressInIntent({
   });
 }
 
+export async function getPaymentMethods(customerId: string) {
+  return stripe.customers.listPaymentMethods(customerId, { type: "card" });
+}
+
 export async function getOrderByIntent({
   paymentIntent,
 }: {
