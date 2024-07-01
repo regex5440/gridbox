@@ -94,7 +94,7 @@ export default async function CheckoutPage({
     customer: authenticatedUser.data.stripeCustomerId,
     payment_method_options: {
       card: {
-        setup_future_usage: "off_session",
+        setup_future_usage: "on_session",
       },
     },
   });
