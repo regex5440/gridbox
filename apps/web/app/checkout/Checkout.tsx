@@ -133,20 +133,18 @@ function CheckoutPayment({
       return;
     }
 
+    //TODO: A timer can also be set here to cancel the order if payment is not confirmed within a certain time
     if (selectedSavedPaymentId) {
       paymentStatus = await stripe.confirmCardPayment(clientSecret, {
         payment_method: selectedSavedPaymentId,
       });
-      //TODO: A timer can also be set here to cancel the order if payment is not confirmed within a certain time
     } else if (elements) {
-      if (savePayment) {
-        await updateMetadataInIntent({
-          intentId: paymentIntentId,
-          metadata: {
-            savePayment: "1",
-          },
-        });
-      }
+      await updateMetadataInIntent({
+        intentId: paymentIntentId,
+        metadata: {
+          savePayment: savePayment ? "1" : "0",
+        },
+      });
       paymentStatus = await stripe.confirmPayment({
         elements,
         confirmParams: {
