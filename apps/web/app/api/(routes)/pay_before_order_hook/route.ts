@@ -21,8 +21,6 @@ interface Payment extends Stripe.PaymentIntent {
   };
 }
 export const POST: NextRoute = async (request) => {
-  //TODO: Initiate refund if order creation fails
-
   const paymentIntentEvent = await request.json();
   if (paymentIntentEvent.type !== "payment_intent.succeeded") {
     return new Response(null, { status: 204 });
@@ -45,9 +43,9 @@ export const POST: NextRoute = async (request) => {
         forUser: paymentMetadata.forUser,
         shippingId: paymentMetadata.shippingId,
         billingId: paymentMetadata.billingId,
-        buyNowOrder: parseInt(paymentMetadata.buyNowOrder),
+        buyNowOrder: paymentMetadata.buyNowOrder,
         items: JSON.parse(paymentMetadata.cartItems),
-        savePayment: parseInt(paymentMetadata.savePayment || "0"),
+        savePayment: paymentMetadata.savePayment,
       });
 
     if (!validatedPaymentIntentMetadata.success) {
@@ -66,7 +64,7 @@ export const POST: NextRoute = async (request) => {
     const cartItems = validatedPaymentIntentMetadata.data.items as CartItem[];
     const savePayment = validatedPaymentIntentMetadata.data.savePayment;
 
-    if (savePayment === 0 && typeof paymentIntent.payment_method === "string") {
+    if (savePayment === "0" && typeof paymentIntent.payment_method === "string") {
       await stripe.paymentMethods.detach(paymentIntent.payment_method);
     }
 
@@ -133,7 +131,7 @@ export const POST: NextRoute = async (request) => {
       throw new Error("Order creation failed");
     }
 
-    if (!validatedPaymentIntentMetadata.data.buyNowOrder) {
+    if (validatedPaymentIntentMetadata.data.buyNowOrder !== "1") {
       clearCart({ userId });
     }
 
