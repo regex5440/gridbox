@@ -1,7 +1,7 @@
 "use server";
 
 import { RedirectType, redirect } from "next/navigation";
-import { SignupFormErrorState } from "@types";
+import type { SignupFormErrorState } from "@types";
 import { SignupSchema } from "@lib/definitions/account";
 import { hash } from "@lib/bcrypt";
 import { authenticateUser, createUser } from "controllers/account";
@@ -46,10 +46,7 @@ export default async function signup(
       gender,
     });
     userForVerification = user.id;
-    console.log("User created. Sending verification email...");
-    //TODO: put this task in a queue: sent a verification email with token
   } catch (e) {
-    console.log(e);
     return {
       error: { message: "Something went wrong. Please try again." },
     };
