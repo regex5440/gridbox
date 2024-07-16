@@ -1,8 +1,8 @@
 "use client";
-import { Input, Select as SelectElem } from "@repo/ui";
+import { Input, Loader, Select as SelectElem } from "@repo/ui";
 import { useFormState } from "react-dom";
 import type { HTMLAttributes } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { LoginFormErrorState, SignupFormErrorState } from "@types";
 import FormButton from "@components/FormButton";
@@ -24,15 +24,19 @@ export function Login({ className, withinModal = false, ...rest }: FormProps) {
   const router = useRouter();
   const { fetchCart } = useMiniCart();
   const { fetchUser, user } = useUserStore();
+  const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
-    if (state?.success || user?.id) {
-      if (!user) {
-        fetchCart();
-        fetchUser();
-      }
+    if (state?.success && !user) {
+      fetchUser();
+      fetchCart();
+    }
+  }, [state, user, fetchCart, fetchUser]);
+  useEffect(() => {
+    if (state?.success) {
       const redirect = window.location.search?.split("redirect=")[1];
       if (redirect) {
+        setRedirecting(true);
         router.push(decodeURIComponent(redirect));
       } else if (withinModal) {
         router.back();
@@ -40,32 +44,40 @@ export function Login({ className, withinModal = false, ...rest }: FormProps) {
         router.push("/");
       }
     }
-  }, [state, router, fetchCart, fetchUser, withinModal, user?.id, user]);
+    return () => {
+      setRedirecting(false);
+    };
+  }, [state, router, withinModal]);
 
   const singleError =
     state?.error?.message || state?.error?.email || state?.error?.password;
   return (
-    <form action={action} className={`mt-4 *:mb-4 w-60 ${className}`} {...rest}>
+    <form action={action} className={`mt-4 w-60 ${className}`} {...rest}>
       <Input
-        className={singleError ? `border-2 border-alert` : ""}
+        className={singleError ? `border-2 border-alert` : "mb-4"}
         id="email"
         name="email"
         placeholder="Email Address"
         type="email"
       />
       <Input
-        className={singleError ? `border-2 border-alert` : ""}
+        className={singleError ? `border-2 border-alert` : "mb-4"}
         id="password"
         name="password"
         placeholder="Password"
         type="password"
       />
       {singleError ? (
-        <div className="text-alert text-sm">{singleError}</div>
+        <div className="text-alert text-sm mb-4">{singleError}</div>
       ) : null}
-      <FormButton className="bg-primary text-regular-inverted w-full">
+      <FormButton className="bg-primary text-regular-inverted w-full mb-4">
         Login
       </FormButton>
+      {redirecting ? (
+        <div className="absolute inset-0 w-full h-full grid place-content-center bg-overlay">
+          <Loader iconSize={40} />
+        </div>
+      ) : null}
     </form>
   );
 }
