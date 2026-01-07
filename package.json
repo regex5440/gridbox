@@ -28,6 +28,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "@prisma/client": "^5.16.1",
     "class-variance-authority": "^0.7.0"
   },
   "name": "gridbox"
