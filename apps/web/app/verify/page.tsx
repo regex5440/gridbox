@@ -64,12 +64,30 @@ export default async function VerifyPage({ searchParams }: VerifyPageProps) {
         </div>
       );
     } else {
-      await sendVerificationEmail({
+      const response = await sendVerificationEmail({
         email: user.email,
         userId: user.id,
         firstName: user.firstName,
         lastName: user.lastName || "",
       });
+      if (response.status !== 200) {
+        renderVerifyContent = (
+          <div>
+            <p>
+              <CircleX className="text-alert mx-auto" size={70} />
+            </p>
+            <h1 className="text-center text-2xl">Something went wrong</h1>
+            <p className="text-center mt-5">
+              Unable to resend verification email. Please try again later.
+            </p>
+          </div>
+        );
+        console.error(
+          "Error: Resend verification email Failed:",
+          await response.json()
+        );
+      }
+
       renderVerifyContent = (
         <div>
           <p>
