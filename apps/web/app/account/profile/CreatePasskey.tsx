@@ -97,7 +97,10 @@ export default function CreatePasskey({
         setShowNameModal(true);
         return;
       }
-    } catch (e) {
+    } catch (e: any) {
+      if (e?.name === "NotAllowedError") {
+        return;
+      }
       setShowError(true);
       console.error(e);
     }
