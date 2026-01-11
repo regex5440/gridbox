@@ -1,4 +1,5 @@
 import { Loader2, LoaderIcon } from "lucide-react";
+import { cn } from "../utils";
 
 export default function Loader({
   className,
@@ -10,8 +11,8 @@ export default function Loader({
   type?: 1 | 2;
 }) {
   return (
-    <div className={`${className} w-fit`}>
-      <div className="animate-spin text-primary">
+    <div className={cn(`text-primary w-fit`, className)}>
+      <div className="animate-spin">
         {type === 1 ? (
           <Loader2 size={iconSize} />
         ) : (
