@@ -44,6 +44,7 @@ const config: Omit<Config, "content"> = {
         regular: "var(--text-regular)",
         "regular-inverted": "var(--text-regular-inverted)",
         alert: "var(--alert)",
+        "alert-foreground": "#fff",
       },
       boxShadow: {
         "inset-top": "inset 0 5px 5px  rgba(125, 125, 125, 0.4)",
