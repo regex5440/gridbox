@@ -25,3 +25,9 @@ export const ORDER_STATUS: Record<
     color: "red",
   },
 };
+
+export const ALGORITHM_MAP: Record<number, string> = {
+  "-8": "EdDSA",
+  "-7": "ES256",
+  "-257": "RS256",
+};

@@ -1,9 +1,22 @@
 import { z } from "zod";
 
-export const LoginSchema = z.object({
-  email: z.string().email("Please provide valid credentials").trim(),
-  password: z.string().min(8, "Please provide valid credentials").trim(),
-});
+export const LoginSchema = z
+  .object({
+    email: z.string().email("Please provide valid credentials").trim(),
+    password: z.string().min(8, "Please provide valid credentials").trim(),
+  })
+  .or(
+    z.object({
+      credId: z.string().min(1, "Passkey ID is required").trim(),
+      clientDataJSON: z.string().min(1, "Client Data is required").trim(),
+      authenticatorData: z
+        .string()
+        .min(1, "Authenticator Data is required")
+        .trim(),
+      signature: z.string().min(1, "Signature is required").trim(),
+      challengeId: z.string().min(1, "Challenge ID is required").trim(),
+    })
+  );
 export const SignupSchema = z
   .object({
     firstName: z.string().min(1, "First name is required").trim(),

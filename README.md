@@ -1,6 +1,6 @@
 # Gridbox - E-commerce (Turborepo)
 
-Live at https://gb.hdxdev.in
+Live at <https://gb.hdxdev.in>
 
 ## Features
 
@@ -8,6 +8,8 @@ Live at https://gb.hdxdev.in
 >   - Account Creation
 >   - Updating Profile information
 > - User Authentication
+>   - Email & Password
+>   - Password less auth with Passkeys
 > - Product Search & Listing
 > - Product details page
 > - Order creation and tracking
@@ -81,7 +83,7 @@ SESSION_EXPIRY=604800 # 7 days in seconds
 PASSWORD_HASH_SALT=10 #(optional, default is 10)
 EMAIL_SERVICE=<Url for mailer service>
 EMAIL_SERVICE_TOKEN=<mailer service static auth token>
-
+RPID=<Id/name to be used for passkey storage>
 #PAYMENT
 
 PAYMENT_SECRET_KEY=<secret key from payment aggregator>

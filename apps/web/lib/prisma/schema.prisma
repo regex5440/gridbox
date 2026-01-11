@@ -31,6 +31,7 @@ model profile {
   addressBook      shippingInfo[]
   cart             cartItem[]
   orders           order[]
+  passkeys         passkeys[]
 }
 
 model shippingInfo {
@@ -82,4 +83,15 @@ model orderItem {
   quantity  Int
   price     Float
   order     order? @relation(fields: [orderId], references: [id], onUpdate: Cascade)
+}
+
+model passkeys {
+  id        String   @id @default(cuid())
+  pkey      String
+  name      String
+  profileId String
+  credId    String   @unique
+  algorithm String
+  createdAt DateTime @default(now())
+  profile   profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
 }
