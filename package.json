@@ -28,6 +28,8 @@
     "packages/*"
   ],
   "dependencies": {
+    "@next/eslint-plugin-next": "^12.3.0",
+    "@prisma/client": "^5.16.1",
     "class-variance-authority": "^0.7.0"
   },
   "name": "gridbox"

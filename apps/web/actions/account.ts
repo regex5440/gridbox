@@ -3,6 +3,7 @@ import { authenticateUser } from "./auth";
 import {
   addNewAddress,
   deleteAddress,
+  deletePasskey,
   editAddress,
   getUserShippingInfo,
 } from "controllers/account";
@@ -67,4 +68,18 @@ const deleteAddressAction = async (
   return { success: { data: deletedAddress } };
 };
 
-export { getUserAddresses, addressAction, deleteAddressAction };
+const deletePasskeyAction = async (keyId: string) => {
+  const authenticUser = await authenticateUser();
+  if (authenticUser.error) {
+    return { error: { common: true, message: "Unauthorized" } };
+  }
+  const res = await deletePasskey(keyId, authenticUser.data.id);
+  return res.id;
+};
+
+export {
+  getUserAddresses,
+  addressAction,
+  deleteAddressAction,
+  deletePasskeyAction,
+};

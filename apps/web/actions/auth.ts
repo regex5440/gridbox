@@ -5,16 +5,14 @@ import { cookies } from "next/headers";
 
 export async function authenticateUser() {
   const token = cookies().get("session.token")?.value;
-  if (!token) {
-    return { error: { message: "Invalid token" } };
-  }
-  const payload = await decryptToken<{ id: string }>(token);
-  if (!payload) {
-    return { error: { message: "Invalid token" } };
-  }
-  const { id } = payload;
-  if (typeof id === "string") {
-    return { data: { id }, success: true };
+  if (token) {
+    const payload = await decryptToken<{ id: string }>(token);
+    if (payload) {
+      const { id } = payload;
+      if (typeof id === "string") {
+        return { data: { id }, success: true };
+      }
+    }
   }
   return { error: { message: "Invalid token" } };
 }

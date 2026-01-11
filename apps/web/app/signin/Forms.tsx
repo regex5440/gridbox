@@ -1,5 +1,5 @@
 "use client";
-import { Input, Loader, Select as SelectElem } from "@repo/ui";
+import { Button, Input, Loader, Select as SelectElem } from "@repo/ui";
 import { useFormState } from "react-dom";
 import type { HTMLAttributes } from "react";
 import { useEffect, useState } from "react";
@@ -10,6 +10,7 @@ import login from "actions/login";
 import signup from "actions/signup";
 import useMiniCart from "@lib/store/minicart";
 import useUserStore from "@lib/store/user";
+import { createChallenge } from "controllers/account";
 
 type FormProps = {
   className?: HTMLAttributes<HTMLFormElement>["className"];
@@ -17,14 +18,16 @@ type FormProps = {
 };
 
 export function Login({ className, withinModal = false, ...rest }: FormProps) {
-  const [state, action] = useFormState<LoginFormErrorState, FormData>(
-    login,
-    undefined
-  );
+  const [state, action, actionInProgress] = useFormState<
+    LoginFormErrorState,
+    FormData
+  >(login, undefined);
   const router = useRouter();
   const { fetchCart } = useMiniCart();
   const { fetchUser, user } = useUserStore();
   const [redirecting, setRedirecting] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const isPending = actionInProgress || isLoading;
 
   useEffect(() => {
     if (state?.success && !user) {
@@ -49,16 +52,80 @@ export function Login({ className, withinModal = false, ...rest }: FormProps) {
     };
   }, [state, router, withinModal]);
 
+  async function signinWithPasskey(e: React.MouseEvent<HTMLButtonElement>) {
+    try {
+      e.preventDefault();
+      setIsLoading(true);
+      const isAvailable =
+        await PublicKeyCredential?.isUserVerifyingPlatformAuthenticatorAvailable();
+      if (!isAvailable) {
+        alert(
+          "Passkey signin is not supported on this device/browser. Please use email and password."
+        );
+        setIsLoading(false);
+        return;
+      }
+      const challenge = await createChallenge();
+      //@ts-expect-error - Issues with TS for WebAuthn APIs
+      const _options = PublicKeyCredential.parseRequestOptionsFromJSON({
+        challenge: challenge.challenge,
+        timeout: 60000,
+      });
+      const prRes = (await navigator.credentials.get({
+        publicKey: _options,
+      })) as PublicKeyCredential | null;
+      if (!prRes) {
+        throw new Error("No passkey response");
+      }
+      //@ts-expect-error - Issues with TS for WebAuthn APIs
+      const passkeyData = prRes.toJSON() as Omit<
+        PublicKeyCredential,
+        "response"
+      > & {
+        response: {
+          clientDataJSON: string;
+          authenticatorData: string;
+          signature: string;
+          userHandle: string | null;
+        };
+      };
+
+      const formData = new FormData();
+      formData.append("credId", passkeyData.id);
+      formData.append("clientDataJSON", passkeyData.response.clientDataJSON);
+      formData.append("challengeId", challenge.challengeId);
+      formData.append(
+        "authenticatorData",
+        passkeyData.response.authenticatorData
+      );
+      formData.append("signature", passkeyData.response.signature);
+      action(formData);
+    } catch (err: any) {
+      if (err?.name === "NotAllowedError") {
+        // User cancelled the operation or it timed out
+        return;
+      }
+      console.error("Passkey Signin Error:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   const singleError =
     state?.error?.message || state?.error?.email || state?.error?.password;
   return (
-    <form action={action} className={`mt-4 w-60 ${className}`} {...rest}>
+    <form
+      action={action}
+      className={`mt-4 w-60 text-center ${className}`}
+      {...rest}
+    >
       <Input
         className={singleError ? `border-2 border-alert` : "mb-4"}
         id="email"
         name="email"
         placeholder="Email Address"
         type="email"
+        autoComplete="email webauthn"
       />
       <Input
         className={singleError ? `border-2 border-alert` : "mb-4"}
@@ -70,14 +137,27 @@ export function Login({ className, withinModal = false, ...rest }: FormProps) {
       {singleError ? (
         <div className="text-alert text-sm mb-4">{singleError}</div>
       ) : null}
-      <FormButton className="bg-primary text-regular-inverted w-full mb-4">
-        Login
+      <FormButton
+        className="bg-primary text-regular-inverted w-full mb-4"
+        disabled={isPending}
+      >
+        {isPending ? <Loader className="text-white" /> : "Login"}
       </FormButton>
       {redirecting ? (
         <div className="absolute inset-0 w-full h-full grid place-content-center bg-overlay">
           <Loader iconSize={40} />
         </div>
       ) : null}
+      <div className="text-xs">Or</div>
+      <Button
+        type="button"
+        variant="link"
+        size={"sm"}
+        onClick={signinWithPasskey}
+        disabled={isPending}
+      >
+        Continue with Passkey
+      </Button>
     </form>
   );
 }

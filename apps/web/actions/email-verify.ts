@@ -68,7 +68,7 @@ export async function sendVerificationEmail({
       verificationLink: `${process.env.ASSIGNED_URL}${SiteMap.Verify.path}?token=${verificationToken}`,
     })
     .toHTML();
-  await sendEmail({
+  return await sendEmail({
     html: verificationEmail,
     subject: "Verify your email",
     to: email,
