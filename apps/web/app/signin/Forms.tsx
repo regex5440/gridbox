@@ -56,6 +56,15 @@ export function Login({ className, withinModal = false, ...rest }: FormProps) {
     try {
       e.preventDefault();
       setIsLoading(true);
+      const isAvailable =
+        await PublicKeyCredential?.isUserVerifyingPlatformAuthenticatorAvailable();
+      if (!isAvailable) {
+        alert(
+          "Passkey signin is not supported on this device/browser. Please use email and password."
+        );
+        setIsLoading(false);
+        return;
+      }
       const challenge = await createChallenge();
       const _options = PublicKeyCredential.parseRequestOptionsFromJSON({
         challenge: challenge.challenge,

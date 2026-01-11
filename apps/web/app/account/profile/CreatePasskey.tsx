@@ -65,6 +65,12 @@ export default function CreatePasskey({
 
   async function handleNewPasskeyCreation() {
     try {
+      const isAvailable =
+        await PublicKeyCredential?.isUserVerifyingPlatformAuthenticatorAvailable();
+      if (!isAvailable) {
+        alert("Passkey creation is not supported on this device/browser.");
+        return;
+      }
       const _options = PublicKeyCredential.parseCreationOptionsFromJSON({
         challenge,
         rp: {
