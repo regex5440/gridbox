@@ -66,6 +66,7 @@ export function Login({ className, withinModal = false, ...rest }: FormProps) {
         return;
       }
       const challenge = await createChallenge();
+      //@ts-expect-error - Issues with TS for WebAuthn APIs
       const _options = PublicKeyCredential.parseRequestOptionsFromJSON({
         challenge: challenge.challenge,
         timeout: 60000,
@@ -76,6 +77,7 @@ export function Login({ className, withinModal = false, ...rest }: FormProps) {
       if (!prRes) {
         throw new Error("No passkey response");
       }
+      //@ts-expect-error - Issues with TS for WebAuthn APIs
       const passkeyData = prRes.toJSON() as Omit<
         PublicKeyCredential,
         "response"

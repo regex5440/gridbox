@@ -82,10 +82,6 @@ export default async function VerifyPage({ searchParams }: VerifyPageProps) {
             </p>
           </div>
         );
-        console.error(
-          "Error: Resend verification email Failed:",
-          await response.json()
-        );
       }
 
       renderVerifyContent = (

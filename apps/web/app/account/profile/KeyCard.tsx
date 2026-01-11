@@ -55,6 +55,7 @@ export default function KeyCard({ passkey }: { passkey: Passkey }) {
                   await deletePasskeyAction(passkey.id);
                   window.location.reload();
                 } catch (err) {
+                  alert("Failed to delete passkey. Please try again.");
                   console.error("Error deleting passkey:", err);
                 } finally {
                   setIsDeleting(false);

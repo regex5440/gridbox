@@ -46,9 +46,9 @@ export default function CreatePasskey({
   );
 
   useEffect(() => {
-    if (submissionError && submissionError != "noerr") {
+    if (submissionError && submissionError !== "noerr") {
       setShowError(true);
-    } else if (submissionError == "noerr") {
+    } else if (submissionError === "noerr") {
       setShowNameModal(false);
       window.location.reload();
     }
@@ -71,6 +71,7 @@ export default function CreatePasskey({
         alert("Passkey creation is not supported on this device/browser.");
         return;
       }
+      //@ts-expect-error - Issues with TS for WebAuthn APIs
       const _options = PublicKeyCredential.parseCreationOptionsFromJSON({
         challenge,
         rp: {
@@ -92,7 +93,8 @@ export default function CreatePasskey({
       const pr = (await navigator.credentials.create({
         publicKey: _options,
       })) as PublicKeyCredential | null;
-      if (pr && pr.type == "public-key") {
+      if (pr && pr.type === "public-key") {
+        //@ts-expect-error - Issues with TS for WebAuthn APIs
         const prJson = pr.toJSON();
         prJson.name = "New Passkey " + crypto.randomUUID().slice(0, 5);
         prJson.challengeId = challengeId;

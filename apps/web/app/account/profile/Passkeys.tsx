@@ -32,7 +32,7 @@ export default async function Passkeys({
       return "Incomplete passkey data received.";
     }
 
-    if (!name || !/[\w\ ]{3,30}/.test(name)) {
+    if (!name || !/[\w ]{3,30}/.test(name)) {
       return "Please enter a valid name (3-30 alphanumeric characters or spaces).";
     }
     const isValid = validateChallenge(challengeId, clientData);
